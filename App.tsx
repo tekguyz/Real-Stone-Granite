@@ -25,7 +25,10 @@ const App: React.FC = () => {
         </main>
         
         {/* Global Features (Overlays) */}
-        <StoneCurator onLaunchStudio={() => setIsStudioOpen(true)} />
+        <StoneCurator 
+          onLaunchStudio={() => setIsStudioOpen(true)} 
+          isStudioOpen={isStudioOpen}
+        />
         <DesignStudio isOpen={isStudioOpen} onClose={() => setIsStudioOpen(false)} />
 
         {/* Footer Layer */}

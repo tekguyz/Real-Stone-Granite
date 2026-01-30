@@ -1,7 +1,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Send, ChevronRight, Terminal } from 'lucide-react';
+import { X, Send, ChevronRight, ArrowUp } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { COMPANY_KB } from '../../entities/company/knowledge';
 import { Button } from '../../shared/ui/Button';
@@ -17,39 +17,38 @@ interface Message {
 
 interface StoneCuratorProps {
   onLaunchStudio: () => void;
+  isStudioOpen: boolean;
 }
 
-// --- System Prompt Construction ---
+const CHAT_THRESHOLD = 800;
+const TOP_THRESHOLD = 2000;
+
+// --- System Prompt ---
 const constructSystemPrompt = () => {
   const kbString = JSON.stringify(COMPANY_KB);
   return `
     ROLE: Senior Consultant at Real Stone & Granite.
     
     IDENTITY: 
-    You are "The Curator," a stone professional with over 30 years of hands-on experience in masonry and consultancy. 
-    You are standing on a showroom floor, speaking directly to a client.
+    You are "The Curator," a stone professional with 30+ years of experience. You focus on geological integrity and the visceral beauty of the materials.
     
-    CORE VALUES: 
-    Integrity, Quality, and Craftsmanship. You always recommend the right material for the legacy of the project, even if it requires more intricate fabrication.
-
-    KNOWLEDGE BASE:
+    CORE DATA:
     ${kbString}
 
     OBJECTIVE:
-    Guide clients through stone selection. Focus on the soul of the material—its veining, its origin, and its life in a home.
-    If the user asks about cost or project planning, use [ACTION_LAUNCH_STUDIO].
+    Help clients choose stone based on the "Legacy" of the project.
+    Use the 'visualKeywords' (e.g., "polished igneous rock", "translucent honey onyx") to describe stones vividly.
+    Talk about the "Crystalline density" of Quartzite or the "Atmospheric presence" of Onyx.
 
-    LANGUAGE CONSTRAINTS (NO JARGON):
-    - NEVER say: "AI", "Processing", "Assistant", "Large language model", "Input", "Parameters".
-    - DO NOT use: "Thermal Specs" (use "Heat Resistance"), "Yield Ratios" (use "Maximizing your slab usage").
-    - If unsure, say: "That's a specific detail I'd like to check with our fabrication team to ensure we give you the most accurate answer."
+    PERSONA RULES:
+    1. ZERO JARGON: No "AI", "Processing", "Slabs in database". Say "I've seen blocks like this..." or "Our current selection shows...".
+    2. SLAB FOCUS: Describe the stone as a physical object. Mention veining, light refraction, and heat resistance.
+    3. ACTION: If they ask for pricing, planning, or blueprints, use [ACTION_LAUNCH_STUDIO].
 
-    BEHAVIOR & FORMATTING:
-    - Use Markdown.
-    - Use **bold** for material names (e.g., **Calacatta Gold**) and key design terms.
-    - Use bulleted lists for professional comparisons or specifications.
-    - Use backticks (\` \`) for technical measurements or references (e.g., \`3cm\`, \`Ref: IT-04\`).
-    - Responses must be concise (under 60 words) and deeply professional.
+    FORMATTING:
+    - Bold material names: **Absolute Black Granite**.
+    - Use Markdown for clarity.
+    - Responses under 70 words. Be professional, direct, and elite.
   `;
 };
 
@@ -60,19 +59,51 @@ const SUGGESTIONS = [
   "The Fabrication Process"
 ];
 
-export const StoneCurator: React.FC<StoneCuratorProps> = ({ onLaunchStudio }) => {
+const SurveyorDiamondIcon = () => (
+  <svg 
+    viewBox="0 0 24 24" 
+    className="w-6 h-6 text-gold drop-shadow-[0_0_5px_rgba(212,175,55,0.5)]" 
+    fill="none" 
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    {/* The Diamond (Rotated Square) */}
+    <path 
+      d="M12 5 L19 12 L12 19 L5 12 Z" 
+      stroke="currentColor" 
+      strokeWidth="1.5" 
+      strokeLinecap="square"
+    />
+    {/* The Sharp Triangular Tail */}
+    <path 
+      d="M17 17 L21 21 L21 17 Z" 
+      fill="currentColor" 
+    />
+  </svg>
+);
+
+export const StoneCurator: React.FC<StoneCuratorProps> = ({ onLaunchStudio, isStudioOpen }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 'init-1',
       role: 'model',
-      content: 'Good morning. I’ve spent three decades working with these materials; I’m happy to help you find the perfect stone for your project. Where should we begin?',
+      content: 'Good morning. I’ve spent my career working with these geological treasures. How may I assist you in selecting a material for your legacy project?',
     }
   ]);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     if (isOpen) {
@@ -121,45 +152,52 @@ export const StoneCurator: React.FC<StoneCuratorProps> = ({ onLaunchStudio }) =>
       setMessages(prev => [...prev, {
         id: Date.now().toString(),
         role: 'model',
-        content: "I'm having a moment of difficulty reaching our design database. Let's try that again in a moment."
+        content: "I've encountered a temporary technical disconnect. Let's revisit that inquiry in a moment."
       }]);
     } finally {
       setIsLoading(false);
     }
   };
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Visibility Logic
+  const showChatFab = scrollY > CHAT_THRESHOLD && !isStudioOpen;
+  const showTopBtn = scrollY > TOP_THRESHOLD && !isStudioOpen;
+
   return (
-    <div className="fixed bottom-0 right-0 z-[100] flex flex-col items-end">
+    <div className="fixed bottom-6 right-6 md:bottom-12 md:right-12 z-[100] flex flex-col items-end gap-4 pointer-events-none">
       <AnimatePresence>
+        
+        {/* --- CHAT WINDOW --- */}
         {isOpen && (
           <motion.div
             initial={{ opacity: 0, y: 100, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 100, scale: 0.98 }}
             transition={PHYSICS.snappy}
-            className="w-screen md:w-[480px] h-[85vh] bg-primary border-l border-t border-white/10 shadow-[0_-40px_120px_rgba(0,0,0,0.9)] flex flex-col overflow-hidden relative"
+            className="w-[90vw] md:w-[480px] h-[75vh] md:h-[80vh] bg-primary border border-white/10 shadow-[0_-40px_120px_rgba(0,0,0,0.9)] flex flex-col overflow-hidden relative pointer-events-auto origin-bottom-right mb-4 mr-0"
           >
-            {/* Ambient Noise */}
-            <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('data:image/svg+xml,%3Csvg viewBox=%270 0 200 200%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cfilter id=%27noiseFilter%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.65%27 numOctaves=%273%27 stitchTiles=%27stitch%27/%3E%3C/filter%3E%3Crect width=%27100%25%27 height=%27100%25%27 filter=%27url(%23noiseFilter)%27/%3E%3C/svg%3E')]" />
-
-            {/* Header: Integrated & Sharp */}
+            {/* Header */}
             <div className="h-16 border-b border-white/5 bg-surface/50 backdrop-blur-xl flex items-center justify-between pl-6 pr-0 flex-shrink-0 z-20">
               <div className="flex items-center gap-3">
                 <div className="w-1.5 h-1.5 bg-gold animate-pulse rotate-45" />
-                <span className="text-xs text-white/90 uppercase tracking-[0.25em] font-sans font-medium">
+                <span className="text-xs text-white/90 uppercase tracking-[0.25em] font-mono font-medium">
                   Senior Associate
                 </span>
               </div>
               <button 
                 onClick={() => setIsOpen(false)}
-                className="h-16 w-16 flex items-center justify-center border-l border-white/5 hover:bg-red-500/10 hover:text-red-400 transition-all duration-200 group"
+                className="h-16 w-16 flex items-center justify-center border-l border-white/5 hover:bg-red-500/10 hover:text-red-400 transition-all group"
               >
-                <X className="w-5 h-5 opacity-40 group-hover:opacity-100 transition-opacity" />
+                <X className="w-5 h-5 opacity-40 group-hover:opacity-100" />
               </button>
             </div>
 
-            {/* Message History */}
-            <div className="flex-1 overflow-y-auto p-8 space-y-10 z-10 custom-scrollbar scroll-smooth">
+            {/* Messages */}
+            <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-10 z-10 custom-scrollbar scroll-smooth bg-primary">
               {messages.map((msg) => (
                 <motion.div 
                   initial={{ opacity: 0, y: 10 }}
@@ -167,45 +205,29 @@ export const StoneCurator: React.FC<StoneCuratorProps> = ({ onLaunchStudio }) =>
                   key={msg.id} 
                   className={`flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'}`}
                 >
-                  {msg.role === 'model' && (
-                    <div className="flex items-center gap-2 mb-3 opacity-30">
-                       <span className="text-[9px] font-mono tracking-[0.2em] uppercase">Senior Associate</span>
-                    </div>
-                  )}
-                  
                   <div 
-                    className={`max-w-[90%] p-5 border shadow-sm ${
+                    className={`max-w-[90%] p-6 border ${
                       msg.role === 'user' 
-                        ? 'bg-white/5 text-white border-white/10 font-sans' 
-                        : 'bg-surface/80 text-text-main border-white/5 font-sans prose-stone'
+                        ? 'bg-white/5 text-white border-white/10' 
+                        : 'bg-surface/80 text-text-main border-white/5 prose-stone'
                     }`}
                   >
-                    {msg.role === 'model' ? (
-                      <div className="text-[14px] leading-[1.6] font-light">
-                        <ReactMarkdown>
-                          {msg.content}
-                        </ReactMarkdown>
-                      </div>
-                    ) : (
-                      <p className="text-[14px] leading-[1.6] font-light">
+                    <div className="text-[13px] md:text-[14px] leading-relaxed font-light">
+                      <ReactMarkdown>
                         {msg.content}
-                      </p>
-                    )}
+                      </ReactMarkdown>
+                    </div>
                   </div>
 
                   {msg.hasAction && (
-                    <motion.div 
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      className="mt-6 w-full max-w-[85%]"
-                    >
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-6 w-full max-w-[85%]">
                       <Button 
                         variant="gold" 
                         size="md" 
-                        className="w-full flex items-center justify-between group border-gold/40 h-14"
+                        className="w-full flex items-center justify-between group h-14"
                         onClick={onLaunchStudio}
                       >
-                        <span className="font-mono text-[11px] tracking-widest">Start Project Plan</span>
+                        <span className="font-mono text-[10px] tracking-widest uppercase">Launch Planner</span>
                         <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                       </Button>
                     </motion.div>
@@ -213,51 +235,41 @@ export const StoneCurator: React.FC<StoneCuratorProps> = ({ onLaunchStudio }) =>
                 </motion.div>
               ))}
               {isLoading && (
-                <div className="flex items-start">
-                   <div className="bg-surface/50 p-4 border border-white/5 flex gap-3 items-center">
-                      <div className="flex gap-1">
-                        <div className="w-1 h-1 bg-gold animate-bounce rotate-45" />
-                        <div className="w-1 h-1 bg-gold animate-bounce [animation-delay:0.2s] rotate-45" />
-                        <div className="w-1 h-1 bg-gold animate-bounce [animation-delay:0.4s] rotate-45" />
-                      </div>
-                      <span className="text-[9px] font-mono text-gold/60 tracking-widest uppercase">Consulting...</span>
-                   </div>
+                <div className="flex gap-2 items-center p-4 bg-surface/30 border border-white/5 w-fit">
+                    <div className="w-1 h-1 bg-gold animate-bounce rotate-45" />
+                    <div className="w-1 h-1 bg-gold animate-bounce [animation-delay:0.2s] rotate-45" />
+                    <div className="w-1 h-1 bg-gold animate-bounce [animation-delay:0.4s] rotate-45" />
+                    <span className="text-[9px] font-mono text-gold uppercase tracking-widest ml-2">Consulting...</span>
                 </div>
               )}
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Input & Control Hub */}
-            <div className="bg-primary border-t border-white/5 p-6 z-20">
-              {/* Gold Pill Suggestions */}
-              <div className="flex flex-wrap gap-2 mb-6">
+            {/* Input */}
+            <div className="bg-primary border-t border-white/5 p-6">
+              <div className="flex flex-wrap gap-2 mb-4">
                 {SUGGESTIONS.map((chip) => (
                   <button
                     key={chip}
                     onClick={() => handleSend(chip)}
-                    disabled={isLoading}
-                    className="px-3 py-1.5 border border-gold/30 hover:border-gold hover:bg-gold/5 text-[11px] font-mono text-gold uppercase tracking-wider transition-all duration-300 disabled:opacity-30"
+                    className="px-3 py-1.5 border border-gold/20 hover:border-gold hover:bg-gold/5 text-[10px] font-mono text-gold uppercase tracking-widest transition-all"
                   >
                     {chip}
                   </button>
                 ))}
               </div>
-
-              {/* Input Area */}
-              <div className="relative flex items-center h-14 bg-surface/50 border border-white/5 hover:border-white/10 transition-colors">
+              <div className="relative flex items-center h-14 bg-surface/50 border border-white/5">
                 <input
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                  placeholder="Inquire about a selection..."
-                  className="w-full h-full bg-transparent px-5 text-white text-[13px] font-sans outline-none placeholder:text-white/10"
-                  disabled={isLoading}
+                  placeholder="Ask a question..."
+                  className="w-full h-full bg-transparent px-5 text-white text-xs font-mono outline-none"
                 />
                 <button 
                   onClick={() => handleSend()}
-                  disabled={!input.trim() || isLoading}
-                  className="w-14 h-full flex items-center justify-center text-gold hover:text-white disabled:opacity-20 transition-all border-l border-white/5"
+                  className="w-14 h-full flex items-center justify-center text-gold border-l border-white/5"
                 >
                   <Send className="w-4 h-4" />
                 </button>
@@ -265,26 +277,50 @@ export const StoneCurator: React.FC<StoneCuratorProps> = ({ onLaunchStudio }) =>
             </div>
           </motion.div>
         )}
-      </AnimatePresence>
 
-      {/* Industrial FAB Toggle */}
-      {!isOpen && (
-        <motion.button
-          onClick={() => setIsOpen(true)}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.98 }}
-          className="m-8 w-16 h-16 bg-gold text-primary shadow-2xl relative group flex items-center justify-center overflow-hidden"
-        >
-          <Terminal className="w-6 h-6 relative z-10" strokeWidth={1.5} />
-          <div className="absolute inset-0 bg-white/30 translate-y-full group-hover:translate-y-0 transition-transform duration-400 ease-out" />
-          
-          <span className="absolute right-full mr-6 top-1/2 -translate-y-1/2 bg-surface border border-white/10 px-4 py-3 text-[10px] font-mono uppercase tracking-[0.3em] text-white whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none translate-x-4 group-hover:translate-x-0">
-            Consult Specialist
-          </span>
-        </motion.button>
-      )}
+        {/* --- FLOATING CONTROLS STACK --- */}
+        <div className="flex flex-col items-center gap-4 pointer-events-auto">
+          {/* Back to Top - Visible after 2000px */}
+          <AnimatePresence>
+            {showTopBtn && !isOpen && (
+              <motion.button
+                key="top-btn"
+                initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.8, y: 10 }}
+                onClick={scrollToTop}
+                whileHover={{ borderColor: 'var(--color-gold)', color: 'var(--color-gold)' }}
+                whileTap={{ scale: 0.95 }}
+                className="w-9 h-9 md:w-[42px] md:h-[42px] bg-transparent border border-white/20 flex items-center justify-center text-text-muted transition-all shadow-xl"
+              >
+                <ArrowUp className="w-4 h-4 md:w-5 md:h-5" strokeWidth={1.5} />
+              </motion.button>
+            )}
+          </AnimatePresence>
+
+          {/* Chat FAB - Visible after 800px */}
+          <AnimatePresence>
+            {showChatFab && !isOpen && (
+              <motion.button
+                key="chat-btn"
+                initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.8, y: 20 }}
+                onClick={() => setIsOpen(true)}
+                whileHover={{ scale: 1.05, borderColor: 'rgba(212,175,55,0.5)' }}
+                whileTap={{ scale: 0.95 }}
+                transition={PHYSICS.snappy}
+                className="w-12 h-12 md:w-14 md:h-14 bg-surface border border-white/10 flex items-center justify-center shadow-2xl relative group"
+              >
+                <SurveyorDiamondIcon />
+                {/* Glow Overlay */}
+                <div className="absolute inset-0 bg-gold/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </motion.button>
+            )}
+          </AnimatePresence>
+        </div>
+
+      </AnimatePresence>
     </div>
   );
 };

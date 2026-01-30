@@ -161,9 +161,9 @@ export const Monuments: React.FC = () => {
                      </motion.div>
                   </div>
 
-                  {/* Center Crosshair Decoration */}
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 pointer-events-none">
-                     <div className="absolute inset-0 border border-gold/20 rounded-full" />
+                  {/* Center Crosshair Decoration - Diamond Conversion */}
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 pointer-events-none">
+                     <div className="absolute inset-0 border border-gold/40 rotate-45" />
                      <div className="absolute top-1/2 left-0 w-full h-[1px] bg-gold/20" />
                      <div className="absolute left-1/2 top-0 w-[1px] h-full bg-gold/20" />
                   </div>

@@ -28,15 +28,16 @@ import {
 } from 'lucide-react';
 
 export const TEXTURES = {
-  GRANITE: "https://images.unsplash.com/photo-1628498064887-41f5eb1451a4?auto=format&fit=crop&q=80&w=1200",
-  MARBLE: "https://images.unsplash.com/photo-1523413651479-597eb2da0ad6?auto=format&fit=crop&q=80&w=1200",
-  QUARTZITE: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&q=80&w=1200",
-  ONYX: "https://images.unsplash.com/photo-1515549832467-d3b1576fc031?auto=format&fit=crop&q=80&w=1200",
-  DEKTON: "https://images.unsplash.com/photo-1516594798947-e65505dbb29d?auto=format&fit=crop&q=80&w=1200",
-  PORCELAIN: "https://images.unsplash.com/photo-1615529328331-f8917597711f?auto=format&fit=crop&q=80&w=1200",
-  QUARTZ: "https://images.unsplash.com/photo-1596139947659-5f25a589f928?auto=format&fit=crop&q=80&w=1200",
-  SEMIPRECIOUS: "https://images.unsplash.com/photo-1582736486022-723eb1b78298?auto=format&fit=crop&q=80&w=1200",
-  RARE_FINDS: "https://images.unsplash.com/photo-1582128795907-2a544c9b1399?auto=format&fit=crop&q=80&w=1200",
+  // Focus: Macro Textures & Polished Slabs
+  GRANITE: "https://images.unsplash.com/photo-1628498064887-41f5eb1451a4?auto=format&fit=crop&q=80&w=1200", // Polished igneous
+  MARBLE: "https://images.unsplash.com/photo-1523413651479-597eb2da0ad6?auto=format&fit=crop&q=80&w=1200", // Carrara Macro
+  QUARTZITE: "https://images.unsplash.com/photo-1517430816045-df4b7de11d1d?auto=format&fit=crop&q=80&w=1200", // Taj Mahal detail
+  ONYX: "https://images.unsplash.com/photo-1515549832467-d3b1576fc031?auto=format&fit=crop&q=80&w=1200", // Backlit translucent
+  DEKTON: "https://images.unsplash.com/photo-1615529328331-f8917597711f?auto=format&fit=crop&q=80&w=1200", // Industrial slab
+  PORCELAIN: "https://images.unsplash.com/photo-1622396481328-9b1b78cdd9fd?auto=format&fit=crop&q=80&w=1200", // Calacatta porcelain
+  QUARTZ: "https://images.unsplash.com/photo-1534073828943-f801091bb18c?auto=format&fit=crop&q=80&w=1200", // Engineered macro
+  SEMIPRECIOUS: "https://images.unsplash.com/photo-1582736486022-723eb1b78298?auto=format&fit=crop&q=80&w=1200", // Agate/Amethyst
+  RARE_FINDS: "https://images.unsplash.com/photo-1582128795907-2a544c9b1399?auto=format&fit=crop&q=80&w=1200", // Rare block
 };
 
 export const MEDIA = {

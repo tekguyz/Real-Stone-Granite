@@ -1,17 +1,18 @@
 
 /**
  * COMPANY_KB: The authoritative data source for Real Stone & Granite Corp.
- * Used for UI text, AI grounding context, and professional specifications.
+ * Pillars: Integrity, Craftsmanship, Quality.
  */
 export const COMPANY_KB = {
   identity: {
     name: "Real Stone & Granite Corp",
     established: 1993,
     motto: "Excellence in Stone",
-    mission: "Crafting distinguished architectural surfaces since 1993.",
+    mission: "Crafting distinguished architectural surfaces since 1993 with a focus on integrity and artisanal quality.",
+    pillars: ["Integrity", "Craftsmanship", "Quality"]
   },
   sourcing: {
-    origin: "Our founder personally selects unique materials from the historic quarries of Italy, Spain, Greece, and Brazil.",
+    origin: "Our founder personally hand-selects unique materials from the historic quarries of Italy, Spain, Greece, and Brazil.",
     standards: "Direct extraction oversight ensures the structural integrity and aesthetic exclusivity our clients demand.",
   },
   materials: {
@@ -19,17 +20,20 @@ export const COMPANY_KB = {
       {
         type: "Granite",
         description: "A resilient and enduring choice, celebrated for its unique character and strength in sophisticated spaces.",
+        visualKeywords: "Macro granite texture, polished igneous rock slab, deep grain granite",
         attributes: ["Durable", "Unique Patterns", "Heat Resistant"],
       },
       {
         type: "Marble",
         description: "The definition of timeless elegance, offering unique veining and a smooth, classic texture for discerning projects.",
+        visualKeywords: "Carrara marble veining macro, polished white marble slab, calacatta gold texture",
         attributes: ["Elegant", "Veined", "Classic"],
       },
       {
         type: "Quartzite",
         description: "A masterful blend of natural strength and refined beauty, mirroring the aesthetic of marble with superior hardness.",
-        attributes: ["High Strength", "Marble-like Aesthetic", "Hardened"],
+        visualKeywords: "Quartzite slab texture, taj mahal quartzite macro, crystalline stone surface",
+        attributes: ["High Strength", "Refined Aesthetic", "Hardened"],
       },
     ],
     engineered: [
@@ -54,6 +58,7 @@ export const COMPANY_KB = {
       {
         type: "Onyx",
         description: "A breathtaking, translucent material used to create dramatic, backlit features that define a room's atmosphere.",
+        visualKeywords: "Translucent onyx slab backlit, orange onyx texture, honey onyx stone",
         attributes: ["Translucent", "Vibrant", "Ornamental"],
       },
       {
@@ -68,36 +73,26 @@ export const COMPANY_KB = {
       }
     ]
   },
-  servicePillars: [
+  capabilities: [
     {
-      id: "01",
       title: "Master Fabrication",
-      description: "Precision cutting via advanced 5-axis systems, guided by a master's touch.",
-      icon: "Fabrication"
+      description: "Precision cutting via advanced systems, guided by a master's touch for perfect edges.",
+      focus: "Craftsmanship"
     },
     {
-      id: "02",
-      title: "Digital Artistry",
-      description: "Photorealistic visualization and virtual layouts for complete design confidence.",
-      icon: "Design"
+      title: "Digital Design",
+      description: "Photorealistic visualization and virtual layouts for complete project confidence.",
+      focus: "Quality"
     },
     {
-      id: "03",
       title: "Bespoke Inlay",
-      description: "Intricate mosaic assembly and hand-finished details for one-of-a-kind features.",
-      icon: "Artistic"
+      description: "Intricate mosaic assembly and hand-finished details for one-of-a-kind architectural features.",
+      focus: "Artistry"
     },
     {
-      id: "04",
       title: "Private Installation",
       description: "Discreet, white-glove site management and fitting by our most senior masons.",
-      icon: "Safety"
-    },
-    {
-      id: "05",
-      title: "Architectural Cladding",
-      description: "Large-scale stone systems engineered for performance and permanence.",
-      icon: "Commercial"
+      focus: "Integrity"
     }
   ],
   legacy: {
@@ -106,14 +101,10 @@ export const COMPANY_KB = {
       { name: "Navy SEAL Museum Memorial", location: "Fort Pierce, FL" },
       { name: "9/11 First Responders Memorial", location: "Various Locations" }
     ],
-    affiliations: [
-      "Natural Stone Institute",
-      "Gary Sinise Foundation"
-    ],
     expertise: "Master-level craftsmanship applied to monuments of national significance.",
   },
   contact: {
     phone: "(772) 489-9964",
-    status: "Operational",
+    status: "Studio Active",
   },
 };
