@@ -1,0 +1,106 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 
+  ACCESSIBILITY OVERRIDES 
+  Context: Industrial Luxury Theme
+*/
+
+:root {
+  --color-gold: oklch(76.6% 0.154 86.6);
+}
+
+/* 
+  1. HIGH VISIBILITY FOCUS
+  Replaces default browser focus with a sharp Gold ring.
+*/
+:focus-visible {
+  outline: 2px solid var(--color-gold) !important;
+  outline-offset: 4px !important;
+  border-radius: 1px;
+  z-index: 50;
+}
+
+/* 
+  2. MOBILE TOUCH TARGETS
+  Enforces WCAG 2.1 AA minimum target size of 44x44px.
+*/
+button, 
+a, 
+input[type="button"], 
+input[type="submit"], 
+[role="button"] {
+  min-height: 44px;
+  min-width: 44px;
+  touch-action: manipulation;
+}
+
+/* 
+  3. TEXT SELECTION
+*/
+::selection {
+  background-color: var(--color-gold);
+  color: oklch(18.6% 0.009 46);
+}
+
+/* 
+  4. INDUSTRIAL MARKDOWN (PROSE-STONE)
+  Custom styles for technical memo rendering.
+*/
+.prose-stone p {
+  margin-bottom: 12px;
+}
+
+.prose-stone p:last-child {
+  margin-bottom: 0;
+}
+
+.prose-stone strong {
+  color: var(--color-gold);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.prose-stone ul, .prose-stone ol {
+  padding-left: 20px;
+  margin-bottom: 12px;
+  list-style-type: none;
+}
+
+.prose-stone ul li {
+  position: relative;
+  margin-bottom: 6px;
+}
+
+.prose-stone ul li::before {
+  content: "";
+  position: absolute;
+  left: -16px;
+  top: 9px;
+  width: 4px;
+  height: 4px;
+  background-color: var(--color-gold);
+}
+
+.prose-stone a {
+  color: var(--color-gold);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+  transition: opacity 0.2s ease;
+}
+
+.prose-stone a:hover {
+  opacity: 0.7;
+}
+
+.prose-stone code {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.9em;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--color-gold);
+  padding: 1px 4px;
+  border: 1px solid rgba(212, 175, 55, 0.1);
+}
