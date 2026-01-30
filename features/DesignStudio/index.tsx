@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ChevronRight, Check, AlertCircle, FileText, Layers, PenTool, Upload, User, Briefcase, Ruler, Box, File } from 'lucide-react';
+import { X, ChevronRight, Check, AlertCircle, FileText, Layers, PenTool, Upload, User, Briefcase, Ruler, Box, File as FileIcon } from 'lucide-react';
 import { useProjectStore, ProjectProvider, ProjectType, Environment, Style, UserRole, FabricationLevel, LeadDossier } from '../../entities/project/store';
 import { PrecisionBtn } from '../../shared/ui/PrecisionBtn';
 import { Button } from '../../shared/ui/Button';
@@ -90,8 +90,8 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
       },
       aiRecommendation: recommendation,
       metadata: {
-        source: "STUDIO_V2_PLANNER",
-        version: "2.0.0-human",
+        source: "Studio Planner",
+        version: "2.0",
       }
     };
 
@@ -127,7 +127,7 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
                 <div className="relative z-20">
                   <div className="flex items-center gap-3 mb-12">
                     <div className="w-3 h-3 bg-gold" />
-                    <span className="font-mono font-bold text-white tracking-widest text-[10px]">PROJECT_JOURNEY</span>
+                    <span className="font-mono font-bold text-white tracking-widest text-[10px]">Project Journey</span>
                   </div>
                   
                   <div className="space-y-4">
@@ -142,7 +142,7 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
                         }`}
                       >
                         <span className={`font-sans text-[10px] font-bold tracking-tighter uppercase ${currentStep === step.id ? 'text-gold' : 'opacity-30'}`}>
-                          STEP {step.id}
+                          Step {step.id}
                         </span>
                         <span className="font-sans text-[11px] uppercase tracking-widest font-light">{step.label}</span>
                       </button>
@@ -286,7 +286,7 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
                       {/* Refined Slider Spacing & Weight */}
                       <div className="space-y-4">
                         <div className="flex justify-between items-end border-b border-white/5 pb-2">
-                          <label className="text-[10px] font-sans text-text-muted uppercase tracking-[0.3em]">Execution window</label>
+                          <label className="text-[10px] font-sans text-text-muted uppercase tracking-[0.3em]">Execution Window</label>
                           <span className="text-gold font-mono text-[11px] uppercase tracking-widest transition-all duration-300">
                              {state.timeline}
                           </span>
@@ -338,7 +338,7 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
 
                       {/* Compressed Documentation Area (20% reduction) */}
                       <div className="space-y-4">
-                        <label className="text-[10px] font-sans text-text-muted uppercase tracking-[0.3em]">Project Documentation</label>
+                        <label className="text-[10px] font-sans text-text-muted uppercase tracking-[0.3em]">Blueprints & Plans</label>
                         <input 
                           type="file" 
                           ref={fileInputRef} 
@@ -352,11 +352,11 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
                         >
                           {attachedFile ? (
                             <>
-                              <File className="w-6 h-6 mb-4 text-gold" />
+                              <FileIcon className="w-6 h-6 mb-4 text-gold" />
                               <p className="font-sans text-base text-white font-bold tracking-tight">
                                 {attachedFile}
                               </p>
-                              <p className="text-gold text-[9px] uppercase tracking-widest mt-2">File Attached Successfully</p>
+                              <p className="text-gold text-[9px] uppercase tracking-widest mt-2">Plans Received</p>
                             </>
                           ) : (
                             <>
@@ -364,7 +364,7 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
                               <p className="font-sans text-base text-white font-light">
                                  Share your blueprints or design plans.
                               </p>
-                              <p className="text-text-muted text-[9px] uppercase tracking-widest mt-2 opacity-60">Upload .DWG or .PDF files</p>
+                              <p className="text-text-muted text-[9px] uppercase tracking-widest mt-2 opacity-60">Supported formats: .DWG, .PDF</p>
                             </>
                           )}
                         </div>
@@ -378,7 +378,7 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
                             disabled={isSubmitting}
                             transition={PHYSICS.snappy}
                           >
-                            {isSubmitting ? "Finalizing Details..." : "Start Your Project"}
+                            {isSubmitting ? "Finalizing Details..." : "Submit Specifications"}
                          </PrecisionBtn>
                       </div>
                     </motion.div>
@@ -393,7 +393,7 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
                     disabled={currentStep === 1 || isSubmitting}
                     className={`${currentStep === 1 ? 'invisible' : ''} text-text-muted font-sans text-[10px] tracking-widest uppercase h-14`}
                   >
-                     Go Back
+                     Previous
                    </Button>
                    {currentStep < 4 && (
                      <Button 
@@ -402,7 +402,7 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
                         className="h-14 px-10 border-white/20 hover:border-gold hover:text-gold group flex items-center justify-center overflow-hidden"
                      >
                         <div className="flex items-center gap-2 leading-none">
-                          <span className="font-sans text-[11px] uppercase tracking-widest leading-none">Next Step</span>
+                          <span className="font-sans text-[11px] uppercase tracking-widest leading-none">Continue</span>
                           <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform shrink-0" />
                         </div>
                      </Button>
@@ -416,17 +416,17 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
                     <div className="relative z-20 flex-1">
                       <div className="flex items-center gap-3 mb-10 text-white/50 border-b border-white/5 pb-6">
                         <FileText className="w-4 h-4" />
-                        <span className="font-sans text-[10px] uppercase tracking-[0.2em] font-bold">Your Project Summary</span>
+                        <span className="font-sans text-[10px] uppercase tracking-[0.2em] font-bold">Brief Overview</span>
                       </div>
 
                       <div className="space-y-10">
                         <div>
-                          <span className="text-[9px] text-text-muted uppercase tracking-widest block mb-2">Project Identity</span>
+                          <span className="text-[9px] text-text-muted uppercase tracking-widest block mb-2">Client Type</span>
                           <span className="text-white text-sm font-light">{state.userRole}</span>
                         </div>
                         
                         <div>
-                          <span className="text-[9px] text-text-muted uppercase tracking-widest block mb-2">Craft Level</span>
+                          <span className="text-[9px] text-text-muted uppercase tracking-widest block mb-2">Fabrication Tier</span>
                           <span className={`text-sm font-light ${state.fabricationLevel === 'Artisan Masterpiece' ? 'text-gold' : 'text-white'}`}>
                              {state.fabricationLevel}
                           </span>
@@ -434,7 +434,7 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
 
                         <div>
                           <span className="text-[9px] text-text-muted uppercase tracking-widest block mb-2">
-                            SELECTED PREFERENCE
+                            Stone Selection
                           </span>
                           <div className="flex items-center gap-2 text-gold">
                             <Check className="w-3 h-3" />
@@ -448,7 +448,7 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
                         </div>
 
                         <div className="pt-8 border-t border-white/5">
-                            <span className="text-[9px] text-text-muted uppercase tracking-widest block mb-2">Project Ref</span>
+                            <span className="text-[9px] text-text-muted uppercase tracking-widest block mb-2">Project Reference</span>
                             <span className="text-white font-mono text-lg tracking-tighter">{projectRef}</span>
                         </div>
                       </div>

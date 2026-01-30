@@ -68,8 +68,9 @@ export const SuccessView: React.FC<SuccessViewProps> = ({ onClose, projectRef })
   }, []);
 
   const handleDownload = () => {
-    console.log(`Generating Dossier for ${projectRef}`);
-    alert("Project Manifest Dossier Generated. Check your downloads.");
+    // Generate a clean filename without computer jargon
+    console.log(`Generating Brief for ${projectRef}`);
+    alert("Project Brief Generated. Please check your downloads.");
   };
 
   return (
@@ -95,7 +96,7 @@ export const SuccessView: React.FC<SuccessViewProps> = ({ onClose, projectRef })
         <div className="space-y-6 mb-12 px-4">
           <div className="h-[1px] w-12 bg-gold mx-auto opacity-50" />
           <p className="text-text-muted font-sans text-sm md:text-base leading-relaxed max-w-md mx-auto">
-            Your Project Reference <span className="text-white font-mono font-bold tracking-tight">#{projectRef}</span> has been logged. Our Senior Associate is reviewing your specifications and blueprints now. You will receive a personal follow-up within 24 hours.
+            Your Reference Number <span className="text-white font-mono font-bold tracking-tight">#{projectRef}</span> has been logged. Our Senior Associate is reviewing your specifications and blueprints now. You will receive a personal follow-up within 24 hours.
           </p>
         </div>
 
@@ -107,7 +108,7 @@ export const SuccessView: React.FC<SuccessViewProps> = ({ onClose, projectRef })
           >
             <div className="flex items-center gap-3">
               <Download className="w-4 h-4" />
-              <span className="font-mono text-[10px] font-bold tracking-[0.2em]">Download Project Dossier (PDF)</span>
+              <span className="font-mono text-[10px] font-bold tracking-[0.2em]">Download Project Brief (PDF)</span>
             </div>
           </PrecisionBtn>
 

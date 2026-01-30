@@ -19,9 +19,9 @@ export const MaterialVault: React.FC = () => {
   };
 
   const tabs: { key: TabKey; label: string }[] = [
-    { key: 'natural', label: '[ Natural Selection ]' },
-    { key: 'engineered', label: '[ Performance Surfaces ]' },
-    { key: 'exotic', label: '[ Exotic Masterpieces ]' },
+    { key: 'natural', label: 'Natural Selection' },
+    { key: 'engineered', label: 'Performance Surfaces' },
+    { key: 'exotic', label: 'Exotic Masterpieces' },
   ];
 
   return (
@@ -100,7 +100,7 @@ export const MaterialVault: React.FC = () => {
                     <div className="absolute top-4 left-4 z-10 opacity-70 group-hover:opacity-100 transition-opacity duration-300">
                       <div className="bg-primary/90 backdrop-blur border border-white/10 px-2 py-1">
                         <span className="text-[10px] font-mono text-gold uppercase tracking-widest">
-                          Ref: {activeTab.substring(0,3).toUpperCase()}-0{idx + 1}
+                          Item No. {idx + 1}
                         </span>
                       </div>
                     </div>
@@ -109,7 +109,7 @@ export const MaterialVault: React.FC = () => {
                     <div className="absolute top-4 right-4 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <div className="bg-primary/90 backdrop-blur border border-white/10 px-2 py-1">
                         <span className="text-[10px] font-mono text-white/80 uppercase tracking-widest">
-                          Weight: 3cm
+                          Thickness: 3cm
                         </span>
                       </div>
                     </div>

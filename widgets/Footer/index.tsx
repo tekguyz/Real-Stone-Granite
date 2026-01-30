@@ -68,13 +68,13 @@ export const Footer: React.FC = () => {
               </div>
 
               <div className="mt-12 space-y-2">
-                <span className="text-white/20 font-mono text-[9px] uppercase tracking-[0.4em]">Operational Status</span>
+                <span className="text-white/20 font-mono text-[9px] uppercase tracking-[0.4em]">Workshop Status</span>
                 <div className="flex items-center gap-3">
                   <div className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                   </div>
-                  <span className="text-white font-mono text-[10px] uppercase tracking-[0.2em]">FABRICATION LINE: ACTIVE</span>
+                  <span className="text-white font-mono text-[10px] uppercase tracking-[0.2em]">Fabrication Floor: Active</span>
                 </div>
               </div>
             </div>
@@ -86,7 +86,7 @@ export const Footer: React.FC = () => {
             {/* Studio Info */}
             <div className="space-y-8">
               <div className="space-y-2">
-                <h4 className="text-gold font-mono uppercase tracking-[0.3em] text-[10px] font-bold">LOC: HQ_STUDIO</h4>
+                <h4 className="text-gold font-mono uppercase tracking-[0.3em] text-[10px] font-bold">The Studio</h4>
                 <div className="text-text-muted font-sans text-sm font-light space-y-1">
                   <p>Real Stone & Granite Corp.</p>
                   <p>Fort Pierce, FL 34946</p>
@@ -95,7 +95,7 @@ export const Footer: React.FC = () => {
               </div>
 
               <div className="space-y-2">
-                <h4 className="text-gold font-mono uppercase tracking-[0.3em] text-[10px] font-bold">REF: COMM_CHANNEL</h4>
+                <h4 className="text-gold font-mono uppercase tracking-[0.3em] text-[10px] font-bold">Concierge Line</h4>
                 <a 
                   href={`tel:${COMPANY_KB.contact.phone.replace(/[^0-9]/g, '')}`}
                   className="block text-white font-mono text-lg hover:text-gold transition-colors uppercase tracking-widest font-black"
@@ -108,7 +108,7 @@ export const Footer: React.FC = () => {
             {/* Navigation & Standards */}
             <div className="space-y-12">
               <div className="space-y-4">
-                <h4 className="text-gold font-mono uppercase tracking-[0.3em] text-[10px] font-bold">DIR: LEGACY_LINKS</h4>
+                <h4 className="text-gold font-mono uppercase tracking-[0.3em] text-[10px] font-bold">Directory</h4>
                 <nav className="flex flex-col gap-3">
                   {navLinks.map((link) => (
                     <a 
@@ -127,10 +127,10 @@ export const Footer: React.FC = () => {
               <div className="pt-6 border-t border-white/5 space-y-4">
                 <div className="flex items-center gap-3 opacity-30 grayscale hover:grayscale-0 hover:opacity-100 transition-all cursor-default">
                   <ICONS.Safety className="w-4 h-4 text-gold" strokeWidth={1.5} />
-                  <span className="text-[9px] font-mono uppercase tracking-widest text-white">ANSI/NSF Certified</span>
+                  <span className="text-[9px] font-mono uppercase tracking-widest text-white">Certified: ANSI / NSF</span>
                 </div>
                 <p className="text-[9px] font-mono text-white/10 uppercase tracking-[0.4em]">
-                  &copy; {new Date().getFullYear()} RSG_MANIFEST_SYSTEM
+                  &copy; {new Date().getFullYear()} Real Stone & Granite Corp.
                 </p>
               </div>
             </div>

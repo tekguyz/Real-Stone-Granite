@@ -122,7 +122,7 @@ export const Hero: React.FC<HeroProps> = ({ onStartProject }) => {
                   <span className="text-gold font-mono text-xs uppercase tracking-[0.3em]">Curation</span>
                 </div>
                 <h3 className="text-white text-3xl font-mono uppercase">Luminous Shadow</h3>
-                <p className="text-white/50 text-xs font-mono mt-2">Natural Detail: 884-A</p>
+                <p className="text-white/50 text-xs font-mono mt-2">Selection: Onyx 884-A</p>
               </div>
 
               {/* Decorative Corners */}

@@ -19,7 +19,7 @@ const PROJECTS: MonumentProject[] = [
     title: "Vietnam Veterans Memorial",
     material: "ABSOLUTE BLACK GRANITE",
     coords: "38.8913° N, 77.0477° W",
-    completion: "1982_REF:01",
+    completion: "Completed 1982",
     image: "https://images.unsplash.com/photo-1599930113854-d6d7fd521f10?auto=format&fit=crop&q=80&w=1200",
     description: "The replication and maintenance of sacred names etched into the most reflective granite on Earth."
   },
@@ -28,7 +28,7 @@ const PROJECTS: MonumentProject[] = [
     title: "Navy SEAL Museum Memorial",
     material: "JET BLACK GRANITE",
     coords: "27.4965° N, 80.3013° W",
-    completion: "2010_REF:02",
+    completion: "Completed 2010",
     image: "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&q=80&w=1200",
     description: "Crafting the Trident-shaped sanctuary honoring the fallen frogmen of the U.S. Navy."
   },
@@ -37,7 +37,7 @@ const PROJECTS: MonumentProject[] = [
     title: "9/11 First Responders",
     material: "VIRGINIA MIST GRANITE",
     coords: "40.7127° N, 74.0134° W",
-    completion: "2011_REF:03",
+    completion: "Completed 2011",
     image: "https://images.unsplash.com/photo-1581440051300-84469e068c2d?auto=format&fit=crop&q=80&w=1200",
     description: "Architectural cladding and monuments dedicated to the bravery of those at Ground Zero."
   }
@@ -148,7 +148,7 @@ export const Monuments: React.FC = () => {
                         className="p-6 border border-gold/20 bg-black/40 backdrop-blur-md"
                      >
                         <span className="text-gold font-mono text-[8px] uppercase tracking-widest block mb-4">
-                           TECHNICAL_DOSSIER
+                           Historical Brief
                         </span>
                         <p className="text-white text-xs font-sans font-light leading-relaxed">
                           {project.description}
@@ -185,7 +185,7 @@ export const Monuments: React.FC = () => {
       <div className="h-12 border-t border-white/5 bg-primary flex items-center justify-center z-20">
          <div className="flex items-center gap-8">
             <span className="text-[8px] font-mono text-text-muted uppercase tracking-[0.5em]">
-              Sovereign_Manufacturing_Division
+              Federal Projects Division
             </span>
             <div className="w-1.5 h-1.5 bg-gold/20 rounded-full" />
             <span className="text-[8px] font-mono text-text-muted uppercase tracking-[0.5em]">

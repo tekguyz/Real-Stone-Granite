@@ -205,7 +205,7 @@ export const StoneCurator: React.FC<StoneCuratorProps> = ({ onLaunchStudio }) =>
                         className="w-full flex items-center justify-between group border-gold/40 h-14"
                         onClick={onLaunchStudio}
                       >
-                        <span className="font-mono text-[11px] tracking-widest">START PROJECT PLAN</span>
+                        <span className="font-mono text-[11px] tracking-widest">Start Project Plan</span>
                         <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                       </Button>
                     </motion.div>

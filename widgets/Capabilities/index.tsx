@@ -17,7 +17,7 @@ const FEATURED: Capability = {
   id: "MASTER",
   title: "Master Fabrication",
   description: "Advanced 5-axis CNC precision integrated with artisanal hand-finishing. We manifest complex structural geometries that redefine the limits of stone as an architectural medium.",
-  techLabel: "REF: CNC-5AXIS / ARTISAN_HYBRID",
+  techLabel: "Precision Machining",
   specs: ["Precision Mitering", "Digital Twin Verification", "Bespoke Details"],
   icon: ICONS.Fabrication
 };
@@ -27,7 +27,7 @@ const SECONDARY: Capability[] = [
     id: "VIZ",
     title: "Visualization",
     description: "Photorealistic rendering and digital slab templating.",
-    techLabel: "REF: VIRTUAL_01",
+    techLabel: "Digital Planning",
     specs: ["Slab Matching", "3D Rendering"],
     icon: ICONS.Design
   },
@@ -35,7 +35,7 @@ const SECONDARY: Capability[] = [
     id: "SITE",
     title: "Installation",
     description: "White-glove site management and structural fitting.",
-    techLabel: "REF: FIELD_SYS",
+    techLabel: "On-Site Management",
     specs: ["Discreet Ops", "Elite Masons"],
     icon: ICONS.Safety
   },
@@ -43,7 +43,7 @@ const SECONDARY: Capability[] = [
     id: "FACADE",
     title: "Cladding",
     description: "Large-scale stone systems engineered for permanence.",
-    techLabel: "REF: ARCH_FACADE",
+    techLabel: "Structural Systems",
     specs: ["Monument Grade", "Structural"],
     icon: ICONS.Commercial
   },
@@ -51,7 +51,7 @@ const SECONDARY: Capability[] = [
     id: "SOURCE",
     title: "Curation",
     description: "Direct access to exclusive geological veins globally.",
-    techLabel: "REF: GLOBAL_V",
+    techLabel: "Global Sourcing",
     specs: ["Hand-Selected", "Rare Slabs"],
     icon: ICONS.Location
   }
@@ -145,7 +145,7 @@ export const Capabilities: React.FC = () => {
         
         <div className="mt-12 text-center">
             <span className="font-mono text-[9px] text-white/10 uppercase tracking-[0.5em] select-none">
-              Design_System_Manifest: v.41.93_Gold_Onyx
+              Design System: Gold & Onyx Edition
             </span>
         </div>
       </div>
