@@ -72,7 +72,7 @@ export const MaterialVault: React.FC = () => {
           ))}
         </div>
 
-        {/* Content Grid */}
+        {/* Content Grid - 1 Col on Mobile (Quality Priority) */}
         <div className="min-h-[400px]">
           <AnimatePresence mode="wait">
             <motion.div
@@ -86,7 +86,7 @@ export const MaterialVault: React.FC = () => {
               {COMPANY_KB.materials[activeTab].map((material: any, idx: number) => (
                 <MachineCard 
                   key={material.type} 
-                  className="group flex flex-col p-0 h-full border border-white/10 hover:border-gold/50 bg-surface/50"
+                  className="group flex flex-col p-0 h-full border border-white/10 hover:border-gold/50 bg-surface/50 overflow-hidden"
                 >
                   {/* Image Container */}
                   <div className="relative aspect-[4/3] overflow-hidden bg-black border-b border-white/5">
@@ -127,14 +127,20 @@ export const MaterialVault: React.FC = () => {
                   </div>
 
                   {/* Text Content */}
-                  <div className="p-6 flex-1 flex flex-col">
+                  <motion.div 
+                    className="p-6 flex-1 flex flex-col relative"
+                    whileTap={{ backgroundColor: 'rgba(212, 175, 55, 0.05)' }}
+                  >
                     <h3 className="text-xl font-mono uppercase text-white mb-3 tracking-tight group-hover:text-gold transition-colors">
                       {material.type}
                     </h3>
                     <p className="text-white/70 text-xs leading-relaxed font-light">
                       {material.description}
                     </p>
-                  </div>
+                    
+                    {/* Active State Pulse Indicator (Mobile/Tap) */}
+                    <div className="absolute bottom-6 right-6 w-1.5 h-1.5 bg-gold rounded-full opacity-0 group-active:opacity-100 animate-pulse transition-opacity" />
+                  </motion.div>
                 </MachineCard>
               ))}
             </motion.div>

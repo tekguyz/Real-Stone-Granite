@@ -30,7 +30,7 @@ export const Footer: React.FC = () => {
       {/* Pillar Header & Motto */}
       <div className="max-w-screen-2xl mx-auto px-6 md:px-12 pt-16 pb-8">
         <div className="flex flex-col items-center">
-          <span className="text-white/40 font-mono text-[10px] uppercase tracking-[0.5em] mb-8">
+          <span className="text-white/40 font-mono text-[8px] md:text-[10px] uppercase tracking-[0.4em] md:tracking-[0.5em] mb-8 whitespace-nowrap text-center">
             INTEGRITY • CRAFTSMANSHIP • QUALITY
           </span>
           {/* Precision Ruler Border */}
@@ -71,8 +71,8 @@ export const Footer: React.FC = () => {
                 <span className="text-white/20 font-mono text-[9px] uppercase tracking-[0.4em]">Workshop Status</span>
                 <div className="flex items-center gap-3">
                   <div className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                    <span className="animate-ping absolute inline-flex h-full w-full bg-green-400 opacity-75 rotate-45"></span>
+                    <span className="relative inline-flex h-2 w-2 bg-green-500 rotate-45"></span>
                   </div>
                   <span className="text-white font-mono text-[10px] uppercase tracking-[0.2em]">Fabrication Floor: Active</span>
                 </div>

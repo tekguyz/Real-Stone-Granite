@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Hero } from '../../widgets/Hero';
+import { Hero } from '../../widgets/Hero/index';
 import { Capabilities } from '../../widgets/Capabilities/index';
 import { MaterialVault } from '../../widgets/MaterialVault/index';
 import { Monuments } from '../../widgets/Monuments/index';

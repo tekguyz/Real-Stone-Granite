@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ChevronRight, Check, AlertCircle, FileText, Layers, PenTool, Upload, User, Briefcase, Ruler, Box, File as FileIcon } from 'lucide-react';
-import { useProjectStore, ProjectProvider, ProjectType, Environment, Style, UserRole, FabricationLevel, LeadDossier } from '../../entities/project/store';
+import { X, ChevronRight, Check, AlertCircle, FileText, Layers, PenTool, Upload, User, Briefcase, Ruler, Box, File as FileIcon, ChevronUp, ChevronDown } from 'lucide-react';
+import { useProjectStore, ProjectProvider, ProjectType, Environment, Style, UserRole, FabricationLevel, LeadDossier, ProjectState, Recommendation } from '../../entities/project/store';
 import { PrecisionBtn } from '../../shared/ui/PrecisionBtn';
 import { Button } from '../../shared/ui/Button';
 import { COMPANY_KB } from '../../entities/company/knowledge';
@@ -27,6 +27,76 @@ const TIMELINE_OPTIONS = [
   "New Construction (6+ Months)"
 ];
 
+// --- Mobile Drawer Component ---
+const MobileSummaryDrawer: React.FC<{ 
+  state: ProjectState; 
+  recommendation: Recommendation; 
+  projectRef: string;
+  isOpen: boolean;
+  onToggle: () => void;
+}> = ({ state, recommendation, projectRef, isOpen, onToggle }) => {
+  return (
+    <motion.div 
+      className={`fixed bottom-0 left-0 right-0 z-50 bg-surface border-t border-gold/20 shadow-[-10px_-10px_30px_rgba(0,0,0,0.5)] lg:hidden flex flex-col`}
+      initial={false}
+      animate={{ height: isOpen ? '75dvh' : '80px' }}
+      transition={PHYSICS.snappy}
+    >
+      {/* Handle / Header */}
+      <div onClick={onToggle} className="h-20 w-full flex items-center justify-between px-8 bg-surface border-b border-white/5 cursor-pointer relative z-20">
+        <div className="flex flex-col">
+          <span className="text-[9px] text-gold font-mono uppercase tracking-widest mb-1">Project Reference</span>
+          <span className="text-white font-mono text-sm tracking-tighter">#{projectRef}</span>
+        </div>
+        <div className="flex items-center gap-2 text-text-muted uppercase tracking-widest text-[9px] font-mono">
+          {isOpen ? "Close Manifest" : "View Manifest"}
+          {isOpen ? <ChevronDown className="w-4 h-4 text-gold" /> : <ChevronUp className="w-4 h-4 text-gold" />}
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="flex-1 overflow-y-auto p-8 bg-surface relative">
+        <div className="space-y-10">
+           <div>
+             <span className="text-[9px] text-text-muted uppercase tracking-widest block mb-2">Client Type</span>
+             <span className="text-white text-lg font-light">{state.userRole}</span>
+           </div>
+           
+           <div>
+             <span className="text-[9px] text-text-muted uppercase tracking-widest block mb-2">Fabrication Tier</span>
+             <span className={`text-lg font-light ${state.fabricationLevel === 'Artisan Masterpiece' ? 'text-gold' : 'text-white'}`}>
+                {state.fabricationLevel}
+             </span>
+           </div>
+
+           <div>
+             <span className="text-[9px] text-text-muted uppercase tracking-widest block mb-2">
+               Stone Selection
+             </span>
+             <div className="flex items-center gap-2 text-gold mb-1">
+               <Check className="w-4 h-4" />
+               <span className="text-lg font-bold uppercase tracking-tight">
+                  {state.stonePreference !== 'Light' ? state.stonePreference : recommendation.material}
+               </span>
+             </div>
+             <span className="text-[9px] text-text-muted/40 uppercase tracking-widest block">
+               {state.stonePreference !== 'Light' ? 'Manual Selection' : 'Expert Suggestion'}
+             </span>
+           </div>
+
+           <div className="pt-8 border-t border-white/5">
+               <span className="text-[9px] text-text-muted uppercase tracking-widest block mb-2">Status</span>
+               <div className="inline-flex items-center gap-2 px-3 py-1 border border-green-500/30 bg-green-500/10 text-green-400 text-[10px] font-mono uppercase tracking-widest">
+                  <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
+                  Drafting
+               </div>
+           </div>
+         </div>
+      </div>
+    </motion.div>
+  );
+};
+
 const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
   const { state, dispatch, recommendation } = useProjectStore();
   const [currentStep, setCurrentStep] = useState(1);
@@ -34,6 +104,9 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [attachedFile, setAttachedFile] = useState<string | null>(null);
+  
+  // Mobile Drawer State
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   
   const fileInputRef = useRef<HTMLInputElement>(null);
   const projectRef = useMemo(() => Math.random().toString(36).substr(2, 9).toUpperCase(), [isOpen]);
@@ -110,8 +183,8 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
           initial={{ opacity: 0, y: '100%' }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: '100%' }}
-          transition={{ type: "spring", damping: 25, stiffness: 200 }}
-          className="fixed inset-0 z-[100] bg-primary flex flex-col md:flex-row overflow-hidden"
+          transition={PHYSICS.snappy}
+          className="fixed inset-0 z-[100] bg-primary flex flex-col lg:flex-row overflow-hidden h-[100dvh]"
         >
           {/* Background Grid */}
           <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
@@ -120,17 +193,18 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
             <SuccessView onClose={handleClose} projectRef={projectRef} />
           ) : (
             <>
-              {/* --- LEFT: Navigation --- */}
-              <div className="w-full md:w-64 bg-surface border-r border-white/5 flex flex-col justify-between p-6 relative z-10 overflow-hidden">
+              {/* --- LEFT: Navigation (Sidebar on Desktop, Topbar on Mobile) --- */}
+              <div className="w-full lg:w-64 bg-surface lg:border-r border-b lg:border-b-0 border-white/5 flex flex-row lg:flex-col justify-between p-4 lg:p-6 relative z-10 flex-shrink-0">
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/5 to-transparent opacity-10" />
                 
-                <div className="relative z-20">
-                  <div className="flex items-center gap-3 mb-12">
-                    <div className="w-3 h-3 bg-gold" />
+                <div className="relative z-20 w-full flex lg:block justify-between items-center">
+                  <div className="flex items-center gap-3 lg:mb-12">
+                    <div className="w-2.5 h-2.5 bg-gold rotate-45" />
                     <span className="font-mono font-bold text-white tracking-widest text-[10px]">Project Journey</span>
                   </div>
                   
-                  <div className="space-y-4">
+                  {/* Desktop Steps */}
+                  <div className="hidden lg:block space-y-4">
                     {STEPS.map((step) => (
                       <button
                         key={step.id}
@@ -148,11 +222,20 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
                       </button>
                     ))}
                   </div>
+
+                  {/* Mobile Close Button (Top Right) */}
+                  <button 
+                    onClick={handleClose} 
+                    className="flex lg:hidden items-center justify-center text-text-muted hover:text-red-400 transition-colors p-2 z-20"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
                 </div>
 
+                {/* Desktop Close Button (Bottom) */}
                 <button 
                   onClick={handleClose} 
-                  className="flex items-center gap-2 text-text-muted hover:text-red-400 transition-colors p-2 z-20"
+                  className="hidden lg:flex items-center gap-2 text-text-muted hover:text-red-400 transition-colors p-2 z-20"
                 >
                   <X className="w-4 h-4" />
                   <span className="font-sans text-[10px] uppercase tracking-widest">End Journey</span>
@@ -160,11 +243,18 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
               </div>
 
               {/* --- CENTER: Configuration Area --- */}
-              <div className="flex-1 p-8 md:p-12 lg:p-16 overflow-y-auto relative z-10 scrollbar-hide">
+              <div className="flex-1 p-6 md:p-12 lg:p-16 overflow-y-auto relative z-10 scrollbar-hide pb-32 lg:pb-16">
                 <div className="max-w-2xl mx-auto">
+                  {/* Mobile Step Indicator */}
+                  <div className="lg:hidden mb-6 flex items-center gap-2">
+                     <span className="text-gold font-mono text-[10px] uppercase tracking-widest">Step {currentStep}</span>
+                     <div className="h-[1px] flex-1 bg-white/10" />
+                     <span className="text-text-muted font-mono text-[10px] uppercase tracking-widest">04</span>
+                  </div>
+
                   <div className="mb-8">
                     <span className="text-gold font-mono text-[11px] tracking-widest uppercase block mb-1.5 opacity-50">Personal Consultation</span>
-                    <h2 className="text-4xl text-white font-sans font-light tracking-tight uppercase">
+                    <h2 className="text-3xl md:text-4xl text-white font-sans font-light tracking-tight uppercase leading-tight">
                       {currentStep === 1 && "Tell us about your project."}
                       {currentStep === 2 && "Select your design complexity."}
                       {currentStep === 3 && "Our Expert Suggestion."}
@@ -174,27 +264,28 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
 
                   {/* STEP 1: IDENTITY */}
                   {currentStep === 1 && (
-                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-8">
-                       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-4 md:space-y-8">
+                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
                            {[
                              { role: 'Private Residence', icon: User, desc: 'For personal residential architecture' },
                              { role: 'Professional Partner', icon: Briefcase, desc: 'For architects, designers, or builders' }
                            ].map((item) => (
-                             <button
+                             <motion.button
                                key={item.role}
+                               whileTap={{ scale: 0.98 }}
                                onClick={() => dispatch({ type: 'SET_USER_ROLE', payload: item.role as UserRole })}
-                               className={`group p-8 border text-left transition-all outline-none flex flex-col justify-between min-h-[200px] ${
+                               className={`group p-6 md:p-8 border text-left transition-all outline-none flex flex-col justify-between min-h-[160px] md:min-h-[200px] ${
                                  state.userRole === item.role 
                                    ? 'border-gold bg-gold/5 text-white' 
                                    : 'border-white/10 text-text-muted hover:border-white/30 bg-surface/50'
                                }`}
                              >
                                <item.icon className={`w-8 h-8 ${state.userRole === item.role ? 'text-gold' : 'text-text-muted group-hover:text-white'}`} />
-                               <div className="mt-8">
+                               <div className="mt-4 md:mt-8">
                                  <span className="block font-sans text-lg font-light mb-1">{item.role}</span>
                                  <span className="text-[11px] font-sans text-text-muted uppercase tracking-wider">{item.desc}</span>
                                </div>
-                             </button>
+                             </motion.button>
                            ))}
                         </div>
                     </motion.div>
@@ -206,7 +297,7 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
                        <div className="grid grid-cols-1 gap-4">
                             <button
                                 onClick={() => dispatch({ type: 'SET_FABRICATION_LEVEL', payload: 'Classic Selection' })}
-                                className={`p-8 border flex items-start gap-6 transition-all outline-none ${
+                                className={`p-6 md:p-8 border flex items-start gap-6 transition-all outline-none ${
                                   state.fabricationLevel === 'Classic Selection' 
                                     ? 'border-gold bg-gold/5 text-white' 
                                     : 'border-white/10 text-text-muted hover:border-white/30'
@@ -223,7 +314,7 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
 
                             <button
                                 onClick={() => dispatch({ type: 'SET_FABRICATION_LEVEL', payload: 'Artisan Masterpiece' })}
-                                className={`p-8 border flex items-start gap-6 transition-all outline-none ${
+                                className={`p-6 md:p-8 border flex items-start gap-6 transition-all outline-none ${
                                   state.fabricationLevel === 'Artisan Masterpiece' 
                                     ? 'border-gold bg-gold/5 text-white' 
                                     : 'border-white/10 text-text-muted hover:border-white/30'
@@ -247,7 +338,7 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
                       {/* Compressed Expert Brief Card */}
                       <div className="p-5 md:p-6 border border-gold/20 bg-gold/5">
                         <div className="flex items-center gap-2 mb-2">
-                            <div className="w-1 h-1 bg-gold rotate-45" />
+                            <div className="w-1.5 h-1.5 bg-gold rotate-45" />
                             <span className="text-gold font-sans text-[9px] uppercase tracking-[0.4em] font-bold">Expert Brief</span>
                         </div>
                         <h4 className="text-white text-xl md:text-2xl font-sans font-light mb-2 leading-tight">
@@ -262,17 +353,18 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
                          <label className="text-[10px] font-sans text-text-muted uppercase tracking-[0.3em] font-medium">Explore Our Portfolio</label>
                          <div className="flex flex-wrap gap-2">
                             {['Granite', 'Marble', 'Quartzite', 'Quartz', 'Dekton', 'Onyx'].map(m => (
-                              <button
+                              <motion.button
                                 key={m}
+                                whileTap={{ scale: 0.95 }}
                                 onClick={() => dispatch({ type: 'SET_STONE_PREFERENCE', payload: m })}
-                                className={`px-4 py-2 text-[10px] uppercase tracking-widest font-sans border transition-all outline-none ${
+                                className={`px-4 py-3 md:py-2 text-[10px] uppercase tracking-widest font-sans border transition-all outline-none ${
                                   state.stonePreference === m
                                     ? 'bg-gold text-primary border-gold font-bold shadow-[0_0_15px_oklch(76.6%_0.154_86.6/0.25)]'
                                     : 'bg-transparent text-text-muted border-white/10 hover:border-white/30'
                                 }`}
                               >
                                 {m}
-                              </button>
+                              </motion.button>
                             ))}
                          </div>
                       </div>
@@ -292,7 +384,8 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
                           </span>
                         </div>
 
-                        <div className="relative h-14 flex items-center px-0.5">
+                        {/* Slider Track Container - Taller for Mobile Touch */}
+                        <div className="relative h-20 md:h-14 flex items-center px-0.5">
                            {/* Heavier Track (2px) */}
                            <div className="absolute top-1/2 left-0 w-full h-[2px] bg-white/10 -translate-y-1/2" />
                            
@@ -323,13 +416,14 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
                                 ))}
                               </div>
 
-                              {/* Larger Thumb (14px) */}
+                              {/* Architectural Diamond Thumb - Larger for Touch */}
                               <motion.div
-                                className="absolute w-[14px] h-[14px] bg-gold shadow-[0_0_20px_oklch(76.6%_0.154_86.6/0.5)] z-20 pointer-events-none"
+                                className="absolute w-5 h-5 bg-gold shadow-[0_0_20px_oklch(76.6%_0.154_86.6/0.5)] z-20 pointer-events-none rotate-45"
                                 initial={false}
                                 animate={{ 
-                                  left: `calc(${(timelineIndex / (TIMELINE_OPTIONS.length - 1)) * 100}% - 7px)` 
+                                  left: `calc(${(timelineIndex / (TIMELINE_OPTIONS.length - 1)) * 100}% - 10px)` 
                                 }}
+                                whileTap={{ scale: 1.2 }}
                                 transition={PHYSICS.snappy}
                               />
                            </div>
@@ -410,8 +504,8 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
                 </div>
               </div>
 
-              {/* --- RIGHT: Summary Sidebar - No Ghost Scrollbar --- */}
-              <div className="w-full md:w-80 bg-surface border-l border-white/5 p-10 relative z-10 hidden lg:block overflow-hidden">
+              {/* --- RIGHT: Summary Sidebar (Desktop) --- */}
+              <div className="hidden lg:block w-80 bg-surface border-l border-white/5 p-10 relative z-10 overflow-hidden flex-shrink-0">
                 <div className="h-full flex flex-col scrollbar-hide overflow-y-auto overflow-x-hidden">
                     <div className="relative z-20 flex-1">
                       <div className="flex items-center gap-3 mb-10 text-white/50 border-b border-white/5 pb-6">
@@ -467,6 +561,15 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
                     </div>
                 </div>
               </div>
+
+              {/* --- MOBILE: Bottom Drawer --- */}
+              <MobileSummaryDrawer 
+                isOpen={isDrawerOpen}
+                onToggle={() => setIsDrawerOpen(!isDrawerOpen)}
+                state={state}
+                recommendation={recommendation}
+                projectRef={projectRef}
+              />
             </>
           )}
 

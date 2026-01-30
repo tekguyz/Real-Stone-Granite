@@ -187,7 +187,7 @@ export const Monuments: React.FC = () => {
             <span className="text-[8px] font-mono text-text-muted uppercase tracking-[0.5em]">
               Federal Projects Division
             </span>
-            <div className="w-1.5 h-1.5 bg-gold/20 rounded-full" />
+            <div className="w-1.5 h-1.5 bg-gold/20 rotate-45" />
             <span className="text-[8px] font-mono text-text-muted uppercase tracking-[0.5em]">
               Est. 1993
             </span>

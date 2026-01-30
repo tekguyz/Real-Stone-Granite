@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { COMPANY_KB } from '../entities/company/knowledge';
 import { PrecisionBtn } from '../shared/ui/PrecisionBtn';
 import { ICONS } from '../shared/assets';
+import { PHYSICS } from '../shared/lib/theme';
 
 interface NavbarProps {
   onOpenStudio?: () => void;
@@ -68,11 +69,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
                 {hovered === link.name && (
                   <motion.div
                     layoutId="nav-indicator"
-                    className="absolute bottom-0 w-[3px] h-[3px] bg-gold"
+                    className="absolute bottom-0 w-[4px] h-[4px] bg-gold rotate-45"
                     initial={{ opacity: 0, scale: 0 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                    transition={PHYSICS.snappy}
                   />
                 )}
               </AnimatePresence>
@@ -98,9 +99,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
 
           <button 
             onClick={() => setIsMobileOpen(!isMobileOpen)}
-            className="md:hidden text-text-muted hover:text-white transition-colors p-2"
+            className="md:hidden text-text-muted hover:text-white transition-colors p-2 flex items-center justify-center border border-white/5 bg-surface/50 w-10 h-10"
           >
-            {isMobileOpen ? <ICONS.Close className="w-6 h-6" /> : <ICONS.Menu className="w-6 h-6" />}
+            {isMobileOpen ? <ICONS.Close className="w-5 h-5" /> : <ICONS.Menu className="w-5 h-5" />}
           </button>
         </div>
       </nav>

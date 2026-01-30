@@ -145,7 +145,7 @@ export const StoneCurator: React.FC<StoneCuratorProps> = ({ onLaunchStudio }) =>
             {/* Header: Integrated & Sharp */}
             <div className="h-16 border-b border-white/5 bg-surface/50 backdrop-blur-xl flex items-center justify-between pl-6 pr-0 flex-shrink-0 z-20">
               <div className="flex items-center gap-3">
-                <div className="w-1.5 h-1.5 bg-gold animate-pulse" />
+                <div className="w-1.5 h-1.5 bg-gold animate-pulse rotate-45" />
                 <span className="text-xs text-white/90 uppercase tracking-[0.25em] font-sans font-medium">
                   Senior Associate
                 </span>
@@ -216,9 +216,9 @@ export const StoneCurator: React.FC<StoneCuratorProps> = ({ onLaunchStudio }) =>
                 <div className="flex items-start">
                    <div className="bg-surface/50 p-4 border border-white/5 flex gap-3 items-center">
                       <div className="flex gap-1">
-                        <div className="w-1 h-1 bg-gold animate-bounce" />
-                        <div className="w-1 h-1 bg-gold animate-bounce [animation-delay:0.2s]" />
-                        <div className="w-1 h-1 bg-gold animate-bounce [animation-delay:0.4s]" />
+                        <div className="w-1 h-1 bg-gold animate-bounce rotate-45" />
+                        <div className="w-1 h-1 bg-gold animate-bounce [animation-delay:0.2s] rotate-45" />
+                        <div className="w-1 h-1 bg-gold animate-bounce [animation-delay:0.4s] rotate-45" />
                       </div>
                       <span className="text-[9px] font-mono text-gold/60 tracking-widest uppercase">Consulting...</span>
                    </div>

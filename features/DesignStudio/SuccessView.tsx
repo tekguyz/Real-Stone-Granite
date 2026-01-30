@@ -13,7 +13,8 @@ interface SuccessViewProps {
 
 export const SuccessView: React.FC<SuccessViewProps> = ({ onClose, projectRef }) => {
   useEffect(() => {
-    const gold = '#d4af37';
+    // OKLCH approx conversions for confetti library
+    const gold = '#d4af37'; 
     const onyx = '#121212';
     
     const fireMetallicShavings = () => {

@@ -4,6 +4,7 @@ import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { MachineCard } from '../../shared/ui/MachineCard';
 import { PrecisionBtn } from '../../shared/ui/PrecisionBtn';
 import { MEDIA, ICONS } from '../../shared/assets';
+import { PHYSICS } from '../../shared/lib/theme';
 
 interface HeroProps {
   onStartProject?: () => void;
@@ -16,9 +17,9 @@ export const Hero: React.FC<HeroProps> = ({ onStartProject }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  // Physics: "Heavy" feel implies stability. 
-  const mouseX = useSpring(x, { stiffness: 400, damping: 30 });
-  const mouseY = useSpring(y, { stiffness: 400, damping: 30 });
+  // Physics: "Industrial Heavy" - High stiffness, critical damping for mass.
+  const mouseX = useSpring(x, PHYSICS.snappy);
+  const mouseY = useSpring(y, PHYSICS.snappy);
 
   // Map mouse position to rotation degrees
   const rotateX = useTransform(mouseY, [-0.5, 0.5], [3, -3]);
@@ -66,13 +67,13 @@ export const Hero: React.FC<HeroProps> = ({ onStartProject }) => {
               <span>Curators of the Rare</span>
             </div>
 
-            <h1 className="text-7xl md:text-9xl font-mono font-black uppercase leading-[0.85] tracking-tighter text-white mb-10">
+            <h1 className="text-5xl md:text-7xl lg:text-9xl font-mono font-black uppercase leading-[0.9] tracking-tighter text-white mb-10">
               <span className="text-transparent" style={{ WebkitTextStroke: '1px white' }}>Integrity</span><br />
               <span>Carved In</span><br />
               <span className="text-gold">Stone.</span>
             </h1>
 
-            <p className="max-w-lg text-text-muted text-lg font-light leading-relaxed mb-12 border-l-2 border-gold/50 pl-6">
+            <p className="max-w-lg text-text-muted text-base md:text-lg font-light leading-relaxed mb-12 border-l-2 border-gold/50 pl-6">
               A bespoke collection of the world's finest geological treasures, hand-selected for the discerning visionary.
             </p>
 
@@ -83,7 +84,7 @@ export const Hero: React.FC<HeroProps> = ({ onStartProject }) => {
         </div>
 
         {/* RIGHT: The Visual (3D Tilt) */}
-        <div className="relative w-full h-[600px] hidden lg:block perspective-[1000px]">
+        <div className="relative w-full h-[500px] lg:h-[600px] hidden lg:block perspective-[1000px]">
           <motion.div
             style={{
               rotateX,
@@ -92,7 +93,7 @@ export const Hero: React.FC<HeroProps> = ({ onStartProject }) => {
             }}
             className="w-full h-full"
           >
-            <MachineCard className="w-full h-full p-0 border-white/10 bg-black overflow-hidden shadow-2xl relative">
+            <MachineCard className="w-full h-full p-0 border-white/10 bg-black overflow-hidden shadow-2xl relative rounded-none">
               {/* Video Layer */}
               <video
                 src={MEDIA.VIDEO_MACRO}
@@ -125,21 +126,21 @@ export const Hero: React.FC<HeroProps> = ({ onStartProject }) => {
                 <p className="text-white/50 text-xs font-mono mt-2">Selection: Onyx 884-A</p>
               </div>
 
-              {/* Decorative Corners */}
-              <div className="absolute top-6 right-6 w-32 h-32 border-t border-r border-white/20 rounded-tr-3xl opacity-50" />
-              <div className="absolute bottom-6 left-6 w-32 h-32 border-b border-l border-white/20 rounded-bl-3xl opacity-50" />
+              {/* Decorative Corners - Sharp */}
+              <div className="absolute top-6 right-6 w-32 h-32 border-t border-r border-white/20 opacity-50" />
+              <div className="absolute bottom-6 left-6 w-32 h-32 border-b border-l border-white/20 opacity-50" />
             </MachineCard>
           </motion.div>
         </div>
       </div>
 
-      {/* Footer Ticker */}
+      {/* Footer Ticker - Sharp Diamonds instead of Rounds */}
       <div className="absolute bottom-0 left-0 w-full border-t border-white/10 bg-primary/95 backdrop-blur-sm h-12 flex items-center justify-center z-30">
         <div className="flex items-center gap-8 text-[10px] font-mono uppercase tracking-[0.3em] text-text-muted/60">
           <span>Est. 1993</span>
-          <span className="w-1 h-1 bg-gold rounded-full" />
+          <span className="w-1.5 h-1.5 bg-gold rotate-45" /> 
           <span>Natural Stone Institute Partner</span>
-          <span className="w-1 h-1 bg-gold rounded-full" />
+          <span className="w-1.5 h-1.5 bg-gold rotate-45" />
           <span>Fort Pierce, FL</span>
         </div>
       </div>
