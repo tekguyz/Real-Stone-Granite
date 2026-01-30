@@ -13,15 +13,19 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
   const [hovered, setHovered] = useState<string | null>(null);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
-  // Corrected links to point to Widget IDs
   const navLinks = [
-    { name: 'Materials', href: '#materials' },
-    { name: 'Capabilities', href: '#capabilities' },
-    { name: 'Monuments', href: '#monuments' },
+    { name: 'Materials', href: 'materials' },
+    { name: 'Capabilities', href: 'capabilities' },
+    { name: 'Monuments', href: 'monuments' },
   ];
 
-  const handleMobileLinkClick = () => {
-    setIsMobileOpen(false);
+  const scrollToSection = (e: React.MouseEvent, id: string) => {
+    e.preventDefault();
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      setIsMobileOpen(false);
+    }
   };
 
   return (
@@ -29,7 +33,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
       <nav className="fixed top-0 left-0 right-0 z-50 h-20 bg-primary/95 backdrop-blur-md border-b border-white/5 flex items-center justify-between px-6 md:px-12">
         {/* Brand Identity */}
         <div className="flex items-center select-none cursor-pointer z-50">
-          <a href="#" className="flex flex-col leading-tight outline-none">
+          <a 
+            href="#" 
+            onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+            className="flex flex-col leading-tight outline-none"
+          >
             <span className="font-mono font-black text-xl text-white tracking-tighter">
               REAL STONE
             </span>
@@ -44,7 +52,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
           {navLinks.map((link) => (
             <a
               key={link.name}
-              href={link.href}
+              href={`#${link.href}`}
+              onClick={(e) => scrollToSection(e, link.href)}
               className="relative h-full flex flex-col justify-center items-center group outline-none"
               onMouseEnter={() => setHovered(link.name)}
               onMouseLeave={() => setHovered(null)}
@@ -55,7 +64,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
                 {link.name}
               </span>
               
-              {/* Hover Indicator */}
               <AnimatePresence>
                 {hovered === link.name && (
                   <motion.div
@@ -88,7 +96,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
             </PrecisionBtn>
           </div>
 
-          {/* Mobile Menu Toggle */}
           <button 
             onClick={() => setIsMobileOpen(!isMobileOpen)}
             className="md:hidden text-text-muted hover:text-white transition-colors p-2"
@@ -98,7 +105,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {isMobileOpen && (
           <motion.div
@@ -112,8 +118,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
               {navLinks.map((link, idx) => (
                 <motion.a
                   key={link.name}
-                  href={link.href}
-                  onClick={handleMobileLinkClick}
+                  href={`#${link.href}`}
+                  onClick={(e) => scrollToSection(e, link.href)}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.1 }}
@@ -139,7 +145,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
               </motion.div>
             </div>
             
-            {/* Mobile Footer */}
             <div className="absolute bottom-8 text-center">
               <p className="text-[10px] font-mono text-text-muted uppercase tracking-widest">
                 {COMPANY_KB.contact.phone}

@@ -45,9 +45,21 @@ input[type="submit"],
   color: oklch(18.6% 0.009 46);
 }
 
+/*
+  4. SCROLLBAR HIDING
+*/
+@layer utilities {
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
 /* 
-  4. INDUSTRIAL MARKDOWN (PROSE-STONE)
-  Custom styles for technical memo rendering.
+  5. INDUSTRIAL MARKDOWN (PROSE-STONE)
 */
 .prose-stone p {
   margin-bottom: 12px;

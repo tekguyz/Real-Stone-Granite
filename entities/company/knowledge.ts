@@ -1,69 +1,69 @@
 
 /**
  * COMPANY_KB: The authoritative data source for Real Stone & Granite Corp.
- * Used for UI text, AI grounding context, and system specifications.
+ * Used for UI text, AI grounding context, and professional specifications.
  */
 export const COMPANY_KB = {
   identity: {
     name: "Real Stone & Granite Corp",
     established: 1993,
     motto: "Excellence in Stone",
-    mission: "Providing high-performance architectural surfaces since 1993.",
+    mission: "Crafting distinguished architectural surfaces since 1993.",
   },
   sourcing: {
-    origin: "Founder personally sources unique materials from Italy, Spain, Greece, and Brazil.",
-    standards: "Direct extraction oversight ensures maximum structural integrity and aesthetic exclusivity.",
+    origin: "Our founder personally selects unique materials from the historic quarries of Italy, Spain, Greece, and Brazil.",
+    standards: "Direct extraction oversight ensures the structural integrity and aesthetic exclusivity our clients demand.",
   },
   materials: {
     natural: [
       {
         type: "Granite",
-        description: "Popular, durable choice known for distinct patterns and resilience in high-traffic areas.",
+        description: "A resilient and enduring choice, celebrated for its unique character and strength in sophisticated spaces.",
         attributes: ["Durable", "Unique Patterns", "Heat Resistant"],
       },
       {
         type: "Marble",
-        description: "Prized for timeless elegance, unique veining, and smooth texture. Ideal for countertops and flooring.",
+        description: "The definition of timeless elegance, offering unique veining and a smooth, classic texture for discerning projects.",
         attributes: ["Elegant", "Veined", "Classic"],
       },
       {
         type: "Quartzite",
-        description: "Blends the strength of granite with the elegant appearance of marble.",
+        description: "A masterful blend of natural strength and refined beauty, mirroring the aesthetic of marble with superior hardness.",
         attributes: ["High Strength", "Marble-like Aesthetic", "Hardened"],
       },
     ],
     engineered: [
       {
         type: "Quartz",
-        description: "Over 90% real ground-up stone bound with resins. Nonporous and consistent.",
+        description: "Expertly composed stone, offering a nonporous and consistent finish for effortless daily elegance.",
         brands: ["Caesarstone", "Cambria"],
         attributes: ["Nonporous", "Maintenance Free", "Consistent"],
       },
       {
         type: "Dekton",
-        description: "Sophisticated blend of glass, porcelain, and quartz. Highly resistant to UV rays, scratches, and stains.",
+        description: "A sophisticated ultra-compact surface, meticulously engineered for absolute resistance to the elements.",
         attributes: ["UV Resistant", "Scratch Resistant", "Ultra-Compact"],
       },
       {
         type: "Porcelain",
-        description: "Sleek appearance and durability.",
+        description: "A sleek, contemporary surface offering exceptional durability and a lightweight architectural profile.",
         attributes: ["Lightweight", "Large Format", "Durable"],
       },
     ],
     exotic: [
       {
         type: "Onyx",
-        description: "Spectacular, often multicolored with incredible coloring. Used for mosaics and backlit features.",
+        description: "A breathtaking, translucent material used to create dramatic, backlit features that define a room's atmosphere.",
         attributes: ["Translucent", "Vibrant", "Ornamental"],
       },
       {
         type: "Semiprecious",
-        description: "Gemstone-quality slabs like Amethyst and Agate, hand-assembled for backlit luxury.",
+        description: "Gemstone-quality surfaces such as Amethyst and Agate, hand-assembled for the ultimate statement in luxury.",
         attributes: ["Rare", "Jewel-Toned", "Bespoke"],
       },
       {
         type: "Rare Finds",
-        description: "One-of-a-kind blocks sourced from exclusive quarries, available by appointment only.",
+        description: "One-of-a-kind stone blocks sourced from exclusive quarries, accessible by private appointment.",
         attributes: ["Exclusive", "Limited Run", "Statement"],
       }
     ]
@@ -71,32 +71,32 @@ export const COMPANY_KB = {
   servicePillars: [
     {
       id: "01",
-      title: "Custom Fabrication",
-      description: "Zero-tolerance precision cutting via 5-axis Waterjet & CNC milling systems.",
+      title: "Master Fabrication",
+      description: "Precision cutting via advanced 5-axis systems, guided by a master's touch.",
       icon: "Fabrication"
     },
     {
       id: "02",
-      title: "Digital Design",
-      description: "Photorealistic rendering and virtual stone layouts for pre-production verification.",
+      title: "Digital Artistry",
+      description: "Photorealistic visualization and virtual layouts for complete design confidence.",
       icon: "Design"
     },
     {
       id: "03",
-      title: "Artistic Inlay",
-      description: "Complex mosaic assembly and mixed-material integration for bespoke features.",
+      title: "Bespoke Inlay",
+      description: "Intricate mosaic assembly and hand-finished details for one-of-a-kind features.",
       icon: "Artistic"
     },
     {
       id: "04",
-      title: "Installation",
-      description: "White-glove onsite fitting by master masons ensuring structural permanence.",
+      title: "Private Installation",
+      description: "Discreet, white-glove site management and fitting by our most senior masons.",
       icon: "Safety"
     },
     {
       id: "05",
-      title: "Commercial Facades",
-      description: "Large-scale cladding systems engineered for high-rise exterior performance.",
+      title: "Architectural Cladding",
+      description: "Large-scale stone systems engineered for performance and permanence.",
       icon: "Commercial"
     }
   ],

@@ -7,8 +7,8 @@ export type ProjectType = 'Residential' | 'Commercial' | 'Monument';
 export type Environment = 'Indoor' | 'Outdoor';
 export type Maintenance = 'Low' | 'Standard';
 export type Style = 'Luxury' | 'Standard' | 'Industrial';
-export type UserRole = 'Homeowner' | 'General Contractor' | 'Architect/Designer';
-export type FabricationLevel = 'Standard' | 'Architectural';
+export type UserRole = 'Private Residence' | 'Professional Partner';
+export type FabricationLevel = 'Classic Selection' | 'Artisan Masterpiece';
 
 export interface ProjectState {
   userRole: UserRole;
@@ -18,7 +18,7 @@ export interface ProjectState {
   maintenance: Maintenance;
   style: Style;
   timeline: string;
-  stonePreference: string; // e.g., "Dark", "Light", "Veined"
+  stonePreference: string; 
 }
 
 export interface Recommendation {
@@ -26,15 +26,12 @@ export interface Recommendation {
   reason: string;
 }
 
-/**
- * LeadDossier: The standardized exchange format for CRM/Webhook integration.
- */
 export interface LeadDossier {
   leadId: string;
   timestamp: string;
   identity: {
     role: UserRole;
-    type: string; // "PROFESSIONAL" | "PRIVATE"
+    type: string; 
   };
   specification: {
     tier: FabricationLevel;
@@ -54,13 +51,13 @@ export interface LeadDossier {
 // --- Initial State ---
 
 const initialState: ProjectState = {
-  userRole: 'Homeowner',
-  fabricationLevel: 'Standard',
+  userRole: 'Private Residence',
+  fabricationLevel: 'Classic Selection',
   projectType: 'Residential',
   environment: 'Indoor',
   maintenance: 'Standard',
   style: 'Standard',
-  timeline: '3-6 Months',
+  timeline: 'Planning Phase (1-3 Months)',
   stonePreference: 'Light',
 };
 
@@ -104,45 +101,42 @@ function projectReducer(state: ProjectState, action: Action): ProjectState {
   }
 }
 
-// --- Smart Logic Engine ---
+// --- Designer Logic Engine (Consultant Persona) ---
 
-/**
- * Derives the recommended material based on architectural constraints and user preferences.
- */
 export const getRecommendation = (state: ProjectState): Recommendation => {
   if (state.environment === 'Outdoor') {
     return { 
       material: 'Dekton', 
-      reason: 'Ultra-compact surface engineered for UV resistance and thermal shock.' 
+      reason: 'For outdoor applications, Dekton is unparalleled. Its ultra-compact molecular structure makes it essentially immune to UV rays and thermal shock, ensuring your space remains pristine through the seasons.' 
     };
   }
   if (state.maintenance === 'Low') {
     return { 
       material: 'Quartz', 
-      reason: 'Non-porous engineered stone requiring zero sealing or special maintenance.' 
+      reason: 'If ease of use is your priority, Quartz is the ideal companion. It offers the high-end aesthetic of natural stone with a non-porous surface that never requires sealing or specialized care.' 
     };
   }
-  if (state.style === 'Luxury' || state.fabricationLevel === 'Architectural') {
+  if (state.style === 'Luxury' || state.fabricationLevel === 'Artisan Masterpiece') {
     return { 
-      material: 'Onyx', 
-      reason: 'Translucent, exotic gemstone slabs for high-impact statement features.' 
+      material: 'Quartzite', 
+      reason: 'Quartzite offers the rare combination of marble’s ethereal beauty with the structural hardness of granite. It is a sophisticated choice for high-traffic kitchens that refuse to sacrifice elegance.' 
     };
   }
   if (state.projectType === 'Monument') {
     return { 
       material: 'Granite', 
-      reason: 'Maximum structural density and historical permanence for exterior memorials.' 
+      reason: 'Granite is the standard for permanence. Its crystalline density provides the atmospheric resistance required for works intended to honor history for centuries to come.' 
     };
   }
   if (state.projectType === 'Commercial') {
     return { 
       material: 'Porcelain', 
-      reason: 'Lightweight, large-format cladding ideal for high-traffic vertical applications.' 
+      reason: 'For modern commercial environments, large-format Porcelain provides a sleek, lightweight profile with exceptional durability against the rigors of public interaction.' 
     };
   }
   return { 
     material: 'Marble', 
-    reason: 'The timeless standard for residential elegance and natural unique veining.' 
+    reason: 'We suggest Marble for its timeless aesthetic; its unique veining creates a natural organic flow that brings a distinct sense of character and luxury to refined residential interiors.' 
   };
 };
 

@@ -1,48 +1,58 @@
 
 import React from 'react';
+import { motion } from 'framer-motion';
 import { ICONS } from '../../shared/assets';
+import { PHYSICS } from '../../shared/lib/theme';
 
-const MODULES = [
+interface Capability {
+  id: string;
+  title: string;
+  description: string;
+  techLabel: string;
+  specs: string[];
+  icon: React.ElementType;
+}
+
+const FEATURED: Capability = {
+  id: "MASTER",
+  title: "Master Fabrication",
+  description: "Advanced 5-axis CNC precision integrated with artisanal hand-finishing. We manifest complex structural geometries that redefine the limits of stone as an architectural medium.",
+  techLabel: "REF: CNC-5AXIS / ARTISAN_HYBRID",
+  specs: ["Precision Mitering", "Digital Twin Verification", "Bespoke Details"],
+  icon: ICONS.Fabrication
+};
+
+const SECONDARY: Capability[] = [
   {
-    id: "SYS-01",
-    title: "Custom Fabrication",
-    description: "Deploying 5-axis waterjet technology and diamond-bit CNC milling for zero-tolerance precision cutting of complex geometries.",
-    specs: ["CNC Bridge Saws", "Waterjet Cutting", "Edge Profiling"],
-    icon: ICONS.Fabrication
-  },
-  {
-    id: "SYS-02",
-    title: "Advanced Design",
-    description: "Comprehensive digital verification, photorealistic rendering, and laser templating to ensure absolute alignment before cutting.",
-    specs: ["3D Rendering", "Digital Templates", "Virtualization"],
+    id: "VIZ",
+    title: "Visualization",
+    description: "Photorealistic rendering and digital slab templating.",
+    techLabel: "REF: VIRTUAL_01",
+    specs: ["Slab Matching", "3D Rendering"],
     icon: ICONS.Design
   },
   {
-    id: "SYS-03",
-    title: "Artistic Features",
-    description: "Execution of intricate waterjet inlays, bas-relief sandblasting, and multi-layered textural finishes for bespoke commissions.",
-    specs: ["Waterjet Inlay", "3D Carving", "Sandblasting"],
-    icon: ICONS.Artistic
-  },
-  {
-    id: "SYS-04",
-    title: "Pro Installation",
-    description: "White-glove site management, dust-containment protocols, and structural anchoring by master-certified stone masons.",
-    specs: ["White-Glove Service", "Dust Containment", "Final Sealing"],
+    id: "SITE",
+    title: "Installation",
+    description: "White-glove site management and structural fitting.",
+    techLabel: "REF: FIELD_SYS",
+    specs: ["Discreet Ops", "Elite Masons"],
     icon: ICONS.Safety
   },
   {
-    id: "SYS-05",
-    title: "Commercial Cladding",
-    description: "Engineered exterior facade systems designed for high-rise wind loads, thermal expansion, and architectural permanence.",
-    specs: ["Facade Work", "Monument Assembly", "Large Scale"],
+    id: "FACADE",
+    title: "Cladding",
+    description: "Large-scale stone systems engineered for permanence.",
+    techLabel: "REF: ARCH_FACADE",
+    specs: ["Monument Grade", "Structural"],
     icon: ICONS.Commercial
   },
   {
-    id: "SYS-06",
-    title: "Global Sourcing",
-    description: "Exclusive direct-import access to rare geological veins from Italian, Brazilian, and Greek quarries, bypassing standard distribution.",
-    specs: ["Italy", "Spain", "Brazil", "Greece"],
+    id: "SOURCE",
+    title: "Curation",
+    description: "Direct access to exclusive geological veins globally.",
+    techLabel: "REF: GLOBAL_V",
+    specs: ["Hand-Selected", "Rare Slabs"],
     icon: ICONS.Location
   }
 ];
@@ -50,68 +60,94 @@ const MODULES = [
 export const Capabilities: React.FC = () => {
   return (
     <section id="capabilities" className="py-24 bg-primary border-b border-white/5 relative overflow-hidden">
-      {/* Background Pattern: Technical Grid */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(212,175,55,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(212,175,55,0.01)_1px,transparent_1px)] bg-[size:50px_50px] pointer-events-none" />
 
       <div className="max-w-screen-2xl mx-auto px-6 md:px-12 relative z-10">
+        <div className="mb-16 border-l border-gold/30 pl-8">
+          <span className="text-gold font-mono text-[10px] uppercase tracking-[0.4em] block mb-2 opacity-60">Technical Infrastructure</span>
+          <h2 className="text-4xl md:text-5xl font-mono font-black uppercase text-white tracking-tighter">Core Capabilities</h2>
+        </div>
+
+        <div className="flex flex-col lg:flex-row gap-4">
+          {/* FEATURED: Left 50% */}
+          <motion.div 
+            whileHover="hover"
+            className="w-full lg:w-1/2 group relative bg-surface/40 border border-gold/20 p-8 md:p-12 min-h-[500px] flex flex-col justify-between overflow-hidden"
+          >
+            {/* Translucent Stone Illumination */}
+            <motion.div 
+              variants={{ hover: { opacity: 0.1, scale: 1.1 } }}
+              initial={{ opacity: 0, scale: 1 }}
+              transition={{ duration: 0.6 }}
+              className="absolute inset-0 bg-gold blur-[80px] pointer-events-none"
+            />
+
+            <div className="relative z-10">
+              <div className="flex justify-between items-start mb-12">
+                <div className="relative">
+                  <FEATURED.icon className="w-16 h-16 text-black/40 fill-white/5 opacity-30 group-hover:opacity-60 transition-opacity" strokeWidth={0.5} />
+                  <div className="absolute inset-0 bg-gold/10 blur-md -z-10 group-hover:bg-gold/20 transition-colors" />
+                </div>
+                <span className="font-mono text-[9px] text-gold/50 tracking-widest">{FEATURED.techLabel}</span>
+              </div>
+              <h3 className="text-3xl md:text-4xl font-mono font-bold text-white mb-6 uppercase tracking-tight">{FEATURED.title}</h3>
+              <p className="text-text-muted text-base leading-relaxed font-sans font-light max-w-md">{FEATURED.description}</p>
+            </div>
+
+            <div className="relative z-10 mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 pt-8 border-t border-white/5">
+              {FEATURED.specs.map(spec => (
+                <div key={spec} className="group/spec flex items-center gap-3">
+                  <div className="w-3 h-[1px] bg-gold/30 group-hover/spec:w-6 group-hover/spec:bg-gold transition-all" />
+                  <span className="font-mono text-[9px] text-white/40 uppercase tracking-widest group-hover/spec:text-gold transition-colors">{spec}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="absolute top-0 left-0 w-8 h-8 border-t border-l border-gold/30" />
+            <div className="absolute bottom-0 right-0 w-8 h-8 border-b border-r border-gold/30" />
+          </motion.div>
+
+          {/* SECONDARY: Right 50% 2-column Grid */}
+          <div className="w-full lg:w-1/2 grid grid-cols-1 md:grid-cols-2 gap-4">
+            {SECONDARY.map((cap) => (
+              <motion.div 
+                key={cap.id}
+                whileHover="hover"
+                className="group relative bg-surface/20 border border-white/10 p-8 flex flex-col justify-between overflow-hidden"
+              >
+                <motion.div 
+                  variants={{ hover: { opacity: 0.08, scale: 1.1 } }}
+                  initial={{ opacity: 0, scale: 1 }}
+                  className="absolute inset-0 bg-gold blur-[40px] pointer-events-none"
+                />
+
+                <div className="relative z-10">
+                  <div className="flex justify-between items-start mb-6">
+                    <cap.icon className="w-8 h-8 text-black/50 fill-white/5 opacity-20 group-hover:opacity-40 transition-opacity" strokeWidth={0.5} />
+                    <span className="font-mono text-[8px] text-white/20 tracking-widest uppercase">{cap.techLabel}</span>
+                  </div>
+                  <h4 className="text-lg font-mono font-bold text-white mb-2 uppercase tracking-wide">{cap.title}</h4>
+                  <p className="text-xs text-text-muted leading-relaxed font-sans font-light">{cap.description}</p>
+                </div>
+
+                <div className="relative z-10 mt-6 pt-4 border-t border-white/5 space-y-2">
+                  {cap.specs.map(spec => (
+                    <div key={spec} className="flex items-center gap-2 group/sub">
+                      <div className="w-2 h-[1px] bg-gold/20 group-hover/sub:bg-gold transition-colors" />
+                      <span className="font-mono text-[8px] text-white/30 uppercase tracking-[0.2em] group-hover/sub:text-gold transition-colors">{spec}</span>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
         
-        {/* Section Header */}
-        <div className="mb-12 flex items-end justify-between">
-            <div className="border-l-2 border-gold pl-6">
-                <span className="text-gold font-mono text-xs uppercase tracking-[0.3em] block mb-2">Technical Capabilities</span>
-                <h2 className="text-4xl md:text-5xl font-mono font-bold uppercase text-white tracking-tight">System Infrastructure</h2>
-            </div>
-             <div className="hidden md:block text-right">
-                <div className="text-[10px] font-mono text-white/30 uppercase tracking-widest">Module Status: Active</div>
-                <div className="text-[10px] font-mono text-white/30 uppercase tracking-widest">Grid System: 3x2</div>
-             </div>
+        <div className="mt-12 text-center">
+            <span className="font-mono text-[9px] text-white/10 uppercase tracking-[0.5em] select-none">
+              Design_System_Manifest: v.41.93_Gold_Onyx
+            </span>
         </div>
-
-        {/* Technical Modules Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {MODULES.map((mod) => (
-            <div 
-              key={mod.id} 
-              className="group relative bg-surface border border-white/10 p-6 flex flex-col min-h-[250px] overflow-hidden hover:border-gold transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)]"
-            >
-              {/* Module Header */}
-              <div className="flex justify-between items-start mb-4 relative z-10">
-                <mod.icon className="w-8 h-8 text-gold stroke-[1.5px] group-hover:text-white transition-colors duration-300" />
-                <span className="font-mono text-[10px] text-white/20 group-hover:text-gold transition-colors tracking-widest border border-white/10 px-1.5 py-0.5 rounded-sm">
-                  {mod.id}
-                </span>
-              </div>
-
-              {/* Module Body Content */}
-              <div className="mb-3 relative z-10">
-                <h3 className="text-lg font-bold font-sans uppercase text-white mb-2 tracking-wide group-hover:translate-x-1 transition-transform duration-300">
-                    {mod.title}
-                </h3>
-                <p className="text-xs text-text-muted leading-relaxed font-mono font-light border-l border-white/10 pl-3 group-hover:border-gold/50 transition-colors">
-                  {mod.description}
-                </p>
-              </div>
-
-              {/* Technical Specs Checklist - Sits right under content, no mt-auto gap */}
-              <div className="relative z-10 border-t border-white/5 pt-3 group-hover:border-white/10 transition-colors">
-                 <ul className="space-y-1">
-                    {mod.specs.map((spec) => (
-                        <li key={spec} className="flex items-center gap-2 text-[10px] font-mono text-text-muted group-hover:text-white transition-colors duration-200">
-                            <span className="text-gold/50 block">+</span>
-                            <span className="uppercase tracking-wider">{spec}</span>
-                        </li>
-                    ))}
-                 </ul>
-              </div>
-
-              {/* Corner Accents for Industrial Feel */}
-              <div className="absolute top-0 right-0 w-0 h-0 border-t border-r border-gold/40 group-hover:w-3 group-hover:h-3 transition-all duration-300" />
-              <div className="absolute bottom-0 left-0 w-0 h-0 border-b border-l border-gold/40 group-hover:w-3 group-hover:h-3 transition-all duration-300" />
-
-            </div>
-          ))}
-        </div>
-
       </div>
     </section>
   );

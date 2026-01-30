@@ -67,17 +67,17 @@ export const Hero: React.FC<HeroProps> = ({ onStartProject }) => {
             </div>
 
             <h1 className="text-7xl md:text-9xl font-mono font-black uppercase leading-[0.85] tracking-tighter text-white mb-10">
-              <span className="text-transparent" style={{ WebkitTextStroke: '1px white' }}>Precision</span><br />
-              <span>Set In</span><br />
+              <span className="text-transparent" style={{ WebkitTextStroke: '1px white' }}>Integrity</span><br />
+              <span>Carved In</span><br />
               <span className="text-gold">Stone.</span>
             </h1>
 
             <p className="max-w-lg text-text-muted text-lg font-light leading-relaxed mb-12 border-l-2 border-gold/50 pl-6">
-              Direct importers of the world's finest exotic slabs.
+              A bespoke collection of the world's finest geological treasures, hand-selected for the discerning visionary.
             </p>
 
             <PrecisionBtn variant="secondary" onClick={() => document.getElementById('materials')?.scrollIntoView({ behavior: 'smooth'})}>
-              View The Vault
+              Explore the Portfolio
             </PrecisionBtn>
           </div>
         </div>
@@ -119,10 +119,10 @@ export const Hero: React.FC<HeroProps> = ({ onStartProject }) => {
               <div className="absolute bottom-12 left-12 z-20">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-12 h-[1px] bg-gold" />
-                  <span className="text-gold font-mono text-xs uppercase tracking-[0.3em]">Atmosphere</span>
+                  <span className="text-gold font-mono text-xs uppercase tracking-[0.3em]">Curation</span>
                 </div>
-                <h3 className="text-white text-3xl font-mono uppercase">Black Liquid Gold</h3>
-                <p className="text-white/50 text-xs font-mono mt-2">Asset Ref: 884-A</p>
+                <h3 className="text-white text-3xl font-mono uppercase">Luminous Shadow</h3>
+                <p className="text-white/50 text-xs font-mono mt-2">Natural Detail: 884-A</p>
               </div>
 
               {/* Decorative Corners */}
@@ -136,11 +136,11 @@ export const Hero: React.FC<HeroProps> = ({ onStartProject }) => {
       {/* Footer Ticker */}
       <div className="absolute bottom-0 left-0 w-full border-t border-white/10 bg-primary/95 backdrop-blur-sm h-12 flex items-center justify-center z-30">
         <div className="flex items-center gap-8 text-[10px] font-mono uppercase tracking-[0.3em] text-text-muted/60">
-          <span>EST. 1993</span>
+          <span>Est. 1993</span>
           <span className="w-1 h-1 bg-gold rounded-full" />
-          <span>ANSF ACCREDITED</span>
+          <span>Natural Stone Institute Partner</span>
           <span className="w-1 h-1 bg-gold rounded-full" />
-          <span>FORT PIERCE, FL</span>
+          <span>Fort Pierce, FL</span>
         </div>
       </div>
     </section>

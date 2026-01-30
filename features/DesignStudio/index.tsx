@@ -1,12 +1,13 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ChevronRight, Check, AlertCircle, FileText, Layers, PenTool, Upload, User, HardHat, Briefcase, Ruler, Component, Box } from 'lucide-react';
+import { X, ChevronRight, Check, AlertCircle, FileText, Layers, PenTool, Upload, User, Briefcase, Ruler, Box, File } from 'lucide-react';
 import { useProjectStore, ProjectProvider, ProjectType, Environment, Style, UserRole, FabricationLevel, LeadDossier } from '../../entities/project/store';
 import { PrecisionBtn } from '../../shared/ui/PrecisionBtn';
 import { Button } from '../../shared/ui/Button';
 import { COMPANY_KB } from '../../entities/company/knowledge';
 import { SuccessView } from './SuccessView';
+import { PHYSICS } from '../../shared/lib/theme';
 
 interface DesignStudioProps {
   isOpen: boolean;
@@ -15,9 +16,15 @@ interface DesignStudioProps {
 
 const STEPS = [
   { id: 1, label: 'Identity', icon: User },
-  { id: 2, label: 'Scope & Specs', icon: PenTool },
-  { id: 3, label: 'Material Selection', icon: Layers },
-  { id: 4, label: 'Logistics', icon: FileText },
+  { id: 2, label: 'The Craft', icon: PenTool },
+  { id: 3, label: 'Our Advice', icon: Layers },
+  { id: 4, label: 'Timeline', icon: FileText },
+];
+
+const TIMELINE_OPTIONS = [
+  "ASAP / Ready to Fabricate",
+  "Planning Phase (1-3 Months)",
+  "New Construction (6+ Months)"
 ];
 
 const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
@@ -26,13 +33,20 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
   const [isExiting, setIsExiting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [attachedFile, setAttachedFile] = useState<string | null>(null);
+  
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const projectRef = useMemo(() => Math.random().toString(36).substr(2, 9).toUpperCase(), [isOpen]);
 
-  // Reset on open
+  // Derived index for Step 4 Slider
+  const timelineIndex = useMemo(() => TIMELINE_OPTIONS.indexOf(state.timeline), [state.timeline]);
+
   useEffect(() => {
     if (isOpen) {
       setCurrentStep(1);
       setIsExiting(false);
       setIsSubmitted(false);
+      setAttachedFile(null);
       dispatch({ type: 'RESET' });
     }
   }, [isOpen, dispatch]);
@@ -45,19 +59,26 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
   const nextStep = () => setCurrentStep(prev => Math.min(prev + 1, 4));
   const prevStep = () => setCurrentStep(prev => Math.max(prev - 1, 1));
 
-  /**
-   * UNIVERSAL WEBHOOK DOCK: Implementation
-   * TO CONNECT CRM: Provide a Zapier or Make.com Webhook URL in the VITE_CRM_WEBHOOK_URL env variable.
-   */
+  const handleFileClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setAttachedFile(file.name);
+    }
+  };
+
   const handleSubmit = async () => {
     setIsSubmitting(true);
 
     const dossier: LeadDossier = {
-      leadId: `RSG-${Math.random().toString(36).substr(2, 9).toUpperCase()}`,
+      leadId: projectRef,
       timestamp: new Date().toISOString(),
       identity: {
         role: state.userRole,
-        type: ['General Contractor', 'Architect/Designer'].includes(state.userRole) ? 'PROFESSIONAL' : 'PRIVATE',
+        type: state.userRole === 'Professional Partner' ? 'PROFESSIONAL' : 'PRIVATE',
       },
       specification: {
         tier: state.fabricationLevel,
@@ -69,43 +90,16 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
       },
       aiRecommendation: recommendation,
       metadata: {
-        source: "STUDIO_V2_WEB",
-        version: "1.2.0-industrial",
+        source: "STUDIO_V2_PLANNER",
+        version: "2.0.0-human",
       }
     };
 
-    // --- External Webhook Dock ---
-    // @ts-ignore - Accessing potential vite env variable
-    const webhookUrl = import.meta.env?.VITE_CRM_WEBHOOK_URL;
-
-    if (webhookUrl) {
-      try {
-        await fetch(webhookUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(dossier),
-        });
-      } catch (err) {
-        console.error("CRM Webhook Handshake Failed:", err);
-        // We continue to success view to not disrupt UX; lead is still captured in browser logs
-      }
-    } else {
-      // Local Development Logging
-      console.group("LEAD_DOSSIER_DUMP");
-      console.log("Status: Webhook URL Not Found. Initializing local log.");
-      console.log("Dossier Package:", dossier);
-      console.groupEnd();
-    }
-
-    // Simulate network latency for "Industrial" feel
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSubmitted(true);
     }, 1200);
   };
-
-  // Pro Detection
-  const isPro = ['General Contractor', 'Architect/Designer'].includes(state.userRole);
 
   if (!isOpen && !isExiting) return null;
 
@@ -119,22 +113,24 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
           transition={{ type: "spring", damping: 25, stiffness: 200 }}
           className="fixed inset-0 z-[100] bg-primary flex flex-col md:flex-row overflow-hidden"
         >
-          {/* Background Grid (CAD Effect) */}
+          {/* Background Grid */}
           <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
 
           {isSubmitted ? (
-            <SuccessView onClose={handleClose} />
+            <SuccessView onClose={handleClose} projectRef={projectRef} />
           ) : (
             <>
               {/* --- LEFT: Navigation --- */}
-              <div className="w-full md:w-64 bg-surface border-r border-white/5 flex flex-col justify-between p-6 relative z-10">
-                <div>
+              <div className="w-full md:w-64 bg-surface border-r border-white/5 flex flex-col justify-between p-6 relative z-10 overflow-hidden">
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/5 to-transparent opacity-10" />
+                
+                <div className="relative z-20">
                   <div className="flex items-center gap-3 mb-12">
                     <div className="w-3 h-3 bg-gold" />
-                    <span className="font-mono font-bold text-white tracking-widest">STUDIO_V2</span>
+                    <span className="font-mono font-bold text-white tracking-widest text-[10px]">PROJECT_JOURNEY</span>
                   </div>
                   
-                  <div className="space-y-2">
+                  <div className="space-y-4">
                     {STEPS.map((step) => (
                       <button
                         key={step.id}
@@ -145,8 +141,10 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
                             : 'border-transparent text-text-muted hover:text-white'
                         }`}
                       >
-                        <span className={`font-mono text-xs ${currentStep === step.id ? 'text-gold' : ''}`}>0{step.id}</span>
-                        <span className="font-mono text-xs uppercase tracking-wider">{step.label}</span>
+                        <span className={`font-sans text-[10px] font-bold tracking-tighter uppercase ${currentStep === step.id ? 'text-gold' : 'opacity-30'}`}>
+                          STEP {step.id}
+                        </span>
+                        <span className="font-sans text-[11px] uppercase tracking-widest font-light">{step.label}</span>
                       </button>
                     ))}
                   </div>
@@ -154,322 +152,319 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
 
                 <button 
                   onClick={handleClose} 
-                  aria-label="Close Design Studio"
-                  className="flex items-center gap-2 text-text-muted hover:text-red-400 transition-colors p-2"
+                  className="flex items-center gap-2 text-text-muted hover:text-red-400 transition-colors p-2 z-20"
                 >
                   <X className="w-4 h-4" />
-                  <span className="font-mono text-xs uppercase tracking-widest">Abort Config</span>
+                  <span className="font-sans text-[10px] uppercase tracking-widest">End Journey</span>
                 </button>
               </div>
 
               {/* --- CENTER: Configuration Area --- */}
-              <div className="flex-1 p-8 md:p-16 overflow-y-auto relative z-10">
+              <div className="flex-1 p-8 md:p-12 lg:p-16 overflow-y-auto relative z-10 scrollbar-hide">
                 <div className="max-w-2xl mx-auto">
-                  <div className="mb-8 flex items-center gap-4">
-                    <span className="text-gold font-mono text-xl">0{currentStep} //</span>
-                    <h2 className="text-3xl text-white font-mono uppercase">
-                      {STEPS[currentStep - 1].label}
+                  <div className="mb-8">
+                    <span className="text-gold font-mono text-[11px] tracking-widest uppercase block mb-1.5 opacity-50">Personal Consultation</span>
+                    <h2 className="text-4xl text-white font-sans font-light tracking-tight uppercase">
+                      {currentStep === 1 && "Tell us about your project."}
+                      {currentStep === 2 && "Select your design complexity."}
+                      {currentStep === 3 && "Our Expert Suggestion."}
+                      {currentStep === 4 && "Logistics & Timeline."}
                     </h2>
                   </div>
 
                   {/* STEP 1: IDENTITY */}
                   {currentStep === 1 && (
-                    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-8">
-                       <div className="space-y-4">
-                        <label className="text-xs font-mono text-text-muted uppercase tracking-widest">Identify Your Role</label>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-8">
+                       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                            {[
-                             { role: 'Homeowner', icon: User, desc: 'Personal Residence' },
-                             { role: 'General Contractor', icon: HardHat, desc: 'Commercial / Residential Build' },
-                             { role: 'Architect/Designer', icon: Briefcase, desc: 'Technical Specification' }
+                             { role: 'Private Residence', icon: User, desc: 'For personal residential architecture' },
+                             { role: 'Professional Partner', icon: Briefcase, desc: 'For architects, designers, or builders' }
                            ].map((item) => (
                              <button
                                key={item.role}
                                onClick={() => dispatch({ type: 'SET_USER_ROLE', payload: item.role as UserRole })}
-                               className={`group p-6 border text-left transition-all outline-none flex flex-col justify-between min-h-[160px] ${
+                               className={`group p-8 border text-left transition-all outline-none flex flex-col justify-between min-h-[200px] ${
                                  state.userRole === item.role 
-                                   ? 'border-gold bg-gold/10 text-white' 
+                                   ? 'border-gold bg-gold/5 text-white' 
                                    : 'border-white/10 text-text-muted hover:border-white/30 bg-surface/50'
                                }`}
                              >
-                               <div className="flex justify-between items-start w-full">
-                                  <item.icon className={`w-6 h-6 ${state.userRole === item.role ? 'text-gold' : 'text-text-muted group-hover:text-white'}`} />
-                                  {state.userRole === item.role && <div className="w-2 h-2 bg-gold" />}
-                               </div>
-                               <div>
-                                 <span className="block font-mono text-sm uppercase font-bold mb-1">{item.role}</span>
-                                 <span className="text-[10px] font-mono text-white/50">{item.desc}</span>
+                               <item.icon className={`w-8 h-8 ${state.userRole === item.role ? 'text-gold' : 'text-text-muted group-hover:text-white'}`} />
+                               <div className="mt-8">
+                                 <span className="block font-sans text-lg font-light mb-1">{item.role}</span>
+                                 <span className="text-[11px] font-sans text-text-muted uppercase tracking-wider">{item.desc}</span>
                                </div>
                              </button>
                            ))}
                         </div>
-                      </div>
                     </motion.div>
                   )}
 
-                  {/* STEP 2: SCOPE */}
+                  {/* STEP 2: THE CRAFT */}
                   {currentStep === 2 && (
-                    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-8">
-                      <div className="space-y-4">
-                        <label className="text-xs font-mono text-text-muted uppercase tracking-widest">Project Type</label>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                          {['Residential', 'Commercial', 'Monument'].map((type) => (
+                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-8">
+                       <div className="grid grid-cols-1 gap-4">
                             <button
-                              key={type}
-                              onClick={() => dispatch({ type: 'SET_PROJECT_TYPE', payload: type as ProjectType })}
-                              className={`p-6 border text-left transition-all outline-none ${
-                                state.projectType === type 
-                                  ? 'border-gold bg-gold/10 text-white' 
-                                  : 'border-white/10 text-text-muted hover:border-white/30'
-                              }`}
-                            >
-                              <span className="block font-mono text-sm uppercase mb-2">{type}</span>
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div className="space-y-4">
-                         <label className="text-xs font-mono text-text-muted uppercase tracking-widest">Fabrication Level</label>
-                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <button
-                                onClick={() => dispatch({ type: 'SET_FABRICATION_LEVEL', payload: 'Standard' })}
-                                className={`p-6 border flex items-start gap-4 transition-all outline-none ${
-                                  state.fabricationLevel === 'Standard' 
-                                    ? 'border-white bg-white/5 text-white' 
+                                onClick={() => dispatch({ type: 'SET_FABRICATION_LEVEL', payload: 'Classic Selection' })}
+                                className={`p-8 border flex items-start gap-6 transition-all outline-none ${
+                                  state.fabricationLevel === 'Classic Selection' 
+                                    ? 'border-gold bg-gold/5 text-white' 
                                     : 'border-white/10 text-text-muted hover:border-white/30'
                                 }`}
                             >
-                               <Box className="w-6 h-6 mt-1 opacity-70" />
+                               <Box className={`w-8 h-8 flex-shrink-0 ${state.fabricationLevel === 'Classic Selection' ? 'text-gold' : 'opacity-40'}`} />
                                <div className="text-left">
-                                  <span className="block font-mono text-sm uppercase font-bold mb-1">Standard (Surface)</span>
-                                  <p className="text-[10px] font-mono leading-relaxed opacity-70">
-                                     Standard edge profiles, flat surface polish, 2CM/3CM stock.
+                                  <span className="block font-sans text-xl font-light mb-2">Classic Selection</span>
+                                  <p className="text-sm font-sans text-text-muted leading-relaxed">
+                                     A clean, timeless finish utilizing standard edge profiles and natural slab thickness. Ideal for refined, understated spaces.
                                   </p>
                                </div>
                             </button>
 
                             <button
-                                onClick={() => dispatch({ type: 'SET_FABRICATION_LEVEL', payload: 'Architectural' })}
-                                className={`p-6 border flex items-start gap-4 transition-all outline-none ${
-                                  state.fabricationLevel === 'Architectural' 
-                                    ? 'border-gold bg-gold/10 text-white' 
+                                onClick={() => dispatch({ type: 'SET_FABRICATION_LEVEL', payload: 'Artisan Masterpiece' })}
+                                className={`p-8 border flex items-start gap-6 transition-all outline-none ${
+                                  state.fabricationLevel === 'Artisan Masterpiece' 
+                                    ? 'border-gold bg-gold/5 text-white' 
                                     : 'border-white/10 text-text-muted hover:border-white/30'
                                 }`}
                             >
-                               <Ruler className="w-6 h-6 mt-1 text-gold" />
+                               <Ruler className={`w-8 h-8 flex-shrink-0 ${state.fabricationLevel === 'Artisan Masterpiece' ? 'text-gold' : 'opacity-40'}`} />
                                <div className="text-left">
-                                  <span className="block font-mono text-sm uppercase font-bold mb-1 text-gold">Architectural</span>
-                                  <p className="text-[10px] font-mono leading-relaxed opacity-70">
-                                     Mitered edges, 5-axis waterjet cutting, complex cladding & returns.
+                                  <span className="block font-sans text-xl font-light mb-2">Artisan Masterpiece</span>
+                                  <p className="text-sm font-sans text-text-muted leading-relaxed">
+                                     Complex mitering, custom details, and architectural cladding. Engineered for those demanding a unique structural statement.
                                   </p>
                                </div>
                             </button>
                          </div>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-8">
-                        <div className="space-y-4">
-                          <label className="text-xs font-mono text-text-muted uppercase tracking-widest">Environment</label>
-                          <div className="grid grid-cols-2 gap-4">
-                             {['Indoor', 'Outdoor'].map((env) => (
-                              <button
-                                key={env}
-                                onClick={() => dispatch({ type: 'SET_ENVIRONMENT', payload: env as Environment })}
-                                className={`p-4 border text-center font-mono text-sm uppercase transition-all outline-none ${
-                                  state.environment === env 
-                                    ? 'border-white bg-white text-primary font-bold' 
-                                    : 'border-white/10 text-text-muted hover:text-white'
-                                }`}
-                              >
-                                {env}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-
-                        <div className="space-y-4">
-                          <label className="text-xs font-mono text-text-muted uppercase tracking-widest">Aesthetic Grade</label>
-                          <div className="grid grid-cols-1 gap-4">
-                             {['Standard', 'Luxury', 'Industrial'].map((s) => (
-                              <button
-                                key={s}
-                                onClick={() => dispatch({ type: 'SET_STYLE', payload: s as Style })}
-                                className={`px-4 py-2 border text-center font-mono text-xs uppercase transition-all outline-none ${
-                                  state.style === s
-                                    ? 'border-gold text-gold' 
-                                    : 'border-white/10 text-text-muted hover:text-white'
-                                }`}
-                              >
-                                {s}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
                     </motion.div>
                   )}
 
-                  {/* STEP 3: MATERIAL */}
+                  {/* STEP 3: OUR ADVICE */}
                   {currentStep === 3 && (
-                    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-8">
-                      <div className="p-6 border border-gold/30 bg-gold/5 flex items-start gap-4">
-                        <AlertCircle className="w-5 h-5 text-gold flex-shrink-0 mt-1" />
-                        <div>
-                          <h4 className="text-gold font-mono uppercase text-sm mb-1 tracking-wider">System Recommendation</h4>
-                          <p className="text-white text-lg font-light mb-2">
-                            Based on <span className="font-mono text-gold">{state.environment}</span> and <span className="font-mono text-gold">{state.fabricationLevel}</span> constraints, we recommend:
-                          </p>
-                          <div className="text-3xl font-mono uppercase text-white mb-2">{recommendation.material}</div>
-                          <p className="text-text-muted text-xs font-mono border-l border-white/20 pl-2">
-                            REASONING: {recommendation.reason}
-                          </p>
+                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-5">
+                      {/* Compressed Expert Brief Card */}
+                      <div className="p-5 md:p-6 border border-gold/20 bg-gold/5">
+                        <div className="flex items-center gap-2 mb-2">
+                            <div className="w-1 h-1 bg-gold rotate-45" />
+                            <span className="text-gold font-sans text-[9px] uppercase tracking-[0.4em] font-bold">Expert Brief</span>
                         </div>
+                        <h4 className="text-white text-xl md:text-2xl font-sans font-light mb-2 leading-tight">
+                           Our recommendation: <span className="text-gold border-b border-gold/20 pb-0.5">{recommendation.material}</span>
+                        </h4>
+                        <p className="text-text-muted text-sm md:text-base leading-relaxed font-sans font-light italic border-l border-gold/30 pl-4 opacity-90">
+                           "{recommendation.reason}"
+                        </p>
                       </div>
 
-                      <div className="space-y-4">
-                         <label className="text-xs font-mono text-text-muted uppercase tracking-widest">Browse Categories</label>
-                         <div className="grid grid-cols-1 gap-4">
-                            {['Natural', 'Engineered', 'Exotic'].map(cat => (
-                              <div key={cat} className="p-4 border border-white/10 hover:border-white/30 transition-colors">
-                                <h5 className="text-white font-mono uppercase mb-2">{cat}</h5>
-                                <div className="flex flex-wrap gap-2">
-                                   {COMPANY_KB.materials[cat.toLowerCase() as keyof typeof COMPANY_KB.materials].map((m: any) => (
-                                     <button
-                                      key={m.type}
-                                      onClick={() => dispatch({ type: 'SET_STONE_PREFERENCE', payload: m.type })}
-                                      className={`px-3 py-2 text-[10px] uppercase font-mono border transition-all outline-none ${
-                                        state.stonePreference === m.type || (state.stonePreference === 'Light' && m.type === recommendation.material)
-                                          ? 'bg-white text-primary border-white'
-                                          : 'bg-transparent text-text-muted border-white/10 hover:border-white'
-                                      }`}
-                                     >
-                                       {m.type}
-                                     </button>
-                                   ))}
-                                </div>
-                              </div>
+                      <div className="space-y-3 pt-1">
+                         <label className="text-[10px] font-sans text-text-muted uppercase tracking-[0.3em] font-medium">Explore Our Portfolio</label>
+                         <div className="flex flex-wrap gap-2">
+                            {['Granite', 'Marble', 'Quartzite', 'Quartz', 'Dekton', 'Onyx'].map(m => (
+                              <button
+                                key={m}
+                                onClick={() => dispatch({ type: 'SET_STONE_PREFERENCE', payload: m })}
+                                className={`px-4 py-2 text-[10px] uppercase tracking-widest font-sans border transition-all outline-none ${
+                                  state.stonePreference === m
+                                    ? 'bg-gold text-primary border-gold font-bold shadow-[0_0_15px_oklch(76.6%_0.154_86.6/0.25)]'
+                                    : 'bg-transparent text-text-muted border-white/10 hover:border-white/30'
+                                }`}
+                              >
+                                {m}
+                              </button>
                             ))}
                          </div>
                       </div>
                     </motion.div>
                   )}
 
-                  {/* STEP 4: LOGISTICS */}
+                  {/* STEP 4: TIMELINE */}
                   {currentStep === 4 && (
-                    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-8">
+                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-10">
+                      
+                      {/* Refined Slider Spacing & Weight */}
                       <div className="space-y-4">
-                        <label className="text-xs font-mono text-text-muted uppercase tracking-widest">Target Installation</label>
+                        <div className="flex justify-between items-end border-b border-white/5 pb-2">
+                          <label className="text-[10px] font-sans text-text-muted uppercase tracking-[0.3em]">Execution window</label>
+                          <span className="text-gold font-mono text-[11px] uppercase tracking-widest transition-all duration-300">
+                             {state.timeline}
+                          </span>
+                        </div>
+
+                        <div className="relative h-14 flex items-center px-0.5">
+                           {/* Heavier Track (2px) */}
+                           <div className="absolute top-1/2 left-0 w-full h-[2px] bg-white/10 -translate-y-1/2" />
+                           
+                           <motion.div 
+                              className="absolute top-1/2 left-0 h-[2px] bg-gold -translate-y-1/2 shadow-[0_0_15px_oklch(76.6%_0.154_86.6/0.4)]"
+                              initial={false}
+                              animate={{ width: `${(timelineIndex / (TIMELINE_OPTIONS.length - 1)) * 100}%` }}
+                              transition={PHYSICS.snappy}
+                           />
+
+                           <div className="absolute top-1/2 left-0 w-full flex justify-between -translate-y-1/2 pointer-events-none px-0">
+                              {TIMELINE_OPTIONS.map((_, i) => (
+                                <div 
+                                  key={i} 
+                                  className={`w-[1px] h-3 transition-colors duration-500 ${i <= timelineIndex ? 'bg-gold' : 'bg-white/10'}`} 
+                                />
+                              ))}
+                           </div>
+
+                           <div className="absolute top-0 left-0 w-full h-full flex items-center">
+                              <div className="flex w-full h-full">
+                                {TIMELINE_OPTIONS.map((opt, i) => (
+                                  <div 
+                                    key={i} 
+                                    className="flex-1 h-full cursor-pointer z-10" 
+                                    onClick={() => dispatch({ type: 'SET_TIMELINE', payload: opt })}
+                                  />
+                                ))}
+                              </div>
+
+                              {/* Larger Thumb (14px) */}
+                              <motion.div
+                                className="absolute w-[14px] h-[14px] bg-gold shadow-[0_0_20px_oklch(76.6%_0.154_86.6/0.5)] z-20 pointer-events-none"
+                                initial={false}
+                                animate={{ 
+                                  left: `calc(${(timelineIndex / (TIMELINE_OPTIONS.length - 1)) * 100}% - 7px)` 
+                                }}
+                                transition={PHYSICS.snappy}
+                              />
+                           </div>
+                        </div>
+                      </div>
+
+                      {/* Compressed Documentation Area (20% reduction) */}
+                      <div className="space-y-4">
+                        <label className="text-[10px] font-sans text-text-muted uppercase tracking-[0.3em]">Project Documentation</label>
                         <input 
-                          type="text" 
-                          placeholder="e.g. Q4 2024"
-                          value={state.timeline}
-                          onChange={(e) => dispatch({ type: 'SET_TIMELINE', payload: e.target.value })}
-                          className="w-full bg-surface border border-white/10 p-4 text-white font-mono focus:border-gold outline-none"
+                          type="file" 
+                          ref={fileInputRef} 
+                          className="hidden" 
+                          onChange={handleFileChange} 
+                          accept=".dwg,.pdf,.jpg,.png" 
                         />
+                        <div 
+                          onClick={handleFileClick}
+                          className={`border border-white/10 bg-surface/30 p-8 flex flex-col items-center justify-center text-center group cursor-pointer transition-all border-dashed ${attachedFile ? 'border-gold bg-gold/5' : 'hover:bg-gold/5 hover:border-gold/30'}`}
+                        >
+                          {attachedFile ? (
+                            <>
+                              <File className="w-6 h-6 mb-4 text-gold" />
+                              <p className="font-sans text-base text-white font-bold tracking-tight">
+                                {attachedFile}
+                              </p>
+                              <p className="text-gold text-[9px] uppercase tracking-widest mt-2">File Attached Successfully</p>
+                            </>
+                          ) : (
+                            <>
+                              <Upload className="w-6 h-6 mb-4 text-text-muted group-hover:text-gold transition-colors" />
+                              <p className="font-sans text-base text-white font-light">
+                                 Share your blueprints or design plans.
+                              </p>
+                              <p className="text-text-muted text-[9px] uppercase tracking-widest mt-2 opacity-60">Upload .DWG or .PDF files</p>
+                            </>
+                          )}
+                        </div>
                       </div>
 
-                      <div className="space-y-4">
-                        <div className="flex justify-between items-center">
-                           <label className="text-xs font-mono text-text-muted uppercase tracking-widest">Blueprint Upload</label>
-                           {isPro && (
-                             <span className="text-[10px] text-gold font-bold uppercase tracking-wider animate-pulse">Required for Bid</span>
-                           )}
-                        </div>
-                        
-                        <div className={`border-2 border-dashed rounded-none p-12 flex flex-col items-center justify-center text-center transition-all cursor-pointer group ${
-                            isPro 
-                            ? 'border-gold/50 bg-gold/5 hover:bg-gold/10' 
-                            : 'border-white/10 hover:border-gold/50'
-                        }`}>
-                          <Upload className={`w-8 h-8 mb-4 transition-colors ${isPro ? 'text-gold' : 'text-text-muted group-hover:text-gold'}`} />
-                          <p className={`font-mono text-sm uppercase ${isPro ? 'text-white font-bold' : 'text-white'}`}>
-                             Drag Schematic Files Here
-                          </p>
-                          <p className="text-text-muted text-xs mt-2">.DWG, .PDF, .RVT supported</p>
-                        </div>
-                      </div>
-
-                      <div className="pt-8 border-t border-white/10">
+                      <div className="pt-2">
                          <PrecisionBtn 
                             variant="primary" 
-                            className="w-full" 
+                            className="w-full h-16" 
                             onClick={handleSubmit}
                             disabled={isSubmitting}
+                            transition={PHYSICS.snappy}
                           >
-                            {isSubmitting ? "Processing Dossier..." : "Submit Specification"}
+                            {isSubmitting ? "Finalizing Details..." : "Start Your Project"}
                          </PrecisionBtn>
                       </div>
                     </motion.div>
                   )}
                 </div>
 
-                {/* Pagination */}
+                {/* Pagination Controls - Fixed Alignment */}
                 <div className="max-w-2xl mx-auto mt-12 flex justify-between">
                    <Button 
                     variant="ghost" 
                     onClick={prevStep} 
                     disabled={currentStep === 1 || isSubmitting}
-                    className={currentStep === 1 ? 'invisible' : ''}
+                    className={`${currentStep === 1 ? 'invisible' : ''} text-text-muted font-sans text-[10px] tracking-widest uppercase h-14`}
                   >
-                     Back
+                     Go Back
                    </Button>
                    {currentStep < 4 && (
-                     <Button variant="outline" onClick={nextStep}>
-                       Next Step <ChevronRight className="w-4 h-4 ml-2" />
+                     <Button 
+                        variant="outline" 
+                        onClick={nextStep} 
+                        className="h-14 px-10 border-white/20 hover:border-gold hover:text-gold group flex items-center justify-center overflow-hidden"
+                     >
+                        <div className="flex items-center gap-2 leading-none">
+                          <span className="font-sans text-[11px] uppercase tracking-widest leading-none">Next Step</span>
+                          <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform shrink-0" />
+                        </div>
                      </Button>
                    )}
                 </div>
               </div>
 
-              {/* --- RIGHT: Manifest Sidebar --- */}
-              <div className="w-full md:w-80 bg-surface border-l border-white/5 p-8 relative z-10 hidden lg:block">
-                <div className="flex items-center gap-2 mb-8 text-gold border-b border-gold/20 pb-4">
-                  <FileText className="w-4 h-4" />
-                  <span className="font-mono text-xs uppercase tracking-[0.2em]">Project Manifest</span>
-                </div>
+              {/* --- RIGHT: Summary Sidebar - No Ghost Scrollbar --- */}
+              <div className="w-full md:w-80 bg-surface border-l border-white/5 p-10 relative z-10 hidden lg:block overflow-hidden">
+                <div className="h-full flex flex-col scrollbar-hide overflow-y-auto overflow-x-hidden">
+                    <div className="relative z-20 flex-1">
+                      <div className="flex items-center gap-3 mb-10 text-white/50 border-b border-white/5 pb-6">
+                        <FileText className="w-4 h-4" />
+                        <span className="font-sans text-[10px] uppercase tracking-[0.2em] font-bold">Your Project Summary</span>
+                      </div>
 
-                <div className="space-y-8 font-mono">
-                  <div className="bg-white/5 p-4 border border-white/10">
-                    <span className="text-[10px] text-gold/80 uppercase block mb-1">Lead Type</span>
-                    <span className="text-white text-sm font-bold uppercase">{state.userRole}</span>
-                  </div>
-                  
-                  <div>
-                    <span className="text-[10px] text-text-muted uppercase block mb-1">Fabrication Tier</span>
-                    <span className={`text-sm uppercase ${state.fabricationLevel === 'Architectural' ? 'text-gold' : 'text-white'}`}>
-                       {state.fabricationLevel}
-                    </span>
-                  </div>
+                      <div className="space-y-10">
+                        <div>
+                          <span className="text-[9px] text-text-muted uppercase tracking-widest block mb-2">Project Identity</span>
+                          <span className="text-white text-sm font-light">{state.userRole}</span>
+                        </div>
+                        
+                        <div>
+                          <span className="text-[9px] text-text-muted uppercase tracking-widest block mb-2">Craft Level</span>
+                          <span className={`text-sm font-light ${state.fabricationLevel === 'Artisan Masterpiece' ? 'text-gold' : 'text-white'}`}>
+                             {state.fabricationLevel}
+                          </span>
+                        </div>
 
-                  <div>
-                    <span className="text-[10px] text-text-muted uppercase block mb-1">Type</span>
-                    <span className="text-white text-sm">{state.projectType}</span>
-                  </div>
-                  <div>
-                    <span className="text-[10px] text-text-muted uppercase block mb-1">Environment</span>
-                    <span className="text-white text-sm">{state.environment}</span>
-                  </div>
-                   <div>
-                    <span className="text-[10px] text-text-muted uppercase block mb-1">System Recommendation</span>
-                    <div className="flex items-center gap-2 text-gold">
-                      <Check className="w-3 h-3" />
-                      <span className="text-sm font-bold uppercase">{recommendation.material}</span>
+                        <div>
+                          <span className="text-[9px] text-text-muted uppercase tracking-widest block mb-2">
+                            SELECTED PREFERENCE
+                          </span>
+                          <div className="flex items-center gap-2 text-gold">
+                            <Check className="w-3 h-3" />
+                            <span className="text-sm font-bold uppercase tracking-tight">
+                               {state.stonePreference !== 'Light' ? state.stonePreference : recommendation.material}
+                            </span>
+                          </div>
+                          <span className="text-[8px] text-text-muted/40 uppercase tracking-widest block mt-1">
+                            {state.stonePreference !== 'Light' ? 'Manual Selection' : 'Expert Suggestion'}
+                          </span>
+                        </div>
+
+                        <div className="pt-8 border-t border-white/5">
+                            <span className="text-[9px] text-text-muted uppercase tracking-widest block mb-2">Project Ref</span>
+                            <span className="text-white font-mono text-lg tracking-tighter">{projectRef}</span>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                   <div>
-                    <span className="text-[10px] text-text-muted uppercase block mb-1">Selected Preference</span>
-                    <span className="text-white text-sm">
-                      {state.stonePreference === 'Light' ? 'Pending Selection...' : state.stonePreference}
-                    </span>
-                  </div>
-                </div>
 
-                <div className="absolute bottom-8 left-8 right-8">
-                  <div className="text-[10px] text-text-muted mb-2 font-mono">MANIFEST_ID: {Math.random().toString(36).substr(2, 9).toUpperCase()}</div>
-                  <div className="h-1 w-full bg-white/10">
-                     <div className="h-full bg-gold transition-all duration-500" style={{ width: `${(currentStep / 4) * 100}%`}} />
-                  </div>
+                    {/* Progress Indicator at bottom of sidebar */}
+                    <div className="mt-auto pt-10">
+                      <div className="h-[2px] w-full bg-white/5">
+                         <motion.div 
+                            className="h-full bg-gold"
+                            initial={{ width: 0 }}
+                            animate={{ width: `${(currentStep / 4) * 100}%` }}
+                            transition={PHYSICS.snappy}
+                         />
+                      </div>
+                    </div>
                 </div>
               </div>
             </>

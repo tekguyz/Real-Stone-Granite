@@ -1,103 +1,136 @@
 
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ShieldCheck } from 'lucide-react';
-// @ts-ignore
-import confetti from 'https://esm.sh/canvas-confetti@1.9.2';
+import { ShieldCheck, Download, Calendar, ArrowLeft } from 'lucide-react';
+import confetti from 'canvas-confetti';
 import { PrecisionBtn } from '../../shared/ui/PrecisionBtn';
+import { PHYSICS } from '../../shared/lib/theme';
 
 interface SuccessViewProps {
   onClose: () => void;
+  projectRef: string;
 }
 
-export const SuccessView: React.FC<SuccessViewProps> = ({ onClose }) => {
+export const SuccessView: React.FC<SuccessViewProps> = ({ onClose, projectRef }) => {
   useEffect(() => {
-    const colors = ['#d4af37', '#ffffff', '#333333'];
+    const gold = '#d4af37';
+    const onyx = '#121212';
+    
+    const fireMetallicShavings = () => {
+      const duration = 3 * 1000;
+      const end = Date.now() + duration;
 
-    // Initial Burst
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 },
-      colors: colors,
-      disableForReducedMotion: true,
-      zIndex: 200, // Ensure it appears above the modal backdrop
-    });
+      const frame = () => {
+        confetti({
+          particleCount: 2,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0, y: 0.6 },
+          colors: [gold, onyx],
+          shapes: ['square'],
+          scalar: 0.7,
+          drift: 0.5,
+          gravity: 0.8,
+          ticks: 300
+        });
+        confetti({
+          particleCount: 2,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1, y: 0.6 },
+          colors: [gold, onyx],
+          shapes: ['square'],
+          scalar: 0.7,
+          drift: -0.5,
+          gravity: 0.8,
+          ticks: 300
+        });
 
-    // Secondary Flank Bursts
-    setTimeout(() => {
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      };
+      
       confetti({
-        particleCount: 50,
-        angle: 60,
-        spread: 55,
-        origin: { x: 0 },
-        colors: colors,
-        zIndex: 200,
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: [gold, onyx],
+        shapes: ['square'],
+        scalar: 0.9,
+        gravity: 1.2,
       });
-      confetti({
-        particleCount: 50,
-        angle: 120,
-        spread: 55,
-        origin: { x: 1 },
-        colors: colors,
-        zIndex: 200,
-      });
-    }, 250);
 
+      frame();
+    };
+
+    fireMetallicShavings();
   }, []);
 
-  return (
-    <div className="w-full h-full flex flex-col items-center justify-center relative z-20 p-8">
-      <motion.div
-        initial={{ scale: 0.8, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ type: "spring", duration: 0.8, bounce: 0.5 }}
-        className="mb-8 relative"
-      >
-        <div className="w-24 h-24 border border-gold/30 flex items-center justify-center bg-gold/5 relative z-10 backdrop-blur-sm">
-            <ShieldCheck className="w-10 h-10 text-gold" strokeWidth={1} />
-        </div>
-        {/* Glow Effect */}
-        <div className="absolute inset-0 bg-gold/20 blur-2xl rounded-full" />
-      </motion.div>
+  const handleDownload = () => {
+    console.log(`Generating Dossier for ${projectRef}`);
+    alert("Project Manifest Dossier Generated. Check your downloads.");
+  };
 
-      <motion.h2 
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.2 }}
-        className="text-4xl md:text-5xl font-mono font-black uppercase text-white tracking-tighter mb-4 text-center"
-      >
-        Project Initiated
-      </motion.h2>
+  return (
+    <div className="w-full h-full flex flex-col items-center justify-center relative z-20 p-6 bg-primary overflow-hidden">
+      {/* Background Sheen */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.03),transparent)] pointer-events-none" />
 
       <motion.div 
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.3 }}
-        className="max-w-md mx-auto space-y-2 mb-12 text-center"
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={PHYSICS.snappy}
+        className="max-w-xl w-full flex flex-col items-center text-center"
       >
-         <div className="h-[1px] w-12 bg-gold mx-auto mb-6 opacity-50" />
-         <p className="text-text-muted font-mono text-sm leading-relaxed">
-            The Stone Curator has received your dossier. 
-         </p>
-         <p className="text-text-muted font-mono text-sm leading-relaxed">
-            We will contact you shortly to finalize logistics.
-         </p>
-      </motion.div>
+        <div className="w-20 h-20 border border-gold/30 bg-gold/5 flex items-center justify-center mb-10 relative">
+          <ShieldCheck className="w-10 h-10 text-gold" strokeWidth={1} />
+          <div className="absolute inset-0 border border-gold/10 scale-125 opacity-20" />
+        </div>
 
-      <motion.div
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.4 }}
-      >
-        <PrecisionBtn onClick={onClose} variant="primary">
-           Return to Vault
-        </PrecisionBtn>
+        <h2 className="text-4xl md:text-5xl font-mono font-black uppercase text-white tracking-tighter mb-6">
+          Project Started.
+        </h2>
+
+        <div className="space-y-6 mb-12 px-4">
+          <div className="h-[1px] w-12 bg-gold mx-auto opacity-50" />
+          <p className="text-text-muted font-sans text-sm md:text-base leading-relaxed max-w-md mx-auto">
+            Your Project Reference <span className="text-white font-mono font-bold tracking-tight">#{projectRef}</span> has been logged. Our Senior Associate is reviewing your specifications and blueprints now. You will receive a personal follow-up within 24 hours.
+          </p>
+        </div>
+
+        <div className="w-full max-w-sm space-y-4">
+          <PrecisionBtn 
+            onClick={handleDownload}
+            variant="secondary"
+            className="w-full h-16 border-gold/40 text-gold hover:bg-gold/5"
+          >
+            <div className="flex items-center gap-3">
+              <Download className="w-4 h-4" />
+              <span className="font-mono text-[10px] font-bold tracking-[0.2em]">Download Project Dossier (PDF)</span>
+            </div>
+          </PrecisionBtn>
+
+          <PrecisionBtn 
+            onClick={() => alert("Redirecting to secure scheduling portal...")}
+            variant="primary"
+            className="w-full h-16"
+          >
+            <div className="flex items-center gap-3">
+              <Calendar className="w-4 h-4" />
+              <span className="font-mono text-[10px] font-bold tracking-[0.2em]">Schedule Consultation</span>
+            </div>
+          </PrecisionBtn>
+
+          <button 
+            onClick={onClose}
+            className="pt-6 text-text-muted hover:text-white font-mono text-[10px] uppercase tracking-[0.4em] transition-colors flex items-center justify-center gap-2 group mx-auto"
+          >
+            <ArrowLeft className="w-3 h-3 group-hover:-translate-x-1 transition-transform" />
+            Return to Portfolio
+          </button>
+        </div>
       </motion.div>
-      
-      <div className="absolute bottom-8 text-[10px] font-mono text-white/20 uppercase tracking-[0.3em]">
-        Transmission Secure • ID: {Math.random().toString(36).substr(2, 9).toUpperCase()}
-      </div>
     </div>
   );
 };

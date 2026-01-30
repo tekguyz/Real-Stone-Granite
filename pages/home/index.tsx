@@ -38,20 +38,20 @@ export const HomePage: React.FC<HomePageProps> = ({ onStartProject }) => {
           </div>
 
           <h2 className="text-4xl md:text-6xl font-mono font-bold uppercase mb-8 leading-tight text-white tracking-tight">
-            From Concept <br/>
-            <span className="text-text-muted">To Concrete Reality</span>
+            From Vision <br/>
+            <span className="text-text-muted">To Permanent Reality</span>
           </h2>
 
           <p className="text-text-muted text-lg leading-relaxed mb-12 max-w-2xl mx-auto font-light">
-            Access our digital specification engine to generate precise architectural requirements for your next commission.
+            Use our project planner to begin shaping the architectural details for your next commission.
           </p>
 
           <div className="flex flex-col items-center gap-4">
             <PrecisionBtn variant="primary" onClick={onStartProject}>
-              Initialize Specification
+              Start Your Project
             </PrecisionBtn>
             <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-white/30">
-              System V1.0 • Secure Uplink
+              Crafted in Fort Pierce • Est. 1993
             </span>
           </div>
 

@@ -23,35 +23,41 @@ interface StoneCuratorProps {
 const constructSystemPrompt = () => {
   const kbString = JSON.stringify(COMPANY_KB);
   return `
-    ROLE: Senior Design Associate at Real Stone & Granite Corp.
+    ROLE: Senior Consultant at Real Stone & Granite.
     
     IDENTITY: 
-    You are a human expert named "The Curator". 
-    AUTHORITATIVE, HELPFUL, SOPHISTICATED.
+    You are "The Curator," a stone professional with over 30 years of hands-on experience in masonry and consultancy. 
+    You are standing on a showroom floor, speaking directly to a client.
     
+    CORE VALUES: 
+    Integrity, Quality, and Craftsmanship. You always recommend the right material for the legacy of the project, even if it requires more intricate fabrication.
+
     KNOWLEDGE BASE:
     ${kbString}
 
     OBJECTIVE:
-    Provide technical guidance on stone specification. 
-    Focus on material properties (veining, density, durability).
-    If the user asks about price or estimates, use [ACTION_LAUNCH_STUDIO].
+    Guide clients through stone selection. Focus on the soul of the material—its veining, its origin, and its life in a home.
+    If the user asks about cost or project planning, use [ACTION_LAUNCH_STUDIO].
+
+    LANGUAGE CONSTRAINTS (NO JARGON):
+    - NEVER say: "AI", "Processing", "Assistant", "Large language model", "Input", "Parameters".
+    - DO NOT use: "Thermal Specs" (use "Heat Resistance"), "Yield Ratios" (use "Maximizing your slab usage").
+    - If unsure, say: "That's a specific detail I'd like to check with our fabrication team to ensure we give you the most accurate answer."
 
     BEHAVIOR & FORMATTING:
-    - Use Markdown for all responses.
-    - Use **bold** for material types and key architectural terms.
-    - Use bulleted lists for technical specifications or comparisons.
-    - Use backticks (\` \`) for technical measurements, thickness (e.g., \`3CM\`), or Reference IDs.
-    - Language: "mitered returns", "honed finish", "tensile strength".
-    - Responses: Under 60 words. Professional tone.
+    - Use Markdown.
+    - Use **bold** for material names (e.g., **Calacatta Gold**) and key design terms.
+    - Use bulleted lists for professional comparisons or specifications.
+    - Use backticks (\` \`) for technical measurements or references (e.g., \`3cm\`, \`Ref: IT-04\`).
+    - Responses must be concise (under 60 words) and deeply professional.
   `;
 };
 
 const SUGGESTIONS = [
-  "Granite vs. Quartz",
-  "Outdoor Durability",
-  "View Portfolio",
-  "How it Works"
+  "Marble vs. Quartzite",
+  "Kitchen Heat Resistance",
+  "Outdoor Kitchen Slabs",
+  "The Fabrication Process"
 ];
 
 export const StoneCurator: React.FC<StoneCuratorProps> = ({ onLaunchStudio }) => {
@@ -62,7 +68,7 @@ export const StoneCurator: React.FC<StoneCuratorProps> = ({ onLaunchStudio }) =>
     {
       id: 'init-1',
       role: 'model',
-      content: 'Welcome. I can help you select the right material or provide technical details for your project. Where should we start?',
+      content: 'Good morning. I’ve spent three decades working with these materials; I’m happy to help you find the perfect stone for your project. Where should we begin?',
     }
   ]);
 
@@ -92,7 +98,7 @@ export const StoneCurator: React.FC<StoneCuratorProps> = ({ onLaunchStudio }) =>
         }),
       });
 
-      if (!response.ok) throw new Error('Handshake Failed');
+      if (!response.ok) throw new Error('Communication failed.');
 
       const data = await response.json();
       let aiText = data.text;
@@ -115,7 +121,7 @@ export const StoneCurator: React.FC<StoneCuratorProps> = ({ onLaunchStudio }) =>
       setMessages(prev => [...prev, {
         id: Date.now().toString(),
         role: 'model',
-        content: "Our specification server is currently offline. Please try again shortly."
+        content: "I'm having a moment of difficulty reaching our design database. Let's try that again in a moment."
       }]);
     } finally {
       setIsLoading(false);
@@ -141,7 +147,7 @@ export const StoneCurator: React.FC<StoneCuratorProps> = ({ onLaunchStudio }) =>
               <div className="flex items-center gap-3">
                 <div className="w-1.5 h-1.5 bg-gold animate-pulse" />
                 <span className="text-xs text-white/90 uppercase tracking-[0.25em] font-sans font-medium">
-                  Design Consultant
+                  Senior Associate
                 </span>
               </div>
               <button 
@@ -175,9 +181,11 @@ export const StoneCurator: React.FC<StoneCuratorProps> = ({ onLaunchStudio }) =>
                     }`}
                   >
                     {msg.role === 'model' ? (
-                      <ReactMarkdown className="text-[14px] leading-[1.6] font-light">
-                        {msg.content}
-                      </ReactMarkdown>
+                      <div className="text-[14px] leading-[1.6] font-light">
+                        <ReactMarkdown>
+                          {msg.content}
+                        </ReactMarkdown>
+                      </div>
                     ) : (
                       <p className="text-[14px] leading-[1.6] font-light">
                         {msg.content}
@@ -197,7 +205,7 @@ export const StoneCurator: React.FC<StoneCuratorProps> = ({ onLaunchStudio }) =>
                         className="w-full flex items-center justify-between group border-gold/40 h-14"
                         onClick={onLaunchStudio}
                       >
-                        <span className="font-mono text-[11px] tracking-widest">INITIALIZE ESTIMATE</span>
+                        <span className="font-mono text-[11px] tracking-widest">START PROJECT PLAN</span>
                         <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                       </Button>
                     </motion.div>
@@ -242,7 +250,7 @@ export const StoneCurator: React.FC<StoneCuratorProps> = ({ onLaunchStudio }) =>
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                  placeholder="Inquire about stone specification..."
+                  placeholder="Inquire about a selection..."
                   className="w-full h-full bg-transparent px-5 text-white text-[13px] font-sans outline-none placeholder:text-white/10"
                   disabled={isLoading}
                 />

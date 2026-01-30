@@ -19,9 +19,9 @@ export const MaterialVault: React.FC = () => {
   };
 
   const tabs: { key: TabKey; label: string }[] = [
-    { key: 'natural', label: '[ Natural Stone ]' },
-    { key: 'engineered', label: '[ Engineered ]' },
-    { key: 'exotic', label: '[ Exotic Showcase ]' },
+    { key: 'natural', label: '[ Natural Selection ]' },
+    { key: 'engineered', label: '[ Performance Surfaces ]' },
+    { key: 'exotic', label: '[ Exotic Masterpieces ]' },
   ];
 
   return (
@@ -34,18 +34,18 @@ export const MaterialVault: React.FC = () => {
             <div className="flex items-center gap-3 mb-4">
               <div className="w-2 h-2 bg-gold rotate-45" />
               <span className="text-gold font-mono text-xs uppercase tracking-[0.3em]">
-                Inventory
+                Our Selection
               </span>
             </div>
             <h2 className="text-4xl md:text-5xl font-mono font-black uppercase text-white tracking-tighter">
-              Material Vault
+              The Portfolio
             </h2>
             <p className="text-text-muted mt-4 max-w-xl text-sm leading-relaxed">
-              A curated library of geological and engineered surfaces. 
-              Sourced globally, processed precisely.
+              A meticulously curated library of distinguished surfaces. 
+              Sourced globally, finished to perfection.
             </p>
           </div>
-          <Button variant="outline" size="sm">Download Catalog</Button>
+          <Button variant="outline" size="sm">Explore the Catalog</Button>
         </div>
 
         {/* Tab Navigation */}
@@ -54,7 +54,6 @@ export const MaterialVault: React.FC = () => {
             <button
               key={tab.key}
               onClick={() => setActiveTab(tab.key)}
-              // Added py-4 to ensure 44px height for touch targets
               className={`py-4 text-xs font-mono uppercase tracking-[0.2em] transition-all duration-300 relative outline-none ${
                 activeTab === tab.key 
                   ? 'text-gold' 
@@ -82,7 +81,6 @@ export const MaterialVault: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3 }}
-              // A11y Update: Changed lg:grid-cols-3 to lg:grid-cols-4 for better density
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
             >
               {COMPANY_KB.materials[activeTab].map((material: any, idx: number) => (
@@ -94,7 +92,7 @@ export const MaterialVault: React.FC = () => {
                   <div className="relative aspect-[4/3] overflow-hidden bg-black border-b border-white/5">
                     <img 
                       src={getTexture(material.type)}
-                      alt={`Texture sample of ${material.type}`}
+                      alt={`A sample of our ${material.type}`}
                       className="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700 ease-out"
                     />
                     
@@ -102,16 +100,16 @@ export const MaterialVault: React.FC = () => {
                     <div className="absolute top-4 left-4 z-10 opacity-70 group-hover:opacity-100 transition-opacity duration-300">
                       <div className="bg-primary/90 backdrop-blur border border-white/10 px-2 py-1">
                         <span className="text-[10px] font-mono text-gold uppercase tracking-widest">
-                          REF: {activeTab.substring(0,3).toUpperCase()}-0{idx + 1}
+                          Ref: {activeTab.substring(0,3).toUpperCase()}-0{idx + 1}
                         </span>
                       </div>
                     </div>
 
-                    {/* Technical Overlay - THK (Top Right) - Micro-Label Upgrade */}
+                    {/* Technical Overlay - THK (Top Right) */}
                     <div className="absolute top-4 right-4 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <div className="bg-primary/90 backdrop-blur border border-white/10 px-2 py-1">
                         <span className="text-[10px] font-mono text-white/80 uppercase tracking-widest">
-                          THK: 3CM
+                          Weight: 3cm
                         </span>
                       </div>
                     </div>
