@@ -1,139 +1,186 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ICONS } from '../../shared/assets';
-import { COMPANY_KB } from '../../entities/company/knowledge';
+import { PHYSICS } from '../../shared/lib/theme';
 
-interface Capability {
-  title: string;
-  description: string;
-  techLabel: string;
-  specs: string[];
-  icon: React.ElementType;
-}
+// --- System Configuration Data ---
 
-const FEATURED: Capability = {
-  title: "Master Fabrication",
-  description: "Advanced precision integrated with artisanal hand-finishing. We manifest complex structural geometries that redefine the limits of stone as an architectural medium.",
-  techLabel: "Professional Excellence",
-  specs: ["Precision Detail", "Digital Verification", "Bespoke Finishing"],
-  icon: ICONS.Fabrication
-};
-
-const SECONDARY: Capability[] = [
+const SYSTEM_MODULES = [
   {
+    id: "SYS_01",
+    title: "Master Fabrication",
+    subtitle: "Primary Operations",
+    description: "Advanced precision integration. 5-Axis Waterjet systems and CNC bridge saws guided by artisan oversight.",
+    specs: ["TOLERANCE: ±0.1mm", "CAPACITY: 20K SQFT", "STATUS: ONLINE"],
+    icon: ICONS.Fabrication,
+    size: "large", // 2x2
+    gradient: "radial-gradient(circle at top right, rgba(212,175,55,0.15), transparent 70%)"
+  },
+  {
+    id: "SYS_02",
     title: "Project Design",
-    description: "Photorealistic rendering and digital slab templating for a perfect preview.",
-    techLabel: "Consultant Service",
-    specs: ["Slab Matching", "Project Visualization"],
-    icon: ICONS.Design
+    subtitle: "Visualization",
+    description: "Photorealistic rendering & digital slab templating.",
+    specs: ["RENDER: 8K", "MODE: PREVIEW"],
+    icon: ICONS.Design,
+    size: "standard"
   },
   {
+    id: "SYS_03",
     title: "Elite Installation",
-    description: "White-glove site management and professional structural fitting.",
-    techLabel: "Management",
-    specs: ["Discreet Care", "Senior Masons"],
-    icon: ICONS.Safety
+    subtitle: "Deployment",
+    description: "White-glove site management & structural fitting.",
+    specs: ["CREW: SENIOR", "SAFE: OSHA-30"],
+    icon: ICONS.Safety,
+    size: "standard"
   },
   {
+    id: "SYS_04",
     title: "Architecture",
-    description: "Large-scale stone systems engineered for permanence and beauty.",
-    techLabel: "Structural Detail",
-    specs: ["National Standards", "Structural Integrity"],
-    icon: ICONS.Commercial
+    subtitle: "Structural Systems",
+    description: "Large-scale facade work & monument assembly.",
+    specs: ["LOAD: HEAVY", "TYPE: CLAD"],
+    icon: ICONS.Commercial,
+    size: "standard"
   },
   {
-    title: "Stone Curation",
-    description: "Direct access to exclusive geological veins globally through our network.",
-    techLabel: "Global Sourcing",
-    specs: ["Hand Selected", "Rare Materials"],
-    icon: ICONS.Location
+    id: "SYS_05",
+    title: "Global Sourcing",
+    subtitle: "Logistics",
+    description: "Direct import network from historic quarries.",
+    specs: ["ORIGIN: ITALY", "VIA: DIRECT"],
+    icon: ICONS.Location,
+    size: "standard"
   }
 ];
 
 export const Capabilities: React.FC = () => {
   return (
-    <section id="capabilities" className="py-24 bg-primary border-b border-white/5 relative overflow-hidden">
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(212,175,55,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(212,175,55,0.01)_1px,transparent_1px)] bg-[size:50px_50px] pointer-events-none" />
+    <section id="capabilities" className="w-full bg-primary relative overflow-hidden border-t border-white/10">
+      
+      {/* Background Noise Texture */}
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]" />
 
-      <div className="max-w-screen-2xl mx-auto px-6 md:px-12 relative z-10">
-        <div className="mb-16 border-l border-gold/30 pl-8">
-          <span className="text-gold font-mono text-[10px] uppercase tracking-[0.4em] block mb-2 opacity-60">Professional Standards</span>
-          <h2 className="text-4xl md:text-5xl font-mono font-black uppercase text-white tracking-tighter">Our Capabilities</h2>
-        </div>
-
-        <div className="flex flex-col lg:flex-row gap-4">
-          <motion.div 
-            whileHover="hover"
-            className="w-full lg:w-1/2 group relative bg-surface/40 border border-gold/20 p-8 md:p-12 min-h-[500px] flex flex-col justify-between overflow-hidden"
-          >
-            <motion.div 
-              variants={{ hover: { opacity: 0.1, scale: 1.1 } }}
-              initial={{ opacity: 0, scale: 1 }}
-              transition={{ duration: 0.6 }}
-              className="absolute inset-0 bg-gold blur-[80px] pointer-events-none"
-            />
-
-            <div className="relative z-10">
-              <div className="flex justify-between items-start mb-12">
-                <div className="relative">
-                  <FEATURED.icon className="w-16 h-16 text-black/40 fill-white/5 opacity-30 group-hover:opacity-60 transition-opacity" strokeWidth={0.5} />
-                  <div className="absolute inset-0 bg-gold/10 blur-md -z-10 group-hover:bg-gold/20 transition-colors" />
-                </div>
-                <div className="px-3 py-1 border border-gold/20 bg-gold/5">
-                   <span className="font-mono text-[9px] text-gold uppercase tracking-widest">{FEATURED.techLabel}</span>
-                </div>
-              </div>
-              <h3 className="text-3xl md:text-4xl font-mono font-bold text-white mb-6 uppercase tracking-tight">{FEATURED.title}</h3>
-              <p className="text-text-muted text-base leading-relaxed font-sans font-light max-w-md">{FEATURED.description}</p>
-            </div>
-
-            <div className="relative z-10 mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 pt-8 border-t border-white/5">
-              {FEATURED.specs.map(spec => (
-                <div key={spec} className="group/spec flex items-center gap-3">
-                  <div className="w-1.5 h-1.5 bg-gold rotate-45 group-hover/spec:scale-125 transition-transform" />
-                  <span className="font-mono text-[9px] text-white/40 uppercase tracking-widest group-hover/spec:text-gold transition-colors">{spec}</span>
-                </div>
-              ))}
-            </div>
-
-            <div className="absolute top-0 left-0 w-8 h-8 border-t border-l border-gold/30" />
-            <div className="absolute bottom-0 right-0 w-8 h-8 border-b border-r border-gold/30" />
-          </motion.div>
-
-          <div className="w-full lg:w-1/2 grid grid-cols-1 md:grid-cols-2 gap-4">
-            {SECONDARY.map((cap) => (
+      {/* The Command Grid */}
+      <div className="w-full grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 border-b border-white/10">
+        
+        {SYSTEM_MODULES.map((mod, idx) => {
+          const isLarge = mod.size === "large";
+          
+          return (
+            <motion.div
+              key={mod.id}
+              className={`
+                group relative bg-primary border-r border-b border-white/10 overflow-hidden cursor-crosshair
+                ${isLarge ? 'md:col-span-2 md:row-span-2 min-h-[500px]' : 'col-span-1 min-h-[250px]'}
+              `}
+              initial="idle"
+              whileHover="active"
+              transition={PHYSICS.industrial}
+            >
+              {/* 1. Active State Background Highlight */}
               <motion.div 
-                key={cap.title}
-                whileHover="hover"
-                className="group relative bg-surface/20 border border-white/10 p-8 flex flex-col justify-between overflow-hidden"
-              >
-                <motion.div 
-                  variants={{ hover: { opacity: 0.08, scale: 1.1 } }}
-                  initial={{ opacity: 0, scale: 1 }}
-                  className="absolute inset-0 bg-gold blur-[40px] pointer-events-none"
+                className="absolute inset-0 bg-surface opacity-0 group-hover:opacity-100 transition-opacity duration-500" 
+              />
+              
+              {/* 2. Custom Gradient (For Large Module) */}
+              {isLarge && (
+                <div 
+                  className="absolute inset-0 opacity-100 transition-opacity duration-700 pointer-events-none"
+                  style={{ background: mod.gradient }}
                 />
+              )}
 
-                <div className="relative z-10">
-                  <div className="flex justify-between items-start mb-6">
-                    <cap.icon className="w-8 h-8 text-black/50 fill-white/5 opacity-20 group-hover:opacity-40 transition-opacity" strokeWidth={0.5} />
-                    <span className="font-mono text-[8px] text-white/20 tracking-widest uppercase">{cap.techLabel}</span>
-                  </div>
-                  <h4 className="text-lg font-mono font-bold text-white mb-2 uppercase tracking-wide">{cap.title}</h4>
-                  <p className="text-xs text-text-muted leading-relaxed font-sans font-light">{cap.description}</p>
-                </div>
+              {/* 3. The Scanline (Holographic Sweep) */}
+              <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-20 transition-opacity duration-300 overflow-hidden">
+                <div className="w-full h-[50%] bg-gradient-to-b from-transparent via-gold/50 to-transparent -translate-y-full group-hover:animate-[shimmer_2s_infinite]" />
+              </div>
 
-                <div className="relative z-10 mt-6 pt-4 border-t border-white/5 space-y-2">
-                  {cap.specs.map(spec => (
-                    <div key={spec} className="flex items-center gap-2 group/sub">
-                      <div className="w-1.5 h-1.5 bg-gold/20 rotate-45 group-hover/sub:bg-gold transition-colors" />
-                      <span className="font-mono text-[8px] text-white/30 uppercase tracking-[0.2em] group-hover/sub:text-gold transition-colors">{spec}</span>
+              {/* 4. Corner Focus Brackets (Appear on Hover) */}
+              <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+                 <div className="absolute top-4 left-4 w-4 h-4 border-t border-l border-gold/0 group-hover:border-gold/100 transition-all duration-300" />
+                 <div className="absolute top-4 right-4 w-4 h-4 border-t border-r border-gold/0 group-hover:border-gold/100 transition-all duration-300" />
+                 <div className="absolute bottom-4 left-4 w-4 h-4 border-b border-l border-gold/0 group-hover:border-gold/100 transition-all duration-300" />
+                 <div className="absolute bottom-4 right-4 w-4 h-4 border-b border-r border-gold/0 group-hover:border-gold/100 transition-all duration-300" />
+              </div>
+
+              {/* 5. Content Layout */}
+              <div className="relative z-10 h-full p-8 flex flex-col justify-between">
+                
+                {/* Header */}
+                <div className="flex justify-between items-start">
+                  <div>
+                    <div className="flex items-center gap-2 mb-2">
+                       <div className="w-1 h-1 bg-gold" />
+                       <span className="font-mono text-[9px] text-gold uppercase tracking-[0.2em]">{mod.id}</span>
                     </div>
-                  ))}
+                    <h3 className={`font-mono font-bold text-white uppercase tracking-tight ${isLarge ? 'text-4xl' : 'text-xl'}`}>
+                      {mod.title}
+                    </h3>
+                  </div>
+                  
+                  {/* Icon Watermark */}
+                  <mod.icon 
+                    className={`text-white/5 transition-transform duration-700 ease-out group-hover:scale-110 group-hover:text-gold/10
+                      ${isLarge ? 'absolute -right-12 -bottom-12 w-96 h-96' : 'w-8 h-8'}
+                    `} 
+                    strokeWidth={isLarge ? 0.5 : 1}
+                  />
                 </div>
-              </motion.div>
-            ))}
-          </div>
+
+                {/* Body */}
+                <div className={`${isLarge ? 'max-w-md' : ''} relative`}>
+                   <div className="w-8 h-[1px] bg-gold/50 mb-4 group-hover:w-16 transition-all duration-500" />
+                   <span className="font-mono text-[9px] text-white/40 uppercase tracking-widest block mb-2 group-hover:text-white transition-colors">
+                     // {mod.subtitle}
+                   </span>
+                   <p className="text-text-muted text-sm font-sans font-light leading-relaxed group-hover:text-white transition-colors">
+                     {mod.description}
+                   </p>
+                </div>
+
+                {/* Footer / Specs */}
+                <div className="mt-8 pt-4 border-t border-white/5 flex flex-wrap gap-x-6 gap-y-2">
+                   {mod.specs.map((spec) => (
+                     <span key={spec} className="font-mono text-[9px] text-white/30 uppercase tracking-widest group-hover:text-gold transition-colors">
+                       {spec}
+                     </span>
+                   ))}
+                </div>
+
+              </div>
+
+              {/* Vertical Status Text (Right Edge) */}
+              <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-[40%] rotate-90 origin-center opacity-0 group-hover:opacity-20 transition-opacity pointer-events-none">
+                 <span className="font-mono text-[9px] uppercase tracking-[0.5em] text-white whitespace-nowrap">
+                   System Ready
+                 </span>
+              </div>
+
+            </motion.div>
+          );
+        })}
+
+        {/* Filler Grid Cells (if needed to complete row visually) - Optional for aesthetics */}
+        <div className="hidden lg:block col-span-1 bg-primary border-r border-b border-white/10 relative overflow-hidden group">
+            <div className="absolute inset-0 bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,rgba(255,255,255,0.01)_10px,rgba(255,255,255,0.01)_20px)]" />
+            <div className="absolute inset-0 flex items-center justify-center">
+                <span className="font-mono text-[9px] text-white/10 uppercase tracking-[0.5em] -rotate-45">Restricted Area</span>
+            </div>
         </div>
+        
+        <div className="hidden lg:block col-span-2 bg-primary border-r border-b border-white/10 relative overflow-hidden">
+             <div className="absolute inset-0 flex items-center justify-center opacity-10">
+                <div className="w-full h-[1px] bg-white" />
+                <div className="absolute h-full w-[1px] bg-white" />
+                <div className="w-32 h-32 border border-white rounded-full" />
+             </div>
+             <div className="absolute bottom-4 right-4">
+                <span className="font-mono text-[9px] text-white/20 uppercase tracking-widest">Grid_V.2.0</span>
+             </div>
+        </div>
+
       </div>
     </section>
   );

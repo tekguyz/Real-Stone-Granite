@@ -1,133 +1,158 @@
 
 import React, { useRef } from 'react';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { MachineCard } from '../../shared/ui/MachineCard';
+import { motion, useMotionValue, useSpring, useMotionTemplate } from 'framer-motion';
 import { PrecisionBtn } from '../../shared/ui/PrecisionBtn';
-import { MEDIA, ICONS } from '../../shared/assets';
+import { MEDIA } from '../../shared/assets';
 import { PHYSICS } from '../../shared/lib/theme';
-import { COMPANY_KB } from '../../entities/company/knowledge';
 
 interface HeroProps {
   onStartProject?: () => void;
 }
 
 export const Hero: React.FC<HeroProps> = ({ onStartProject }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLElement>(null);
 
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
+  // --- Interaction Physics ---
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
 
-  const mouseX = useSpring(x, PHYSICS.snappy);
-  const mouseY = useSpring(y, PHYSICS.snappy);
+  // Smooth, heavy spring for the "Flashlight" feel
+  const springX = useSpring(mouseX, { stiffness: 120, damping: 25 });
+  const springY = useSpring(mouseY, { stiffness: 120, damping: 25 });
 
-  const rotateX = useTransform(mouseY, [-0.5, 0.5], [3, -3]);
-  const rotateY = useTransform(mouseX, [-0.5, 0.5], [-3, 3]);
+  function handleMouseMove({ clientX, clientY, currentTarget }: React.MouseEvent) {
+    const { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  }
 
-  const sheenX = useTransform(mouseX, [-0.5, 0.5], [-20, 20]);
-  const sheenY = useTransform(mouseY, [-0.5, 0.5], [-20, 20]);
+  // The Spotlight Mask:
+  // Creates a transparent hole in the dark overlay at the cursor position.
+  const maskImage = useMotionTemplate`radial-gradient(circle 350px at ${springX}px ${springY}px, transparent 0%, black 100%)`;
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    
-    const mouseXPct = (e.clientX - rect.left) / width - 0.5;
-    const mouseYPct = (e.clientY - rect.top) / height - 0.5;
-
-    x.set(mouseXPct);
-    y.set(mouseYPct);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
+  const scrollToVault = () => {
+    const element = document.getElementById('materials');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
     <section 
       ref={containerRef}
       onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className="relative min-h-[90vh] flex flex-col justify-center bg-primary overflow-hidden perspective-[1000px] border-b border-white/5"
+      className="relative w-full h-screen overflow-hidden flex items-center justify-center bg-primary cursor-crosshair selection:bg-gold selection:text-black"
     >
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none" />
+      {/* 1. Base Layer: The Raw Material (Video) */}
+      <div className="absolute inset-0 z-0">
+        <video
+          src={MEDIA.VIDEO_MACRO}
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover scale-105 opacity-80"
+        />
+        {/* Permanent Dimmer to ensure white text is always readable even in the spotlight */}
+        <div className="absolute inset-0 bg-black/40" />
+      </div>
+
+      {/* 2. The Atmosphere: Deep Onyx Tint (Masked by Spotlight) */}
+      {/* This layer is opaque black/primary, but becomes transparent at the mouse position */}
+      <motion.div
+        className="absolute inset-0 bg-primary/95 z-10 pointer-events-none"
+        style={{
+          maskImage,
+          WebkitMaskImage: maskImage // Webkit prefix for Safari support
+        }}
+      />
       
-      <div className="max-w-screen-2xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10 px-6 md:px-12 py-24">
+      {/* 3. Texture Overlay (Grain) */}
+      <div className="absolute inset-0 z-10 pointer-events-none opacity-20 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay" />
+
+      {/* 4. The Viewfinder (HUD Layer) */}
+      <div className="absolute inset-0 z-20 pointer-events-none p-6 md:p-12 flex flex-col justify-between">
         
-        <div className="flex flex-col items-start z-20">
-          <div className="pointer-events-auto">
-            <div className="inline-flex items-center gap-3 px-4 py-2 border border-gold/20 bg-gold/5 text-gold text-[10px] font-mono uppercase tracking-[0.3em] mb-12">
-              <ICONS.Excellence className="w-3 h-3" />
-              <span>Studio Excellence</span>
-            </div>
-
-            <h1 className="text-5xl md:text-7xl lg:text-9xl font-mono font-black uppercase leading-[0.9] tracking-tighter text-white mb-10">
-              <span className="text-transparent" style={{ WebkitTextStroke: '1px white' }}>Crafted</span><br />
-              <span>With</span><br />
-              <span className="text-gold">{COMPANY_KB.identity.motto}</span>
-            </h1>
-
-            <p className="max-w-lg text-text-muted text-base md:text-lg font-light leading-relaxed mb-12 border-l-2 border-gold/50 pl-6">
-              A bespoke collection of the world's finest geological treasures, hand-selected for the discerning visionary since 1993.
-            </p>
-
-            <PrecisionBtn variant="secondary" onClick={() => document.getElementById('materials')?.scrollIntoView({ behavior: 'smooth'})}>
-              View Our Selection
-            </PrecisionBtn>
+        {/* Top Data Line */}
+        <div className="flex justify-between items-start">
+          <div className="relative">
+            <div className="w-8 h-8 border-t border-l border-gold" />
+            <span className="absolute top-4 left-4 font-mono text-[9px] text-gold/80 tracking-[0.2em] whitespace-nowrap">
+              EST. 1993 // FORT PIERCE, FL
+            </span>
+          </div>
+          <div className="relative">
+            <div className="w-8 h-8 border-t border-r border-gold" />
           </div>
         </div>
 
-        <div className="relative w-full h-[500px] lg:h-[600px] hidden lg:block perspective-[1000px]">
-          <motion.div
-            style={{
-              rotateX,
-              rotateY,
-              transformStyle: "preserve-3d",
-            }}
-            className="w-full h-full"
-          >
-            <MachineCard className="w-full h-full p-0 border-white/10 bg-black overflow-hidden shadow-2xl relative rounded-none">
-              <video
-                src={MEDIA.VIDEO_MACRO}
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="w-full h-full object-cover opacity-80 scale-110"
-              />
-              
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
-              
-              <motion.div 
-                style={{ x: sheenX, y: sheenY }}
-                className="absolute inset-0 bg-gradient-to-tr from-white/10 via-white/0 to-transparent opacity-100 pointer-events-none mix-blend-overlay" 
-              />
-              
-              <div className="absolute bottom-12 left-12 z-20">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-[1px] bg-gold" />
-                  <span className="text-gold font-mono text-xs uppercase tracking-[0.3em]">Our Studio</span>
-                </div>
-                <h3 className="text-white text-3xl font-mono uppercase">Luminous Finish</h3>
-                <p className="text-white/50 text-xs font-mono mt-2 uppercase tracking-widest">Natural Selection</p>
-              </div>
+        {/* Center Hairline Reticle */}
+        <div className="absolute top-0 left-1/2 h-full w-[1px] bg-white/5 -translate-x-1/2" />
 
-              <div className="absolute top-6 right-6 w-32 h-32 border-t border-r border-white/20 opacity-50" />
-              <div className="absolute bottom-6 left-6 w-32 h-32 border-b border-l border-white/20 opacity-50" />
-            </MachineCard>
-          </motion.div>
+        {/* Bottom Data Line */}
+        <div className="flex justify-between items-end">
+          <div className="relative">
+            <div className="w-8 h-8 border-b border-l border-gold" />
+            <span className="absolute bottom-4 left-4 font-mono text-[9px] text-gold/80 tracking-[0.2em] whitespace-nowrap">
+              COORDS: 27.44N, 80.32W
+            </span>
+          </div>
+          <div className="relative text-right">
+            <div className="w-8 h-8 border-b border-r border-gold ml-auto" />
+            <span className="absolute bottom-4 right-4 font-mono text-[9px] text-gold/80 tracking-[0.2em] whitespace-nowrap">
+              STATUS: FABRICATION ACTIVE
+            </span>
+          </div>
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 w-full border-t border-white/10 bg-primary/95 backdrop-blur-sm h-12 flex items-center justify-center z-30">
-        <div className="flex items-center gap-8 text-[10px] font-mono uppercase tracking-[0.3em] text-text-muted/60">
-          <span>Established 1993</span>
-          <div className="w-1.5 h-1.5 bg-gold rotate-45" /> 
-          <span>Integrity • Craftsmanship • Quality</span>
-          <div className="w-1.5 h-1.5 bg-gold rotate-45" />
-          <span>Fort Pierce, FL</span>
-        </div>
+      {/* 5. The Monument (Typography & Action) */}
+      <div className="relative z-30 flex flex-col items-center text-center px-4">
+        
+        <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ ...PHYSICS.smooth, delay: 0.2 }}
+            className="mb-12"
+        >
+          <h1 className="font-mono font-black uppercase leading-[0.85] tracking-tighter select-none">
+            <span className="block text-6xl md:text-8xl lg:text-[10rem] text-white mix-blend-difference">
+              EXCELLENCE
+            </span>
+            {/* Hollow Text Effect */}
+            <span 
+              className="block text-6xl md:text-8xl lg:text-[10rem] text-transparent"
+              style={{ WebkitTextStroke: '1px var(--color-gold)' }}
+            >
+              IN STONE
+            </span>
+          </h1>
+        </motion.div>
+
+        <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ ...PHYSICS.smooth, delay: 0.6 }}
+            className="text-white/60 font-mono text-[10px] md:text-xs uppercase tracking-[0.5em] mb-16"
+        >
+          Integrity • Craftsmanship • Quality
+        </motion.p>
+
+        <motion.div 
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ ...PHYSICS.industrial, delay: 0.8 }}
+            className="pointer-events-auto"
+        >
+          <PrecisionBtn
+            variant="primary"
+            onClick={scrollToVault}
+            className="border-gold text-primary bg-gold hover:bg-white hover:text-primary transition-colors min-w-[200px]"
+          >
+            ENTER THE VAULT
+          </PrecisionBtn>
+        </motion.div>
+
       </div>
     </section>
   );
