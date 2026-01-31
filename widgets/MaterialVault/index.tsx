@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { COMPANY_KB } from '../../entities/company/knowledge';
@@ -8,7 +9,11 @@ import { PHYSICS } from '../../shared/lib/theme';
 
 type TabKey = 'natural' | 'engineered' | 'exotic';
 
-export const MaterialVault: React.FC = () => {
+interface MaterialVaultProps {
+  onStartProject?: () => void;
+}
+
+export const MaterialVault: React.FC<MaterialVaultProps> = ({ onStartProject }) => {
   const [activeTab, setActiveTab] = useState<TabKey>('natural');
 
   const getTexture = (type: string) => {
@@ -42,7 +47,14 @@ export const MaterialVault: React.FC = () => {
               Every slab in our portfolio is a unique geological legacy. Hand-selected for exceptional integrity and aesthetic character.
             </p>
           </div>
-          <Button variant="outline" size="sm" className="h-14">Request A Consultation</Button>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="h-14" 
+            onClick={onStartProject}
+          >
+            Request A Consultation
+          </Button>
         </div>
 
         <div className="flex flex-wrap gap-12 border-b border-white/10 mb-16">
@@ -85,6 +97,7 @@ export const MaterialVault: React.FC = () => {
                   <MachineCard 
                     key={material.type} 
                     className="group flex flex-col p-0 h-full border border-white/5 hover:border-gold/30 bg-surface/30 overflow-hidden"
+                    onClick={onStartProject}
                   >
                     <div className="relative aspect-square overflow-hidden bg-black border-b border-white/5">
                       <img 

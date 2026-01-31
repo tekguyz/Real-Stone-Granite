@@ -21,7 +21,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onStartProject }) => {
       <Capabilities />
       
       {/* 3. Inventory & Assets */}
-      <MaterialVault />
+      <MaterialVault onStartProject={onStartProject} />
 
       {/* 4. Social Proof & Legacy */}
       <Monuments />

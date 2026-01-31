@@ -269,8 +269,8 @@ export const StudioSteps: React.FC<StudioStepsProps> = ({
             Previous
           </Button>
           {currentStep < 4 && (
-            <Button variant="outline" onClick={handlers.nextStep} className="h-14 px-12 border-white/10 hover:border-gold hover:text-gold group flex items-center justify-center">
-              <span className="font-mono text-[11px] uppercase tracking-widest mr-2">Continue</span>
+            <Button variant="outline" onClick={handlers.nextStep} className="h-14 px-12 border-white/10 hover:border-gold hover:text-gold group">
+              <span className="font-mono text-[11px] uppercase tracking-widest">Continue</span>
               <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Button>
           )}
