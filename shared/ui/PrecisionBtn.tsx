@@ -1,10 +1,11 @@
-
 import React from 'react';
 import { motion, HTMLMotionProps } from 'framer-motion';
 
 interface PrecisionBtnProps extends HTMLMotionProps<"button"> {
   variant?: 'primary' | 'secondary';
   children: React.ReactNode;
+  className?: string;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 export const PrecisionBtn: React.FC<PrecisionBtnProps> = ({ 

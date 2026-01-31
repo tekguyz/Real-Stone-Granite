@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { COMPANY_KB } from '../../entities/company/knowledge';
@@ -96,9 +95,9 @@ export const MaterialVault: React.FC = () => {
                       />
                       
                       <div className="absolute top-6 left-6 z-10 opacity-70 group-hover:opacity-100 transition-opacity">
-                        <div className="bg-primary/90 backdrop-blur-md border border-white/10 px-3 py-1 font-mono">
-                          <span className="text-[9px] text-gold uppercase tracking-[0.2em]">
-                             Reference: 0{idx + 1}
+                        <div className="bg-primary/90 backdrop-blur-md border border-gold/30 px-3 py-1 font-mono">
+                          <span className="text-[9px] text-gold uppercase tracking-[0.2em] font-bold">
+                             Ref. 0{idx + 1}
                           </span>
                         </div>
                       </div>
@@ -124,8 +123,8 @@ export const MaterialVault: React.FC = () => {
                       </p>
                       
                       <div className="mt-auto flex justify-between items-center opacity-40 group-hover:opacity-100 transition-opacity">
-                        <span className="text-[9px] font-mono uppercase tracking-widest text-white/50">Stone Selection</span>
-                        <div className="w-2 h-2 bg-gold rotate-45 group-active:scale-150 transition-transform" />
+                        <span className="text-[9px] font-mono uppercase tracking-widest text-white/50">Geological Registry</span>
+                        <div className="w-1.5 h-1.5 bg-gold rotate-45 group-active:scale-150 transition-transform" />
                       </div>
                     </motion.div>
                   </MachineCard>

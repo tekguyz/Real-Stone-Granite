@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ICONS } from '../../shared/assets';
@@ -80,7 +79,9 @@ export const Capabilities: React.FC = () => {
                   <FEATURED.icon className="w-16 h-16 text-black/40 fill-white/5 opacity-30 group-hover:opacity-60 transition-opacity" strokeWidth={0.5} />
                   <div className="absolute inset-0 bg-gold/10 blur-md -z-10 group-hover:bg-gold/20 transition-colors" />
                 </div>
-                <span className="font-mono text-[9px] text-gold/50 tracking-widest uppercase">{FEATURED.techLabel}</span>
+                <div className="px-3 py-1 border border-gold/20 bg-gold/5">
+                   <span className="font-mono text-[9px] text-gold uppercase tracking-widest">{FEATURED.techLabel}</span>
+                </div>
               </div>
               <h3 className="text-3xl md:text-4xl font-mono font-bold text-white mb-6 uppercase tracking-tight">{FEATURED.title}</h3>
               <p className="text-text-muted text-base leading-relaxed font-sans font-light max-w-md">{FEATURED.description}</p>
@@ -89,7 +90,7 @@ export const Capabilities: React.FC = () => {
             <div className="relative z-10 mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 pt-8 border-t border-white/5">
               {FEATURED.specs.map(spec => (
                 <div key={spec} className="group/spec flex items-center gap-3">
-                  <div className="w-3 h-[1px] bg-gold/30 group-hover/spec:w-6 group-hover/spec:bg-gold transition-all" />
+                  <div className="w-1.5 h-1.5 bg-gold rotate-45 group-hover/spec:scale-125 transition-transform" />
                   <span className="font-mono text-[9px] text-white/40 uppercase tracking-widest group-hover/spec:text-gold transition-colors">{spec}</span>
                 </div>
               ))}
@@ -124,7 +125,7 @@ export const Capabilities: React.FC = () => {
                 <div className="relative z-10 mt-6 pt-4 border-t border-white/5 space-y-2">
                   {cap.specs.map(spec => (
                     <div key={spec} className="flex items-center gap-2 group/sub">
-                      <div className="w-2 h-[1px] bg-gold/20 group-hover/sub:bg-gold transition-colors" />
+                      <div className="w-1.5 h-1.5 bg-gold/20 rotate-45 group-hover/sub:bg-gold transition-colors" />
                       <span className="font-mono text-[8px] text-white/30 uppercase tracking-[0.2em] group-hover/sub:text-gold transition-colors">{spec}</span>
                     </div>
                   ))}
