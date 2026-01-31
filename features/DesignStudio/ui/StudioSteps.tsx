@@ -43,126 +43,155 @@ export const StudioSteps: React.FC<StudioStepsProps> = ({
   voice
 }) => {
   return (
-    <div className="flex-1 p-6 md:p-12 lg:p-24 overflow-y-auto relative z-10 scrollbar-hide pb-32 lg:pb-24">
-      <div className="max-w-2xl mx-auto">
+    <div className="flex-1 p-6 md:p-12 lg:px-24 lg:py-16 overflow-y-auto relative z-10 scrollbar-hide pb-32 lg:pb-24">
+      <div className="max-w-3xl mx-auto">
+        
+        {/* Mobile Step Indicator */}
         <div className="lg:hidden mb-8 flex items-center gap-3">
-            <span className="text-gold font-mono text-[10px] uppercase tracking-widest">Phase 0{currentStep}</span>
+            <span className="text-gold font-mono text-[10px] uppercase tracking-widest">Step 0{currentStep}</span>
             <div className="h-[1px] flex-1 bg-white/10" />
         </div>
 
+        {/* Header - Humanized */}
         <div className="mb-12">
-          <span className="text-gold font-mono text-[11px] tracking-[0.3em] uppercase block mb-3 opacity-50">Expert Consultation</span>
-          <h2 className="text-3xl md:text-5xl text-white font-sans font-light tracking-tight uppercase leading-tight">
-            {currentStep === 1 && "Define the project identity."}
-            {currentStep === 2 && "Select the fabrication tier."}
-            {currentStep === 3 && "Professional Suggestion."}
-            {currentStep === 4 && "Logistics & Implementation."}
+          <h2 className="text-3xl md:text-4xl lg:text-5xl text-white font-sans font-light tracking-tight leading-tight">
+            {currentStep === 1 && "What describes your project?"}
+            {currentStep === 2 && "Select your craftsmanship tier."}
+            {currentStep === 3 && "Our Recommendation."}
+            {currentStep === 4 && "Final Details."}
           </h2>
         </div>
 
+        {/* STEP 1: IDENTITY - TIGHTER CARDS */}
         {currentStep === 1 && (
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {[
-                { role: 'Private Residence', icon: User, desc: 'Personal home projects' },
-                { role: 'Professional Partner', icon: Briefcase, desc: 'Architects and Designers' }
-              ].map((item) => (
-                <motion.button
-                  key={item.role}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => dispatch({ type: 'SET_USER_ROLE', payload: item.role as UserRole })}
-                  className={`group p-8 border text-left transition-all outline-none flex flex-col justify-between min-h-[200px] ${
-                    state.userRole === item.role 
-                      ? 'border-gold bg-gold/5 text-white' 
-                      : 'border-white/10 text-text-muted hover:border-white/30 bg-surface/50'
-                  }`}
-                >
-                  <item.icon className={`w-8 h-8 ${state.userRole === item.role ? 'text-gold' : 'text-text-muted group-hover:text-white'}`} />
-                  <div className="mt-8">
-                    <span className="block font-sans text-xl font-light mb-1">{item.role}</span>
-                    <span className="text-[11px] font-sans text-text-muted uppercase tracking-wider">{item.desc}</span>
-                  </div>
-                </motion.button>
-              ))}
+                { role: 'Private Residence', icon: User, desc: 'For homeowners' },
+                { role: 'Professional Partner', icon: Briefcase, desc: 'For architects & designers' }
+              ].map((item) => {
+                const isActive = state.userRole === item.role;
+                return (
+                  <motion.button
+                    key={item.role}
+                    whileTap={{ scale: 0.99 }}
+                    onClick={() => dispatch({ type: 'SET_USER_ROLE', payload: item.role as UserRole })}
+                    className={`relative group p-6 text-left transition-all outline-none flex flex-col justify-center min-h-[160px] border rounded-sm ${
+                      isActive 
+                        ? 'bg-surface border-gold text-white shadow-lg' 
+                        : 'bg-transparent border-white/10 text-white/60 hover:border-white/30 hover:bg-white/5 hover:text-white'
+                    }`}
+                  >
+                    <div className="relative z-10">
+                        <item.icon className={`w-6 h-6 mb-4 ${isActive ? 'text-gold' : 'text-current transition-colors'}`} strokeWidth={1.5} />
+                        <span className="block font-sans text-lg font-medium tracking-tight mb-2">{item.role}</span>
+                        <span className="text-xs text-current opacity-70">{item.desc}</span>
+                    </div>
+                  </motion.button>
+                )
+              })}
           </motion.div>
         )}
 
+        {/* STEP 2: TIER SELECTION - CLEANER */}
         {currentStep === 2 && (
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
               {[
-                { id: 'Classic Selection', icon: Box, title: 'Classic Selection', desc: 'Refined standard finishing. Focused on the raw, natural beauty of the slab.' },
-                { id: 'Artisan Masterpiece', icon: Ruler, title: 'Artisan Masterpiece', desc: 'Complex structural details and architectural cladding for unique statements.' }
-              ].map(tier => (
-                <button
-                  key={tier.id}
-                  onClick={() => dispatch({ type: 'SET_FABRICATION_LEVEL', payload: tier.id as FabricationLevel })}
-                  className={`p-8 border flex items-start gap-8 transition-all outline-none ${
-                    state.fabricationLevel === tier.id 
-                      ? 'border-gold bg-gold/5 text-white' 
-                      : 'border-white/10 text-text-muted hover:border-white/30'
-                  }`}
-                >
-                    <tier.icon className={`w-10 h-10 flex-shrink-0 ${state.fabricationLevel === tier.id ? 'text-gold' : 'opacity-40'}`} />
-                    <div className="text-left">
-                      <span className="block font-sans text-2xl font-light mb-2">{tier.title}</span>
-                      <p className="text-sm font-sans text-text-muted leading-relaxed max-w-lg">{tier.desc}</p>
-                    </div>
-                </button>
-              ))}
+                { id: 'Classic Selection', icon: Box, title: 'Classic Selection', desc: 'Standard finishing focused on the raw beauty of natural stone.' },
+                { id: 'Artisan Masterpiece', icon: Ruler, title: 'Artisan Masterpiece', desc: 'Complex structural details, mitered edges, and custom fabrication.' }
+              ].map(tier => {
+                const isActive = state.fabricationLevel === tier.id;
+                return (
+                  <button
+                    key={tier.id}
+                    onClick={() => dispatch({ type: 'SET_FABRICATION_LEVEL', payload: tier.id as FabricationLevel })}
+                    className={`relative w-full group p-6 flex items-start gap-6 transition-all outline-none border rounded-sm ${
+                      isActive 
+                        ? 'bg-surface border-gold text-white shadow-lg' 
+                        : 'bg-transparent border-white/10 text-white/60 hover:border-white/30 hover:bg-white/5 hover:text-white'
+                    }`}
+                  >
+                      <div className={`relative z-10 flex items-start gap-6 w-full`}>
+                        <div className={`p-3 border rounded-sm ${isActive ? 'bg-gold text-primary border-gold' : 'bg-transparent border-white/20 group-hover:border-white/50'}`}>
+                           <tier.icon className="w-5 h-5" strokeWidth={1.5} />
+                        </div>
+                        <div className="text-left flex-1">
+                          <span className="block font-sans text-lg font-medium tracking-tight mb-1">{tier.title}</span>
+                          <p className="text-sm font-light leading-relaxed max-w-lg opacity-80">{tier.desc}</p>
+                        </div>
+                      </div>
+                  </button>
+                )
+              })}
           </motion.div>
         )}
 
+        {/* STEP 3: RECOMMENDATION - LUXURY */}
         {currentStep === 3 && (
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-            <div className="p-8 border border-gold/30 bg-gold/5 relative overflow-hidden">
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-12">
+            <div className="p-8 border border-gold/30 bg-surface/50 relative overflow-hidden rounded-sm">
               <div className="flex items-center gap-3 mb-4">
-                  <div className="w-2 h-2 bg-gold rotate-45" />
-                  <span className="text-gold font-mono text-[10px] uppercase tracking-[0.4em] font-bold">Consultant Suggestion</span>
+                  <span className="text-gold font-mono text-[10px] uppercase tracking-[0.2em] font-bold">Suggestion</span>
               </div>
-              <h4 className="text-white text-3xl font-sans font-light mb-4">
-                  Recommended: <span className="text-gold">{recommendation.material}</span>
+              <h4 className="text-white text-2xl md:text-3xl font-sans font-light mb-4">
+                  We recommend <span className="font-medium text-gold">{recommendation.material}</span>.
               </h4>
-              <p className="text-text-muted text-lg leading-relaxed font-sans font-light border-l border-gold/20 pl-8">
+              <p className="text-white/80 text-sm leading-relaxed font-light max-w-2xl">
                   {recommendation.reason}
               </p>
             </div>
 
             <div className="space-y-4">
-                <label className="text-[10px] font-sans text-text-muted uppercase tracking-[0.3em] font-medium">Explore Alternative Portfolios</label>
-                <div className="flex flex-wrap gap-3">
-                  {['Granite', 'Marble', 'Quartzite', 'Quartz', 'Dekton', 'Onyx'].map(m => (
-                    <motion.button
-                      key={m}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={() => dispatch({ type: 'SET_STONE_PREFERENCE', payload: m })}
-                      className={`px-6 py-3 text-[10px] uppercase tracking-widest font-sans border transition-all outline-none ${
-                        state.stonePreference === m
-                          ? 'bg-gold text-primary border-gold font-bold shadow-[0_0_20px_rgba(212,175,55,0.3)]'
-                          : 'bg-transparent text-text-muted border-white/10 hover:border-white/30'
-                      }`}
-                    >
-                      {m}
-                    </motion.button>
-                  ))}
+                <label className="text-[10px] font-mono text-white/40 uppercase tracking-[0.2em] font-bold block mb-2">
+                    Browse Other Options
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {['Granite', 'Marble', 'Quartzite', 'Quartz', 'Dekton', 'Onyx'].map(m => {
+                      const isSelected = state.stonePreference === m;
+                      return (
+                       <motion.button
+                         key={m}
+                         whileTap={{ scale: 0.98 }}
+                         onClick={() => dispatch({ type: 'SET_STONE_PREFERENCE', payload: m })}
+                         className={`px-5 py-2 text-[10px] uppercase tracking-widest font-mono font-bold border transition-all outline-none rounded-sm ${
+                           isSelected
+                             ? 'bg-gold text-primary border-gold'
+                             : 'bg-transparent text-white/60 border-white/10 hover:border-gold hover:text-gold'
+                         }`}
+                       >
+                         {m}
+                       </motion.button>
+                      )
+                  })}
                 </div>
             </div>
           </motion.div>
         )}
 
+        {/* STEP 4: DETAILS - CLEANER FORM */}
         {currentStep === 4 && (
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-12">
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-10">
             
-            {/* Timeline Selection */}
             <div className="space-y-6">
-              <div className="flex justify-between items-end border-b border-white/10 pb-4">
-                <label className="text-[11px] font-sans text-text-muted uppercase tracking-[0.3em]">Project Timeline</label>
-                <span className="text-gold font-mono text-sm uppercase tracking-widest">{state.timeline}</span>
+              <div className="flex justify-between items-end border-b border-white/10 pb-2">
+                <label className="text-[10px] font-mono text-white/40 uppercase tracking-[0.2em]">Timeline</label>
+                <span className="text-gold font-mono text-xs uppercase tracking-widest font-bold">{state.timeline}</span>
               </div>
-              <div className="relative h-20 flex items-center px-1">
+              
+              {/* TIMELINE SLIDER (Keep existing logic, just cleaner CSS) */}
+              <div className="relative h-16 flex items-center">
                   <div className="absolute top-1/2 left-0 w-full h-[1px] bg-white/10 -translate-y-1/2" />
-                  <motion.div className="absolute top-1/2 left-0 h-[1px] bg-gold -translate-y-1/2" initial={false} animate={{ width: `${(timelineIndex / (TIMELINE_OPTIONS.length - 1)) * 100}%` }} transition={PHYSICS.snappy} />
+                  <motion.div 
+                    className="absolute top-1/2 left-0 h-[1px] bg-gold -translate-y-1/2" 
+                    initial={false} 
+                    animate={{ width: `${(timelineIndex / (TIMELINE_OPTIONS.length - 1)) * 100}%` }} 
+                    transition={PHYSICS.snappy} 
+                  />
                   <div className="absolute top-1/2 left-0 w-full flex justify-between -translate-y-1/2 pointer-events-none">
                     {TIMELINE_OPTIONS.map((_, i) => (
-                      <div key={i} className={`w-1 h-1 rotate-45 transition-colors duration-500 ${i <= timelineIndex ? 'bg-gold' : 'bg-white/10'}`} />
+                      <div 
+                        key={i} 
+                        className={`w-2.5 h-2.5 transition-colors duration-300 border border-primary rounded-full ${i <= timelineIndex ? 'bg-gold' : 'bg-surface border-white/20'}`} 
+                      />
                     ))}
                   </div>
                   <div className="absolute top-0 left-0 w-full h-full flex items-center">
@@ -171,106 +200,87 @@ export const StudioSteps: React.FC<StudioStepsProps> = ({
                         <div key={i} className="flex-1 h-full cursor-pointer z-10" onClick={() => dispatch({ type: 'SET_TIMELINE', payload: opt })} />
                       ))}
                     </div>
-                    <motion.div className="absolute w-4 h-4 bg-gold shadow-[0_0_20px_rgba(212,175,55,0.6)] z-20 pointer-events-none rotate-45" initial={false} animate={{ left: `calc(${(timelineIndex / (TIMELINE_OPTIONS.length - 1)) * 100}% - 8px)` }} whileTap={{ scale: 1.2 }} transition={PHYSICS.snappy} />
                   </div>
               </div>
             </div>
 
-            {/* Smart Voice Description Input */}
             <div className="space-y-4">
               <div className="flex justify-between items-center">
-                <label className="text-[11px] font-sans text-text-muted uppercase tracking-[0.3em]">Project Description</label>
-                <div className="flex items-center gap-2">
-                   {voice.isRecording && (
-                     <div className="flex items-center gap-1">
-                       <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse"/>
-                       <span className="text-[9px] font-mono text-red-500 uppercase tracking-widest">Recording</span>
-                     </div>
-                   )}
-                   {voice.isProcessingAudio && (
-                     <span className="text-[9px] font-mono text-gold uppercase tracking-widest animate-pulse">Processing...</span>
-                   )}
-                </div>
-              </div>
-              
-              <div className="relative group">
-                <textarea 
-                  value={state.description}
-                  onChange={(e) => dispatch({ type: 'SET_DESCRIPTION', payload: e.target.value })}
-                  placeholder="Describe your vision, specific measurements, or special requirements..."
-                  className="w-full h-40 bg-surface/30 border border-white/10 text-white font-sans text-sm font-light p-6 focus:border-gold/50 outline-none resize-none transition-colors"
-                />
-                
+                <label className="text-[10px] font-mono text-white/40 uppercase tracking-[0.2em]">Project Notes</label>
+                {/* Clean Mic Button */}
                 <motion.button 
                   onClick={voice.toggleRecording}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                   disabled={voice.isProcessingAudio}
-                  className={`absolute bottom-4 right-4 w-10 h-10 flex items-center justify-center rounded-none border transition-all z-20 ${
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all ${
                     voice.isRecording 
                       ? 'bg-red-500/10 border-red-500 text-red-500' 
-                      : 'bg-gold/10 border-gold/30 text-gold hover:bg-gold hover:text-primary'
+                      : 'bg-white/5 border-white/10 text-white/60 hover:text-gold hover:border-gold'
                   }`}
                 >
-                  <AnimatePresence mode="wait">
                     {voice.isProcessingAudio ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
+                       <Loader2 className="w-3 h-3 animate-spin" />
                     ) : (
-                      <motion.div
-                        key={voice.isRecording ? 'stop' : 'mic'}
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        exit={{ scale: 0 }}
-                      >
-                         <Mic className={`w-4 h-4 ${voice.isRecording ? 'animate-pulse' : ''}`} />
-                      </motion.div>
+                       <Mic className="w-3 h-3" />
                     )}
-                  </AnimatePresence>
-                  
-                  {voice.isRecording && (
-                    <span className="absolute inset-0 rounded-none border border-red-500 animate-ping opacity-20" />
-                  )}
+                    <span className="text-[9px] uppercase tracking-widest font-mono">
+                        {voice.isRecording ? "Stop" : "Dictate"}
+                    </span>
                 </motion.button>
               </div>
+              
+              <textarea 
+                value={state.description}
+                onChange={(e) => dispatch({ type: 'SET_DESCRIPTION', payload: e.target.value })}
+                placeholder="Describe your vision, requirements, or special details..."
+                className="w-full h-32 bg-white/5 border border-white/10 text-white font-sans text-sm p-4 focus:border-gold/50 outline-none resize-none transition-colors placeholder:text-white/20 leading-relaxed rounded-sm"
+              />
             </div>
 
-            {/* File Upload */}
             <div className="space-y-4">
-              <label className="text-[11px] font-sans text-text-muted uppercase tracking-[0.3em]">Technical Specifications</label>
+              <label className="text-[10px] font-mono text-white/40 uppercase tracking-[0.2em]">Upload Files</label>
               <input type="file" ref={fileInputRef} className="hidden" onChange={handlers.handleFileChange} accept=".dwg,.pdf,.jpg,.png" />
-              <div onClick={handlers.handleFileClick} className={`border border-white/10 bg-surface/30 p-12 flex flex-col items-center justify-center text-center group cursor-pointer transition-all border-dashed ${attachedFile ? 'border-gold bg-gold/5' : 'hover:bg-gold/5 hover:border-gold/30'}`}>
+              <div 
+                onClick={handlers.handleFileClick} 
+                className={`
+                   relative border border-dashed p-8 flex flex-col items-center justify-center text-center group cursor-pointer transition-all rounded-sm
+                   ${attachedFile 
+                     ? 'border-gold bg-gold/5' 
+                     : 'border-white/20 hover:border-gold/50 hover:bg-white/5'}
+                `}
+              >
                 {attachedFile ? (
                   <>
-                    <FileIcon className="w-8 h-8 mb-4 text-gold" />
-                    <p className="font-sans text-lg text-white font-bold tracking-tight">{attachedFile}</p>
-                    <p className="text-gold text-[10px] uppercase tracking-widest mt-2">Dossier Attached</p>
+                    <FileIcon className="w-6 h-6 mb-2 text-gold" strokeWidth={1} />
+                    <p className="font-mono text-xs text-white font-bold tracking-tight uppercase truncate max-w-xs">{attachedFile}</p>
                   </>
                 ) : (
                   <>
-                    <Upload className="w-8 h-8 mb-4 text-text-muted group-hover:text-gold transition-colors" />
-                    <p className="font-sans text-lg text-white font-light">Transfer project blueprints or plans.</p>
-                    <p className="text-text-muted text-[10px] uppercase tracking-widest mt-2 opacity-60">Accepted formats: .DWG, .PDF</p>
+                    <Upload className="w-6 h-6 mb-2 text-white/40 group-hover:text-gold transition-colors" strokeWidth={1} />
+                    <p className="font-sans text-xs text-white uppercase tracking-widest font-bold">Select Files</p>
                   </>
                 )}
               </div>
             </div>
 
             <div className="pt-8">
-                <PrecisionBtn variant="primary" className="w-full h-20" onClick={handlers.handleSubmit} disabled={isSubmitting} transition={PHYSICS.snappy}>
-                  {isSubmitting ? "Generating Summary..." : "Create Project Brief"}
+                <PrecisionBtn variant="primary" className="w-full h-14" onClick={handlers.handleSubmit} disabled={isSubmitting} transition={PHYSICS.snappy}>
+                  {isSubmitting ? "Sending..." : "Submit Inquiry"}
                 </PrecisionBtn>
             </div>
           </motion.div>
         )}
       </div>
 
-      <div className="max-w-2xl mx-auto mt-16 flex justify-between border-t border-white/5 pt-10">
-          <Button variant="ghost" onClick={handlers.prevStep} disabled={currentStep === 1 || isSubmitting} className={`${currentStep === 1 ? 'invisible' : ''} text-text-muted font-mono text-[10px] tracking-widest uppercase h-14`}>
-            Previous
+      {/* Footer Navigation */}
+      <div className="max-w-3xl mx-auto mt-12 flex justify-between border-t border-white/5 pt-8">
+          <Button variant="ghost" onClick={handlers.prevStep} disabled={currentStep === 1 || isSubmitting} className={`${currentStep === 1 ? 'invisible' : ''} text-white/40 font-mono text-[10px] tracking-widest uppercase h-12`}>
+            Back
           </Button>
           {currentStep < 4 && (
-            <Button variant="outline" onClick={handlers.nextStep} className="h-14 px-12 border-white/10 hover:border-gold hover:text-gold group">
-              <span className="font-mono text-[11px] uppercase tracking-widest">Continue</span>
+            <Button variant="outline" onClick={handlers.nextStep} className="h-12 px-8 border-white/20 hover:border-gold hover:text-gold group">
+              <span className="font-mono text-[10px] uppercase tracking-widest font-bold">Continue</span>
               <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Button>
           )}

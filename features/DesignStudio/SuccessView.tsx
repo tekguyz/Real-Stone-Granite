@@ -13,47 +13,12 @@ interface SuccessViewProps {
 
 export const SuccessView: React.FC<SuccessViewProps> = ({ onClose, projectRef }) => {
   useEffect(() => {
-    // OKLCH approx conversions for confetti library
     const gold = '#d4af37'; 
     const onyx = '#121212';
     
     const fireMetallicShavings = () => {
-      const duration = 3 * 1000;
-      const end = Date.now() + duration;
-
-      const frame = () => {
-        confetti({
-          particleCount: 2,
-          angle: 60,
-          spread: 55,
-          origin: { x: 0, y: 0.6 },
-          colors: [gold, onyx],
-          shapes: ['square'],
-          scalar: 0.7,
-          drift: 0.5,
-          gravity: 0.8,
-          ticks: 300
-        });
-        confetti({
-          particleCount: 2,
-          angle: 120,
-          spread: 55,
-          origin: { x: 1, y: 0.6 },
-          colors: [gold, onyx],
-          shapes: ['square'],
-          scalar: 0.7,
-          drift: -0.5,
-          gravity: 0.8,
-          ticks: 300
-        });
-
-        if (Date.now() < end) {
-          requestAnimationFrame(frame);
-        }
-      };
-      
       confetti({
-        particleCount: 150,
+        particleCount: 100,
         spread: 70,
         origin: { y: 0.6 },
         colors: [gold, onyx],
@@ -61,43 +26,34 @@ export const SuccessView: React.FC<SuccessViewProps> = ({ onClose, projectRef })
         scalar: 0.9,
         gravity: 1.2,
       });
-
-      frame();
     };
 
     fireMetallicShavings();
   }, []);
 
   const handleDownload = () => {
-    // Generate a clean filename without computer jargon
-    console.log(`Generating Brief for ${projectRef}`);
-    alert("Project Brief Generated. Please check your downloads.");
+    alert("Project Overview downloaded.");
   };
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center relative z-20 p-6 bg-primary overflow-hidden">
-      {/* Background Sheen */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.03),transparent)] pointer-events-none" />
-
       <motion.div 
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={PHYSICS.snappy}
         className="max-w-xl w-full flex flex-col items-center text-center"
       >
-        <div className="w-20 h-20 border border-gold/30 bg-gold/5 flex items-center justify-center mb-10 relative">
-          <ShieldCheck className="w-10 h-10 text-gold" strokeWidth={1} />
-          <div className="absolute inset-0 border border-gold/10 scale-125 opacity-20" />
+        <div className="w-16 h-16 border border-gold/30 bg-gold/5 flex items-center justify-center mb-8 rounded-full">
+          <ShieldCheck className="w-8 h-8 text-gold" strokeWidth={1} />
         </div>
 
-        <h2 className="text-4xl md:text-5xl font-mono font-black uppercase text-white tracking-tighter mb-6">
-          Project Started.
+        <h2 className="text-3xl md:text-4xl font-sans font-bold uppercase text-white tracking-tight mb-4">
+          Inquiry Received
         </h2>
 
         <div className="space-y-6 mb-12 px-4">
-          <div className="h-[1px] w-12 bg-gold mx-auto opacity-50" />
-          <p className="text-text-muted font-sans text-sm md:text-base leading-relaxed max-w-md mx-auto">
-            Your Reference Number <span className="text-white font-mono font-bold tracking-tight">#{projectRef}</span> has been logged. Our Senior Associate is reviewing your specifications and blueprints now. You will receive a personal follow-up within 24 hours.
+          <p className="text-white/60 font-sans text-sm md:text-base leading-relaxed max-w-md mx-auto">
+            Thank you for reaching out. Your reference number is <span className="text-white font-mono font-bold tracking-tight">#{projectRef}</span>. Our team will review your specifications and contact you shortly to discuss your vision.
           </p>
         </div>
 
@@ -105,31 +61,31 @@ export const SuccessView: React.FC<SuccessViewProps> = ({ onClose, projectRef })
           <PrecisionBtn 
             onClick={handleDownload}
             variant="secondary"
-            className="w-full h-16 border-gold/40 text-gold hover:bg-gold/5"
+            className="w-full h-14 border-gold/40 text-gold hover:bg-gold/5"
           >
             <div className="flex items-center gap-3">
               <Download className="w-4 h-4" />
-              <span className="font-mono text-[10px] font-bold tracking-[0.2em]">Download Project Brief (PDF)</span>
+              <span className="font-mono text-[10px] font-bold tracking-[0.2em]">Save Summary</span>
             </div>
           </PrecisionBtn>
 
           <PrecisionBtn 
-            onClick={() => alert("Redirecting to secure scheduling portal...")}
+            onClick={() => alert("Opening scheduling assistant...")}
             variant="primary"
-            className="w-full h-16"
+            className="w-full h-14"
           >
             <div className="flex items-center gap-3">
               <Calendar className="w-4 h-4" />
-              <span className="font-mono text-[10px] font-bold tracking-[0.2em]">Schedule Consultation</span>
+              <span className="font-mono text-[10px] font-bold tracking-[0.2em]">Book Consultation</span>
             </div>
           </PrecisionBtn>
 
           <button 
             onClick={onClose}
-            className="pt-6 text-text-muted hover:text-white font-mono text-[10px] uppercase tracking-[0.4em] transition-colors flex items-center justify-center gap-2 group mx-auto"
+            className="pt-6 text-white/40 hover:text-white font-mono text-[10px] uppercase tracking-[0.4em] transition-colors flex items-center justify-center gap-2 group mx-auto"
           >
             <ArrowLeft className="w-3 h-3 group-hover:-translate-x-1 transition-transform" />
-            Return to Portfolio
+            Return to Home
           </button>
         </div>
       </motion.div>

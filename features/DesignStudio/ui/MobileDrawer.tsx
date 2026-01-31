@@ -28,11 +28,11 @@ export const MobileSummaryDrawer: React.FC<MobileDrawerProps> = ({
     >
       <div onClick={onToggle} className="h-20 w-full flex items-center justify-between px-8 bg-surface border-b border-white/5 cursor-pointer relative z-20">
         <div className="flex flex-col">
-          <span className="text-[9px] text-gold font-mono uppercase tracking-widest mb-1">Project Reference</span>
+          <span className="text-[9px] text-gold font-mono uppercase tracking-widest mb-1">Project ID</span>
           <span className="text-white font-mono text-sm tracking-tighter">#{projectRef}</span>
         </div>
         <div className="flex items-center gap-2 text-text-muted uppercase tracking-widest text-[9px] font-mono">
-          {isOpen ? "Close Brief" : "View Brief"}
+          {isOpen ? "Hide" : "Review"}
           {isOpen ? <ChevronDown className="w-4 h-4 text-gold" /> : <ChevronUp className="w-4 h-4 text-gold" />}
         </div>
       </div>
@@ -40,12 +40,12 @@ export const MobileSummaryDrawer: React.FC<MobileDrawerProps> = ({
       <div className="flex-1 overflow-y-auto p-8 bg-surface relative">
         <div className="space-y-10">
            <div>
-             <span className="text-[9px] text-text-muted uppercase tracking-widest block mb-2">Principal</span>
+             <span className="text-[9px] text-text-muted uppercase tracking-widest block mb-2">Role</span>
              <span className="text-white text-lg font-light">{state.userRole}</span>
            </div>
            
            <div>
-             <span className="text-[9px] text-text-muted uppercase tracking-widest block mb-2">Project Tier</span>
+             <span className="text-[9px] text-text-muted uppercase tracking-widest block mb-2">Tier</span>
              <span className={`text-lg font-light ${state.fabricationLevel === 'Artisan Masterpiece' ? 'text-gold' : 'text-white'}`}>
                 {state.fabricationLevel}
              </span>
@@ -53,22 +53,14 @@ export const MobileSummaryDrawer: React.FC<MobileDrawerProps> = ({
 
            <div>
              <span className="text-[9px] text-text-muted uppercase tracking-widest block mb-2">
-               Material Suggestion
+               Selection
              </span>
              <div className="flex items-center gap-2 text-gold mb-1">
                <Check className="w-4 h-4" />
-               <span className="text-lg font-bold uppercase tracking-tight">
+               <span className="text-lg font-medium uppercase tracking-tight">
                   {state.stonePreference !== 'Light' ? state.stonePreference : recommendation.material}
                </span>
              </div>
-           </div>
-
-           <div className="pt-8 border-t border-white/5">
-               <span className="text-[9px] text-text-muted uppercase tracking-widest block mb-2">Status</span>
-               <div className="inline-flex items-center gap-2 px-3 py-1 border border-gold/30 bg-gold/5 text-gold text-[10px] font-mono uppercase tracking-widest">
-                  <div className="w-1.5 h-1.5 bg-gold rotate-45 animate-pulse" />
-                  In Progress
-               </div>
            </div>
          </div>
       </div>

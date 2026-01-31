@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowUp } from 'lucide-react';
+import { ArrowUp, MessageSquare } from 'lucide-react';
 import { PHYSICS } from '../../../shared/lib/theme';
 
 interface FloatingControlsProps {
@@ -11,31 +11,13 @@ interface FloatingControlsProps {
   openChat: () => void;
 }
 
-const SurveyorDiamondIcon = () => (
-  <svg 
-    viewBox="0 0 24 24" 
-    className="w-6 h-6 text-gold drop-shadow-[0_0_5px_rgba(212,175,55,0.5)]" 
-    fill="none" 
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path 
-      d="M12 5 L19 12 L12 19 L5 12 Z" 
-      stroke="currentColor" 
-      strokeWidth="1.5" 
-      strokeLinecap="square"
-    />
-    <path 
-      d="M17 17 L21 21 L21 17 Z" 
-      fill="currentColor" 
-    />
-  </svg>
-);
-
 export const FloatingControls: React.FC<FloatingControlsProps> = ({
   showTopBtn, showChatFab, isOpen, scrollToTop, openChat
 }) => {
   return (
-    <div className="flex flex-col items-center gap-4 pointer-events-auto">
+    <div className="fixed bottom-8 right-8 flex flex-col items-center gap-4 z-[12000] pointer-events-auto">
+      
+      {/* Scroll to Top */}
       <AnimatePresence>
         {showTopBtn && !isOpen && (
           <motion.button
@@ -44,30 +26,39 @@ export const FloatingControls: React.FC<FloatingControlsProps> = ({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 10 }}
             onClick={scrollToTop}
-            whileHover={{ borderColor: 'var(--color-gold)', color: 'var(--color-gold)' }}
-            whileTap={{ scale: 0.95 }}
-            className="w-9 h-9 md:w-[42px] md:h-[42px] bg-transparent border border-white/20 flex items-center justify-center text-text-muted transition-all shadow-xl"
+            className="w-10 h-10 bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/50 hover:text-gold hover:border-gold transition-all rounded-sm"
           >
-            <ArrowUp className="w-4 h-4 md:w-5 md:h-5" strokeWidth={1.5} />
+            <ArrowUp className="w-4 h-4" />
           </motion.button>
         )}
       </AnimatePresence>
 
+      {/* Main Chat Trigger - CLEAN & ELEGANT */}
       <AnimatePresence>
         {showChatFab && !isOpen && (
           <motion.button
             key="chat-btn"
-            initial={{ opacity: 0, scale: 0.8, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.8, y: 20 }}
+            initial={{ opacity: 0, scale: 0.8, x: 20 }} 
+            animate={{ opacity: 1, scale: 1, x: 0 }}
+            exit={{ opacity: 0, scale: 0.8, x: 20 }}
             onClick={openChat}
-            whileHover={{ scale: 1.05, borderColor: 'rgba(212,175,55,0.5)' }}
+            whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             transition={PHYSICS.snappy}
-            className="w-12 h-12 md:w-14 md:h-14 bg-surface border border-white/10 flex items-center justify-center shadow-2xl relative group"
+            className="group relative w-16 h-16 bg-primary border border-white/10 flex items-center justify-center shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)] overflow-hidden"
           >
-            <SurveyorDiamondIcon />
+            {/* Subtle Gold Pulse on Hover */}
             <div className="absolute inset-0 bg-gold/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+            
+            <MessageSquare className="w-6 h-6 text-gold relative z-10" strokeWidth={1.5} />
+            
+            {/* REMOVED: Technical Corners */}
+            {/* REMOVED: Sensor Scan Effect */}
+            
+            {/* Tooltip Label */}
+            <div className="absolute right-full mr-4 bg-black/90 px-4 py-2 border border-white/10 text-[10px] font-mono text-white uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none backdrop-blur-md">
+                Chat with Us
+            </div>
           </motion.button>
         )}
       </AnimatePresence>

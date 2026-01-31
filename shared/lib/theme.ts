@@ -1,34 +1,45 @@
 export const COLORS = {
-  primary: 'oklch(18.6% 0.009 46)',
-  surface: 'oklch(23.5% 0.009 46)',
-  gold: 'oklch(76.6% 0.154 86.6)',
-  textMain: 'oklch(96% 0.003 86)',
-  textMuted: 'oklch(60% 0.006 46)',
-  // Added translucent variants for glass effects
-  goldDim: 'oklch(76.6% 0.154 86.6 / 0.1)', 
-  surfaceHighlight: 'oklch(23.5% 0.009 46 / 0.8)',
+  // DEEP ONYX: Darker (14% Lightness) for a true "Void" look.
+  primary: 'oklch(14% 0.01 80)', 
+
+  // GUNMETAL: Slightly lighter for cards/modals.
+  surface: 'oklch(19% 0.01 80)',
+
+  // ROLEX GOLD: Richer, Brassier (Hue 82).
+  gold: 'oklch(74% 0.16 82)',
+
+  // PURE WHITE: Maximum legibility.
+  textMain: 'oklch(98% 0 0)',
+
+  // MUTED PLATINUM: For secondary text.
+  textMuted: 'oklch(65% 0.01 80)',
+
+  // TRANSLUCENTS
+  goldDim: 'oklch(74% 0.16 82 / 0.1)', 
+  surfaceHighlight: 'oklch(19% 0.01 80 / 0.8)',
 } as const;
 
 export const PHYSICS = {
-  // Standard UI interactions (Dropdowns, Toggles)
+  // "Snappy": For Drawers, Toggles, and Dropdowns.
   snappy: {
     type: "spring",
     stiffness: 400,
-    damping: 30
+    damping: 30,
+    restDelta: 0.001
   },
-  // Large layout transitions
-  smooth: {
-    type: "spring",
-    stiffness: 100,
-    damping: 20
+
+  // "Smooth": For Scrolling, Parallax.
+  smooth: { 
+    duration: 0.8, 
+    ease: [0.22, 1, 0.36, 1] 
   },
-  // THE NEW STANDARD: For Buttons & Cards. 
-  // High stiffness + Critical damping = Instant response, zero wobble.
-  // It feels "Solid".
+
+  // "Industrial": For Buttons & Hover States.
+  // FEELS LIKE: Pressing a heavy button on a CNC machine.
   industrial: {
     type: "spring",
-    stiffness: 500,
-    damping: 45, 
-    mass: 1.2
+    stiffness: 250, // Lowered from 500 (too jittery)
+    damping: 35,    // Tuned to stop the heavy mass
+    mass: 2.0       // Increased from 1.2 (Heavier feel)
   }
 } as const;

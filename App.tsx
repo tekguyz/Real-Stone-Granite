@@ -32,7 +32,7 @@ const App: React.FC = () => {
         <DesignStudio isOpen={isStudioOpen} onClose={() => setIsStudioOpen(false)} />
 
         {/* Footer Layer */}
-        <Footer />
+        <Footer onOpenStudio={() => setIsStudioOpen(true)} />
       </div>
     </HelmetProvider>
   );

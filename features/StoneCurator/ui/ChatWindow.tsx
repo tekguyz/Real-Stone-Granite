@@ -1,10 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { X, Send, ChevronRight } from 'lucide-react';
+import { X, Send, ChevronRight, MessageSquare } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { Message, SUGGESTIONS } from '../model/types';
 import { Button } from '../../../shared/ui/Button';
-import { PHYSICS } from '../../../shared/lib/theme';
 
 interface ChatWindowProps {
   isOpen: boolean;
@@ -19,108 +18,129 @@ interface ChatWindowProps {
 }
 
 export const ChatWindow: React.FC<ChatWindowProps> = ({
-  isOpen, onClose, messages, isLoading, input, setInput, handleSend, onLaunchStudio, messagesEndRef
+  onClose, messages, isLoading, input, setInput, handleSend, onLaunchStudio, messagesEndRef
 }) => {
-  if (!isOpen) return null;
-
   return (
     <motion.div
-      initial={{ opacity: 0, y: 100, scale: 0.98 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, y: 100, scale: 0.98 }}
-      transition={PHYSICS.snappy}
-      className="w-[90vw] md:w-[480px] h-[75vh] md:h-[80vh] bg-primary border border-white/10 shadow-[0_-40px_120px_rgba(0,0,0,0.9)] flex flex-col overflow-hidden relative pointer-events-auto origin-bottom-right mb-4 mr-0"
+      initial={{ x: '100%', opacity: 1 }}
+      animate={{ x: '0%', opacity: 1 }}
+      exit={{ x: '100%', opacity: 1 }}
+      transition={{ type: "spring", damping: 30, stiffness: 300, mass: 1 }}
+      className="absolute top-0 right-0 h-full w-full md:w-[500px] bg-primary border-l border-white/10 shadow-[-50px_0_100px_rgba(0,0,0,0.8)] flex flex-col pointer-events-auto z-[12001]"
     >
-      {/* Header */}
-      <div className="h-16 border-b border-white/5 bg-surface/50 backdrop-blur-xl flex items-center justify-between pl-6 pr-0 flex-shrink-0 z-20">
-        <div className="flex items-center gap-3">
-          <div className="w-1.5 h-1.5 bg-gold animate-pulse rotate-45" />
-          <span className="text-xs text-white/90 uppercase tracking-[0.25em] font-mono font-medium">
-            Senior Associate
-          </span>
+      {/* Texture Overlay */}
+      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none mix-blend-overlay" />
+
+      {/* Header: Concierge Style */}
+      <div className="h-20 border-b border-white/10 bg-black/40 flex items-center justify-between pl-8 pr-0 flex-shrink-0 relative z-20">
+        <div className="flex items-center gap-4">
+          <div className="w-10 h-10 bg-white/5 border border-white/10 flex items-center justify-center rounded-sm">
+             <MessageSquare className="w-5 h-5 text-gold" strokeWidth={1.5} />
+          </div>
+          <div className="flex flex-col">
+            <span className="text-sm text-white font-sans font-medium tracking-tight">
+              Stone Concierge
+            </span>
+            <span className="text-[10px] text-gold/80 uppercase tracking-widest font-mono">
+              Expert Assistance
+            </span>
+          </div>
         </div>
+        
         <button 
           onClick={onClose}
-          className="h-16 w-16 flex items-center justify-center border-l border-white/5 hover:bg-red-500/10 hover:text-red-400 transition-all group"
+          className="h-20 w-20 flex items-center justify-center border-l border-white/10 hover:bg-white/5 hover:text-white transition-colors group cursor-pointer"
         >
-          <X className="w-5 h-5 opacity-40 group-hover:opacity-100" />
+          <X className="w-5 h-5 text-white/40 group-hover:text-white transition-colors" />
         </button>
       </div>
 
-      {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-10 z-10 custom-scrollbar scroll-smooth bg-primary">
+      {/* Messages Area */}
+      <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-8 z-10 custom-scrollbar scroll-smooth bg-primary/95">
+        
+        {/* Empty State - Humanized */}
+        {messages.length === 0 && (
+          <div className="mt-12 text-center opacity-40">
+            <div className="w-16 h-16 border border-white/10 mx-auto mb-6 flex items-center justify-center rounded-full bg-white/5">
+              <MessageSquare className="w-6 h-6 text-white/40" />
+            </div>
+            <p className="font-sans text-sm text-white/60">How can we assist with your project today?</p>
+          </div>
+        )}
+
         {messages.map((msg) => (
-          <motion.div 
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
+          <div 
             key={msg.id} 
             className={`flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'}`}
           >
             <div 
-              className={`max-w-[90%] p-6 border ${
+              className={`max-w-[90%] p-5 border ${
                 msg.role === 'user' 
                   ? 'bg-white/5 text-white border-white/10' 
-                  : 'bg-surface/80 text-text-main border-white/5 prose-stone'
+                  : 'bg-surface text-text-main border-l-2 border-l-gold border-y border-r border-white/5 prose-stone'
               }`}
             >
-              <div className="text-[13px] md:text-[14px] leading-relaxed font-light">
-                <ReactMarkdown>
-                  {msg.content}
-                </ReactMarkdown>
+              <div className="text-[13px] leading-relaxed font-light font-sans">
+                <ReactMarkdown>{msg.content}</ReactMarkdown>
               </div>
             </div>
 
             {msg.hasAction && (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-6 w-full max-w-[85%]">
+              <div className="mt-4 w-full max-w-[85%]">
                 <Button 
                   variant="gold" 
-                  size="md" 
-                  className="w-full flex items-center justify-between group h-14"
+                  size="sm" 
+                  className="w-full flex items-center justify-between group h-12"
                   onClick={onLaunchStudio}
                 >
-                  <span className="font-mono text-[10px] tracking-widest uppercase">Launch Planner</span>
-                  <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  <span className="font-mono text-[9px] tracking-widest uppercase">Start Project Planner</span>
+                  <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                 </Button>
-              </motion.div>
+              </div>
             )}
-          </motion.div>
+          </div>
         ))}
+
         {isLoading && (
-          <div className="flex gap-2 items-center p-4 bg-surface/30 border border-white/5 w-fit">
-              <div className="w-1 h-1 bg-gold animate-bounce rotate-45" />
-              <div className="w-1 h-1 bg-gold animate-bounce [animation-delay:0.2s] rotate-45" />
-              <div className="w-1 h-1 bg-gold animate-bounce [animation-delay:0.4s] rotate-45" />
-              <span className="text-[9px] font-mono text-gold uppercase tracking-widest ml-2">Consulting...</span>
+          <div className="flex gap-2 items-center p-4 border-l-2 border-gold/50 bg-surface/30 w-fit">
+              <div className="w-1.5 h-1.5 bg-gold rounded-full animate-bounce" />
+              <div className="w-1.5 h-1.5 bg-gold rounded-full animate-bounce delay-100" />
+              <div className="w-1.5 h-1.5 bg-gold rounded-full animate-bounce delay-200" />
+              <span className="ml-2 text-[10px] font-mono text-gold uppercase tracking-widest">Thinking...</span>
           </div>
         )}
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input */}
-      <div className="bg-primary border-t border-white/5 p-6">
-        <div className="flex flex-wrap gap-2 mb-4">
+      {/* Input Area */}
+      <div className="bg-black/40 border-t border-white/10 p-6 relative z-20">
+        
+        {/* Suggestion Chips */}
+        <div className="flex overflow-x-auto gap-2 mb-4 scrollbar-hide pb-2">
           {SUGGESTIONS.map((chip) => (
             <button
               key={chip}
               onClick={() => handleSend(chip)}
-              className="px-3 py-1.5 border border-gold/20 hover:border-gold hover:bg-gold/5 text-[10px] font-mono text-gold uppercase tracking-widest transition-all"
+              className="flex-shrink-0 px-4 py-2 border border-white/10 hover:border-gold hover:text-gold bg-surface/50 text-[10px] font-mono text-text-muted uppercase tracking-wider transition-all whitespace-nowrap"
             >
               {chip}
             </button>
           ))}
         </div>
-        <div className="relative flex items-center h-14 bg-surface/50 border border-white/5">
+
+        <div className="relative flex items-center">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-            placeholder="Ask a question..."
-            className="w-full h-full bg-transparent px-5 text-white text-xs font-mono outline-none"
+            placeholder="Type a message..."
+            className="w-full h-12 bg-surface/50 border border-white/10 px-4 text-white text-sm font-sans outline-none focus:border-gold/50 transition-colors placeholder:text-white/20 placeholder:font-light"
           />
           <button 
             onClick={() => handleSend()}
-            className="w-14 h-full flex items-center justify-center text-gold border-l border-white/5"
+            disabled={!input.trim()}
+            className="absolute right-0 top-0 h-12 w-12 flex items-center justify-center text-gold hover:bg-gold hover:text-primary transition-all disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-gold"
           >
             <Send className="w-4 h-4" />
           </button>

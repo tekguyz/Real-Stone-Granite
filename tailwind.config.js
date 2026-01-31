@@ -1,4 +1,3 @@
-
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: 'class',
@@ -16,7 +15,20 @@ module.exports = {
       },
       borderRadius: {
         none: '0px',
-        sm: '2px',
+        sm: '2px', // Matches index.html logic
+      },
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+        mono: ['Geist Mono', 'monospace'],
+      },
+      animation: {
+        'shimmer': 'shimmer 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+      },
+      keyframes: {
+        shimmer: {
+          '0%': { transform: 'translateX(-150%) skewX(-12deg)' },
+          '100%': { transform: 'translateX(150%) skewX(-12deg)' },
+        },
       },
     },
   },

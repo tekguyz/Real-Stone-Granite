@@ -21,28 +21,33 @@ export const StoneCurator: React.FC<StoneCuratorProps> = ({ onLaunchStudio, isSt
   } = useStoneCurator(onLaunchStudio, isStudioOpen);
 
   return (
-    <div className="fixed bottom-6 right-6 md:bottom-12 md:right-12 z-[100] flex flex-col items-end gap-4 pointer-events-none">
-      <AnimatePresence>
-        <ChatWindow 
-          isOpen={isOpen}
-          onClose={() => setIsOpen(false)}
-          messages={messages}
-          isLoading={isLoading}
-          input={input}
-          setInput={setInput}
-          handleSend={handleSend}
-          onLaunchStudio={onLaunchStudio}
-          messagesEndRef={messagesEndRef}
-        />
-
-        <FloatingControls 
-          showTopBtn={showTopBtn}
-          showChatFab={showChatFab}
-          isOpen={isOpen}
-          scrollToTop={scrollToTop}
-          openChat={() => setIsOpen(true)}
-        />
+    // ARCHITECTURE FIX: Full screen overlay (pointer-events-none) allows the drawer to be full height.
+    // Z-Index 11000 ensures it sits ABOVE the Navbar (9999).
+    <div className="fixed inset-0 z-[11000] pointer-events-none overflow-hidden">
+      <AnimatePresence mode="wait">
+        {isOpen && (
+          <ChatWindow 
+            // We pass props, but rendering is controlled by the parent conditional for AnimatePresence
+            isOpen={isOpen} 
+            onClose={() => setIsOpen(false)}
+            messages={messages}
+            isLoading={isLoading}
+            input={input}
+            setInput={setInput}
+            handleSend={handleSend}
+            onLaunchStudio={onLaunchStudio}
+            messagesEndRef={messagesEndRef}
+          />
+        )}
       </AnimatePresence>
+
+      <FloatingControls 
+        showTopBtn={showTopBtn}
+        showChatFab={showChatFab}
+        isOpen={isOpen}
+        scrollToTop={scrollToTop}
+        openChat={() => setIsOpen(true)}
+      />
     </div>
   );
 };

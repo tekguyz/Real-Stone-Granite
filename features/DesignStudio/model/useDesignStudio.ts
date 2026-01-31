@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useProjectStore } from '../../../entities/project/store';
 import { transcribeAudio } from '../../../shared/api/gemini';
 import { TIMELINE_OPTIONS } from './types';

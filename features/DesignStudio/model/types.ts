@@ -1,3 +1,4 @@
+
 import { User, PenTool, Layers, FileText } from 'lucide-react';
 
 export interface DesignStudioProps {
@@ -6,14 +7,14 @@ export interface DesignStudioProps {
 }
 
 export const STEPS = [
-  { id: 1, label: 'Identity', icon: User },
-  { id: 2, label: 'The Craft', icon: PenTool },
-  { id: 3, label: 'Our Advice', icon: Layers },
-  { id: 4, label: 'Timeline', icon: FileText },
+  { id: 1, label: 'Client Role', icon: User },
+  { id: 2, label: 'Fabrication', icon: PenTool },
+  { id: 3, label: 'Materials', icon: Layers },
+  { id: 4, label: 'Details', icon: FileText },
 ];
 
 export const TIMELINE_OPTIONS = [
-  "ASAP / Ready to Fabricate",
+  "Immediate / Ready to Build",
   "Planning Phase (1-3 Months)",
-  "New Construction (6+ Months)"
+  "Future Project (6+ Months)"
 ];
