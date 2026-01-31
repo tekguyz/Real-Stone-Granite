@@ -19,8 +19,8 @@ export default async (req: Request) => {
   }
 
   try {
-    // 3. Request Parsing - Now accepting systemInstruction dynamically
-    const { prompt, systemInstruction } = await req.json();
+    // 3. Request Parsing - Accepts prompt, systemInstruction, and optional audio data
+    const { prompt, systemInstruction, audio } = await req.json();
 
     if (!process.env.API_KEY) {
       console.error("API_KEY is not defined in the environment.");
@@ -30,17 +30,36 @@ export default async (req: Request) => {
     // 4. Gemini Client Initialization
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
-    // 5. Generate Content with Dynamic System Instruction
+    // 5. Construct Multimodal Content
+    const parts = [];
+    
+    // Add audio part if present
+    if (audio && audio.data && audio.mimeType) {
+      parts.push({
+        inlineData: {
+          mimeType: audio.mimeType,
+          data: audio.data
+        }
+      });
+    }
+
+    // Add text prompt if present
+    if (prompt) {
+      parts.push({ text: prompt });
+    }
+
+    // 6. Generate Content
+    // Using 'gemini-3-flash-preview' for efficient multimodal processing
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
-      contents: prompt,
+      contents: { parts },
       config: {
-        systemInstruction: systemInstruction, // Injected from frontend
-        temperature: 0.6, 
+        systemInstruction: systemInstruction, 
+        temperature: 0.4, // Lower temperature for accurate transcription
       },
     });
 
-    // 6. Success Response
+    // 7. Success Response
     return new Response(JSON.stringify({ 
       text: response.text 
     }), {

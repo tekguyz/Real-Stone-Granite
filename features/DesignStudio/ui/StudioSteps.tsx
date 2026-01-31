@@ -1,6 +1,6 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { ChevronRight, User, Briefcase, Box, Ruler, Upload, File as FileIcon } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronRight, User, Briefcase, Box, Ruler, Upload, File as FileIcon, Mic, Loader2 } from 'lucide-react';
 import { UserRole, FabricationLevel, ProjectState, Recommendation } from '../../../entities/project/store';
 import { TIMELINE_OPTIONS } from '../model/types';
 import { PrecisionBtn } from '../../../shared/ui/PrecisionBtn';
@@ -23,6 +23,11 @@ interface StudioStepsProps {
     nextStep: () => void;
     prevStep: () => void;
   };
+  voice: {
+    isRecording: boolean;
+    isProcessingAudio: boolean;
+    toggleRecording: () => void;
+  };
 }
 
 export const StudioSteps: React.FC<StudioStepsProps> = ({ 
@@ -34,7 +39,8 @@ export const StudioSteps: React.FC<StudioStepsProps> = ({
   attachedFile, 
   fileInputRef, 
   isSubmitting, 
-  handlers 
+  handlers,
+  voice
 }) => {
   return (
     <div className="flex-1 p-6 md:p-12 lg:p-24 overflow-y-auto relative z-10 scrollbar-hide pb-32 lg:pb-24">
@@ -144,6 +150,8 @@ export const StudioSteps: React.FC<StudioStepsProps> = ({
 
         {currentStep === 4 && (
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-12">
+            
+            {/* Timeline Selection */}
             <div className="space-y-6">
               <div className="flex justify-between items-end border-b border-white/10 pb-4">
                 <label className="text-[11px] font-sans text-text-muted uppercase tracking-[0.3em]">Project Timeline</label>
@@ -168,6 +176,65 @@ export const StudioSteps: React.FC<StudioStepsProps> = ({
               </div>
             </div>
 
+            {/* Smart Voice Description Input */}
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <label className="text-[11px] font-sans text-text-muted uppercase tracking-[0.3em]">Project Description</label>
+                <div className="flex items-center gap-2">
+                   {voice.isRecording && (
+                     <div className="flex items-center gap-1">
+                       <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse"/>
+                       <span className="text-[9px] font-mono text-red-500 uppercase tracking-widest">Recording</span>
+                     </div>
+                   )}
+                   {voice.isProcessingAudio && (
+                     <span className="text-[9px] font-mono text-gold uppercase tracking-widest animate-pulse">Processing...</span>
+                   )}
+                </div>
+              </div>
+              
+              <div className="relative group">
+                <textarea 
+                  value={state.description}
+                  onChange={(e) => dispatch({ type: 'SET_DESCRIPTION', payload: e.target.value })}
+                  placeholder="Describe your vision, specific measurements, or special requirements..."
+                  className="w-full h-40 bg-surface/30 border border-white/10 text-white font-sans text-sm font-light p-6 focus:border-gold/50 outline-none resize-none transition-colors"
+                />
+                
+                <motion.button 
+                  onClick={voice.toggleRecording}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  disabled={voice.isProcessingAudio}
+                  className={`absolute bottom-4 right-4 w-10 h-10 flex items-center justify-center rounded-none border transition-all z-20 ${
+                    voice.isRecording 
+                      ? 'bg-red-500/10 border-red-500 text-red-500' 
+                      : 'bg-gold/10 border-gold/30 text-gold hover:bg-gold hover:text-primary'
+                  }`}
+                >
+                  <AnimatePresence mode="wait">
+                    {voice.isProcessingAudio ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <motion.div
+                        key={voice.isRecording ? 'stop' : 'mic'}
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        exit={{ scale: 0 }}
+                      >
+                         <Mic className={`w-4 h-4 ${voice.isRecording ? 'animate-pulse' : ''}`} />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                  
+                  {voice.isRecording && (
+                    <span className="absolute inset-0 rounded-none border border-red-500 animate-ping opacity-20" />
+                  )}
+                </motion.button>
+              </div>
+            </div>
+
+            {/* File Upload */}
             <div className="space-y-4">
               <label className="text-[11px] font-sans text-text-muted uppercase tracking-[0.3em]">Technical Specifications</label>
               <input type="file" ref={fileInputRef} className="hidden" onChange={handlers.handleFileChange} accept=".dwg,.pdf,.jpg,.png" />

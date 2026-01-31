@@ -19,6 +19,7 @@ export interface ProjectState {
   style: Style;
   timeline: string;
   stonePreference: string; 
+  description: string;
 }
 
 export interface Recommendation {
@@ -40,6 +41,7 @@ export interface LeadDossier {
     style: Style;
     timeline: string;
     preferredMaterial: string;
+    description: string;
   };
   aiRecommendation: Recommendation;
   metadata: {
@@ -59,6 +61,7 @@ const initialState: ProjectState = {
   style: 'Standard',
   timeline: 'Planning Phase (1-3 Months)',
   stonePreference: 'Light',
+  description: '',
 };
 
 // --- Actions ---
@@ -72,6 +75,7 @@ type Action =
   | { type: 'SET_STYLE'; payload: Style }
   | { type: 'SET_TIMELINE'; payload: string }
   | { type: 'SET_STONE_PREFERENCE'; payload: string }
+  | { type: 'SET_DESCRIPTION'; payload: string }
   | { type: 'RESET' };
 
 // --- Reducer ---
@@ -94,6 +98,8 @@ function projectReducer(state: ProjectState, action: Action): ProjectState {
       return { ...state, timeline: action.payload };
     case 'SET_STONE_PREFERENCE':
       return { ...state, stonePreference: action.payload };
+    case 'SET_DESCRIPTION':
+      return { ...state, description: action.payload };
     case 'RESET':
       return initialState;
     default:

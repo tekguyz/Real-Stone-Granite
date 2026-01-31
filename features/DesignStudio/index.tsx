@@ -35,7 +35,10 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
     handleSubmit,
     fileInputRef,
     projectRef,
-    timelineIndex
+    timelineIndex,
+    isRecording,
+    isProcessingAudio,
+    toggleRecording
   } = useDesignStudio(isOpen, onClose);
 
   if (!isOpen && !isExiting) return null;
@@ -77,6 +80,11 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
                   handleSubmit,
                   nextStep,
                   prevStep
+                }}
+                voice={{
+                  isRecording,
+                  isProcessingAudio,
+                  toggleRecording
                 }}
               />
 
