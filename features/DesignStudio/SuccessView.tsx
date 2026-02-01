@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ShieldCheck, Download, Calendar, ArrowLeft } from 'lucide-react';
@@ -13,22 +12,48 @@ interface SuccessViewProps {
 
 export const SuccessView: React.FC<SuccessViewProps> = ({ onClose, projectRef }) => {
   useEffect(() => {
+    // Industrial Luxury Palette
     const gold = '#d4af37'; 
-    const onyx = '#121212';
+    const silver = '#e5e5e5';
+    const bronze = '#cd7f32';
     
     const fireMetallicShavings = () => {
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 },
-        colors: [gold, onyx],
-        shapes: ['square'],
-        scalar: 0.9,
-        gravity: 1.2,
-      });
+      // Multiple bursts for a "high-end" feel
+      const duration = 3 * 1000;
+      const animationEnd = Date.now() + duration;
+      const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 30000 };
+
+      const randomInRange = (min: number, max: number) => Math.random() * (max - min) + min;
+
+      const interval: any = setInterval(function() {
+        const timeLeft = animationEnd - Date.now();
+
+        if (timeLeft <= 0) {
+          return clearInterval(interval);
+        }
+
+        const particleCount = 50 * (timeLeft / duration);
+        // since particles fall down, start a bit higher than random
+        confetti({ 
+          ...defaults, 
+          particleCount, 
+          origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+          colors: [gold, silver, bronze],
+          shapes: ['square'],
+        });
+        confetti({ 
+          ...defaults, 
+          particleCount, 
+          origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+          colors: [gold, silver, bronze],
+          shapes: ['square'],
+        });
+      }, 250);
     };
 
-    fireMetallicShavings();
+    // Delay to ensure the SuccessView transition is complete and z-index is settled
+    const timer = setTimeout(fireMetallicShavings, 400);
+    return () => clearTimeout(timer);
   }, []);
 
   const handleDownload = () => {
