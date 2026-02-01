@@ -15,7 +15,7 @@ module.exports = {
       },
       borderRadius: {
         none: '0px',
-        sm: '2px', // Matches index.html logic
+        sm: '2px',
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],

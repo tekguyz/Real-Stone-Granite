@@ -4,12 +4,12 @@
 */
 
 :root {
-  /* Core Palette (OKLCH) */
-  --color-primary: oklch(18.6% 0.009 46);
-  --color-surface: oklch(23.5% 0.009 46);
-  --color-gold: oklch(76.6% 0.154 86.6);
-  --color-text-main: oklch(96% 0.003 86);
-  --color-text-muted: oklch(60% 0.006 46);
+  /* Core Palette (OKLCH Strict) */
+  --color-primary: oklch(14% 0.01 80); 
+  --color-surface: oklch(19% 0.01 80);
+  --color-gold: oklch(74% 0.16 82);
+  --color-text-main: oklch(98% 0 0);
+  --color-text-muted: oklch(65% 0.01 80);
 }
 
 /* 
