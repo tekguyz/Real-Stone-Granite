@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { X, Send, ChevronRight, MessageSquare } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { Message, SUGGESTIONS } from '../model/types';
-import { Button } from '../../../shared/ui/Button';
+import { PrecisionBtn } from '../../../shared/ui/PrecisionBtn';
 
 interface ChatWindowProps {
   isOpen: boolean;
@@ -58,7 +58,6 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
       {/* Messages Area */}
       <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-8 z-10 custom-scrollbar scroll-smooth bg-primary/95">
         
-        {/* Empty State - Humanized */}
         {messages.length === 0 && (
           <div className="mt-12 text-center opacity-40">
             <div className="w-16 h-16 border border-white/10 mx-auto mb-6 flex items-center justify-center rounded-full bg-white/5">
@@ -87,15 +86,14 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
 
             {msg.hasAction && (
               <div className="mt-4 w-full max-w-[85%]">
-                <Button 
-                  variant="gold" 
-                  size="sm" 
-                  className="w-full flex items-center justify-between group h-12"
+                <PrecisionBtn 
+                  variant="primary" 
+                  className="w-full flex items-center justify-between group h-12 text-[9px]"
                   onClick={onLaunchStudio}
                 >
-                  <span className="font-mono text-[9px] tracking-widest uppercase">Start Project Planner</span>
+                  <span className="font-mono tracking-widest uppercase">Start Project Planner</span>
                   <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-                </Button>
+                </PrecisionBtn>
               </div>
             )}
           </div>
@@ -106,7 +104,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
               <div className="w-1.5 h-1.5 bg-gold rounded-full animate-bounce" />
               <div className="w-1.5 h-1.5 bg-gold rounded-full animate-bounce delay-100" />
               <div className="w-1.5 h-1.5 bg-gold rounded-full animate-bounce delay-200" />
-              <span className="ml-2 text-[10px] font-mono text-gold uppercase tracking-widest">Thinking...</span>
+              <span className="ml-2 text-[10px] font-mono text-gold uppercase tracking-widest">Consulting...</span>
           </div>
         )}
         <div ref={messagesEndRef} />
@@ -115,7 +113,6 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
       {/* Input Area */}
       <div className="bg-black/40 border-t border-white/10 p-6 relative z-20">
         
-        {/* Suggestion Chips */}
         <div className="flex overflow-x-auto gap-2 mb-4 scrollbar-hide pb-2">
           {SUGGESTIONS.map((chip) => (
             <button
@@ -134,7 +131,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-            placeholder="Type a message..."
+            placeholder="Inquire about stone types or processes..."
             className="w-full h-12 bg-surface/50 border border-white/10 px-4 text-white text-sm font-sans outline-none focus:border-gold/50 transition-colors placeholder:text-white/20 placeholder:font-light"
           />
           <button 

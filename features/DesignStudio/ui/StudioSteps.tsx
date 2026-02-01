@@ -1,8 +1,7 @@
-
 import React from 'react';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, ArrowLeft } from 'lucide-react';
 import { ProjectState, Recommendation } from '../../../entities/project/store';
-import { Button } from '../../../shared/ui/Button';
+import { PrecisionBtn } from '../../../shared/ui/PrecisionBtn';
 import { StudioHeader } from './StudioHeader';
 import { IdentityStep } from './steps/IdentityStep';
 import { TierStep } from './steps/TierStep';
@@ -76,24 +75,24 @@ export const StudioSteps: React.FC<StudioStepsProps> = ({
 
       {/* Navigation Layer */}
       <div className="max-w-3xl mx-auto mt-12 flex justify-between border-t border-white/5 pt-8">
-        <Button 
-          variant="ghost" 
+        <button 
           onClick={handlers.prevStep} 
           disabled={currentStep === 1 || isSubmitting} 
-          className={`${currentStep === 1 ? 'invisible' : ''} text-white/40 font-mono text-[10px] tracking-widest uppercase h-12`}
+          className={`${currentStep === 1 ? 'invisible' : 'flex'} items-center gap-2 text-white/40 hover:text-white font-mono text-[10px] tracking-[0.3em] uppercase transition-colors group`}
         >
+          <ArrowLeft className="w-3 h-3 group-hover:-translate-x-1 transition-transform" />
           Back
-        </Button>
+        </button>
         
         {currentStep < 4 && (
-          <Button 
-            variant="outline" 
+          <PrecisionBtn 
+            variant="secondary" 
             onClick={handlers.nextStep} 
-            className="h-12 px-8 border-white/20 hover:border-gold hover:text-gold group"
+            className="h-12 px-8 group"
           >
             <span className="font-mono text-[10px] uppercase tracking-widest font-bold">Continue</span>
             <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </Button>
+          </PrecisionBtn>
         )}
       </div>
     </div>
