@@ -1,43 +1,9 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
 import { COMPANY_KB } from '../../entities/company/knowledge';
 import { PrecisionBtn } from '../../shared/ui/PrecisionBtn';
 import { ICONS } from '../../shared/assets';
-
-interface NavItemProps {
-  link: { name: string; href: string };
-  onClick: (e: React.MouseEvent, id: string) => void;
-}
-
-/**
- * NavItem: Clean, high-end navigation link.
- * Replaced "HUD Brackets" with a sophisticated gold underline.
- */
-const NavItem: React.FC<NavItemProps> = ({ link, onClick }) => {
-  const [hover, setHover] = useState(false);
-
-  return (
-    <a
-      href={`#${link.href}`}
-      onClick={(e) => onClick(e, link.href)}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      className="relative h-full flex items-center justify-center outline-none cursor-pointer px-2"
-    >
-      <span className={`font-mono text-xs uppercase tracking-[0.2em] transition-colors duration-300 ${hover ? 'text-white' : 'text-white/60'}`}>
-        {link.name}
-      </span>
-      
-      {/* Luxury Gold Underline */}
-      <motion.div 
-        initial={{ width: 0 }}
-        animate={{ width: hover ? '100%' : 0 }}
-        transition={{ duration: 0.3, ease: "easeOut" }}
-        className="absolute bottom-6 left-0 h-[1px] bg-gold"
-      />
-    </a>
-  );
-};
+import { PHYSICS } from '../../shared/lib/theme';
 
 interface NavbarProps {
   onOpenStudio?: () => void;
@@ -45,15 +11,26 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const { scrollY } = useScroll();
+
+  // Hide navbar when scrolling down, show when scrolling up
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious() || 0;
+    if (latest > previous && latest > 150) {
+      setHidden(true);
+    } else {
+      setHidden(false);
+    }
+  });
 
   const navLinks = [
-    { name: 'Materials', href: 'materials' },
-    { name: 'Capabilities', href: 'capabilities' },
-    { name: 'Monuments', href: 'monuments' },
+    { name: 'Inventory', href: 'materials' },
+    { name: 'Services', href: 'capabilities' },
+    { name: 'Gallery', href: 'monuments' },
   ];
 
-  const scrollToSection = (e: React.MouseEvent, id: string) => {
-    e.preventDefault();
+  const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
@@ -63,99 +40,95 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 w-full h-24 bg-primary/95 backdrop-blur-md z-[9999] border-b border-white/5 flex items-center justify-between transition-all duration-300">
-        
-        {/* Main Container */}
-        <div className="w-full h-full flex items-center justify-between px-6 md:px-12">
+      {/* THE FLOATING PLINTH */}
+      <motion.nav
+        variants={{
+          visible: { y: 0, opacity: 1 },
+          hidden: { y: -100, opacity: 0 },
+        }}
+        animate={hidden ? "hidden" : "visible"}
+        transition={{ duration: 0.35, ease: "easeInOut" }}
+        className="fixed top-6 left-0 right-0 z-[9999] flex justify-center pointer-events-none"
+      >
+        <div className="pointer-events-auto bg-surface/80 backdrop-blur-xl border border-white/10 px-2 py-2 flex items-center gap-2 shadow-2xl shadow-black/50 rounded-sm">
           
-          {/* 1. BRAND IDENTITY */}
-          <div className="h-full flex items-center select-none">
-            <a 
-              href="#" 
-              onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className="flex flex-col group outline-none"
-            >
-              <span className="font-sans font-black text-xl text-white tracking-tighter leading-none">
-                REAL STONE
-              </span>
-              <span className="font-mono font-bold text-[10px] text-gold tracking-[0.3em] uppercase group-hover:text-white transition-colors mt-1">
-                & Granite Corp.
-              </span>
-            </a>
-          </div>
+          {/* 1. LOGO MARK */}
+          <a 
+            href="#" 
+            onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+            className="h-10 px-4 flex items-center bg-black/40 border border-white/5 hover:border-gold/30 transition-colors group"
+          >
+             <span className="font-sans font-black text-sm text-white tracking-tighter group-hover:text-gold transition-colors">RS&G</span>
+          </a>
 
-          {/* 2. DESKTOP NAVIGATION */}
-          <div className="hidden md:flex h-full items-center gap-12">
+          {/* 2. LINKS (Desktop) */}
+          <div className="hidden md:flex items-center bg-black/20 border border-white/5 h-10 px-2">
             {navLinks.map((link) => (
-              <NavItem key={link.name} link={link} onClick={scrollToSection} />
+              <button
+                key={link.name}
+                onClick={() => scrollToSection(link.href)}
+                className="px-6 h-full text-[10px] font-mono uppercase tracking-[0.2em] text-white/60 hover:text-white hover:bg-white/5 transition-all"
+              >
+                {link.name}
+              </button>
             ))}
           </div>
 
-          {/* 3. ACTIONS (Phone & CTA) */}
-          <div className="flex items-center gap-8">
-            
-            {/* Phone Number - Cleaned */}
-            <a 
-              href={`tel:${COMPANY_KB.contact.phone.replace(/[^0-9]/g, '')}`}
-              className="hidden xl:flex items-center gap-3 group outline-none"
-            >
-              <div className="w-8 h-8 flex items-center justify-center border border-white/10 group-hover:border-gold/50 transition-colors bg-white/5 rounded-sm">
-                <ICONS.Contact className="w-3 h-3 text-gold" />
-              </div>
-              <span className="text-xs font-mono text-white font-bold tracking-widest group-hover:text-gold transition-colors">
-                 {COMPANY_KB.contact.phone}
-              </span>
-            </a>
+          {/* 3. CTA */}
+          <PrecisionBtn 
+            variant="primary" 
+            onClick={onOpenStudio} 
+            className="h-10 px-6 text-[10px]"
+          >
+            Start Project
+          </PrecisionBtn>
 
-            {/* CTA Button */}
-            <div className="hidden sm:block">
-              <PrecisionBtn variant="primary" onClick={onOpenStudio} className="h-10 text-[10px] px-6">
-                Start Project
-              </PrecisionBtn>
-            </div>
+          {/* 4. MOBILE TRIGGER */}
+          <button 
+            onClick={() => setIsMobileOpen(true)}
+            className="md:hidden w-10 h-10 flex items-center justify-center border border-white/10 text-white bg-black/40"
+          >
+            <ICONS.Menu className="w-4 h-4" />
+          </button>
 
-            {/* Mobile Menu Toggle */}
-            <button 
-              onClick={() => setIsMobileOpen(!isMobileOpen)}
-              className="md:hidden w-10 h-10 flex items-center justify-center border border-white/10 text-white hover:border-gold hover:text-gold transition-colors"
-            >
-              {isMobileOpen ? <ICONS.Close className="w-5 h-5" /> : <ICONS.Menu className="w-5 h-5" />}
-            </button>
-          </div>
         </div>
-      </nav>
+      </motion.nav>
 
-      {/* MOBILE MENU OVERLAY */}
+      {/* MOBILE FULLSCREEN MENU */}
       <AnimatePresence>
         {isMobileOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-0 z-[9990] bg-primary pt-32 px-8 flex flex-col"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[10000] bg-primary flex flex-col p-8"
           >
-            <div className="flex flex-col gap-8">
+            {/* Header */}
+            <div className="flex justify-between items-center mb-12">
+               <span className="font-sans font-bold text-white tracking-tight">MENU</span>
+               <button onClick={() => setIsMobileOpen(false)} className="p-2 border border-white/10 text-white">
+                  <ICONS.Close className="w-6 h-6" />
+               </button>
+            </div>
+
+            {/* Links */}
+            <div className="flex flex-col gap-6">
               {navLinks.map((link, idx) => (
-                <a
+                <button
                   key={link.name}
-                  href={`#${link.href}`}
-                  onClick={(e) => scrollToSection(e, link.href)}
-                  className="flex items-baseline gap-4 border-b border-white/10 pb-4"
+                  onClick={() => scrollToSection(link.href)}
+                  className="text-left text-4xl font-light text-white font-sans uppercase tracking-tight hover:text-gold transition-colors"
                 >
-                  <span className="font-mono text-xs text-gold/50">0{idx + 1}</span>
-                  <span className="font-sans text-3xl font-light text-white uppercase tracking-tight">
-                    {link.name}
-                  </span>
-                </a>
+                  <span className="text-xs font-mono text-gold/50 mr-4 align-top">0{idx + 1}</span>
+                  {link.name}
+                </button>
               ))}
-              <div className="mt-8">
-                <PrecisionBtn variant="primary" onClick={() => {
-                  onOpenStudio?.();
-                  setIsMobileOpen(false);
-                }} className="w-full h-14 text-sm">
-                  Start Your Project
-                </PrecisionBtn>
-              </div>
+            </div>
+
+            {/* Footer info */}
+            <div className="mt-auto border-t border-white/10 pt-8">
+               <span className="block text-gold font-mono text-xs uppercase tracking-widest mb-2">Contact</span>
+               <span className="text-white text-lg font-light">{COMPANY_KB.contact.phone}</span>
             </div>
           </motion.div>
         )}

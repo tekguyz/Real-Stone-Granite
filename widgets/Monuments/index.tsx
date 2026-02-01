@@ -1,8 +1,8 @@
 
-
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MEDIA } from '../../shared/assets';
+import { PHYSICS } from '../../shared/lib/theme';
 
 interface MonumentProject {
   id: string;
@@ -68,9 +68,6 @@ const PROJECTS: MonumentProject[] = [
   }
 ];
 
-// Heavy physics for massive stone objects
-const HEAVY_PHYSICS = { type: "spring", stiffness: 200, damping: 40, mass: 1.5 } as const;
-
 export const Monuments: React.FC = () => {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
@@ -104,7 +101,7 @@ export const Monuments: React.FC = () => {
             animate={{ 
               flex: hoveredId === project.id ? 2.5 : 1,
             }}
-            transition={HEAVY_PHYSICS}
+            transition={PHYSICS.industrial}
           >
             {/* A. Image Layer (Ignites on Hover) */}
             <motion.div 
@@ -174,7 +171,7 @@ export const Monuments: React.FC = () => {
                      <motion.div 
                         initial={{ y: 40, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
-                        transition={{ ...HEAVY_PHYSICS, delay: 0.1 }}
+                        transition={{ ...PHYSICS.industrial, delay: 0.1 }}
                         className="relative p-8 bg-black/60 backdrop-blur-md border border-gold/20"
                      >
                         {/* Plaque Corner Screws */}
