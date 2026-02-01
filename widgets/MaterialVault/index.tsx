@@ -15,7 +15,7 @@ export const MaterialVault: React.FC<MaterialVaultProps> = ({ onStartProject }) 
 
   // Helper to safely get texture from assets
   const getTexture = (type: string) => {
-    // Splits "Exotic Stones" -> "EXOTIC" to match Asset Keys
+    // Normalizes "Exotic Stones" -> "EXOTIC"
     const key = type.split(' ')[0].toUpperCase(); 
     // @ts-ignore
     return TEXTURES[key] || TEXTURES.GRANITE;

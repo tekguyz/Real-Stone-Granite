@@ -29,23 +29,24 @@ import {
 
 export const TEXTURES = {
   // --- IGNEOUS & METAMORPHIC ---
-  GRANITE: "https://images.unsplash.com/photo-1628498064887-41f5eb1451a4?auto=format&fit=crop&q=80&w=1200", // Polished igneous
-  MARBLE: "https://images.unsplash.com/photo-1523413651479-597eb2da0ad6?auto=format&fit=crop&q=80&w=1200", // Carrara Macro
-  QUARTZITE: "https://images.unsplash.com/photo-1517430816045-df4b7de11d1d?auto=format&fit=crop&q=80&w=1200", // Taj Mahal detail
-  ONYX: "https://images.unsplash.com/photo-1515549832467-d3b1576fc031?auto=format&fit=crop&q=80&w=1200", // Backlit translucent
+  GRANITE: "https://futerno.com/wp-content/uploads/2023/09/lemurian-blue-aGLPf39INqA.jpeg", // Lemurian Blue
+  MARBLE: "https://futerno.com/wp-content/uploads/2023/07/emperador-gold-CeTJdboskw.jpg", // Emperor Gold
+  QUARTZITE: "https://futerno.com/wp-content/uploads/2023/09/Cristallo-1536x1536.jpeg", // Cristallo Quartzite
+  ONYX: "https://futerno.com/wp-content/uploads/2023/09/onice-miele-GOiVshHgrcI.jpeg", // Onyx Miele
   
   // --- SEDIMENTARY ---
-  LIMESTONE: "https://images.unsplash.com/photo-1596627684824-c15b9e782e4e?auto=format&fit=crop&q=80&w=1200", 
+  LIMESTONE: "https://futerno.com/wp-content/uploads/2023/09/azul-valverde-3u6ioDEB4Ko.jpeg", // Azul Valverde 
   TRAVERTINE: "https://images.unsplash.com/photo-1590422501099-17937ac4f04b?auto=format&fit=crop&q=80&w=1200", 
   SOAPSTONE: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&q=80&w=1200", 
   SLATE: "https://images.unsplash.com/photo-1566624838421-50e58836ec27?auto=format&fit=crop&q=80&w=1200", 
 
   // --- ENGINEERED ---
-  DEKTON: "https://images.unsplash.com/photo-1615529328331-f8917597711f?auto=format&fit=crop&q=80&w=1200", 
+  DEKTON: "https://futerno.com/wp-content/uploads/2023/09/liquid-sky-ERIgP1vQoIY.jpeg", // Liquid Sky
   PORCELAIN: "https://images.unsplash.com/photo-1622396481328-9b1b78cdd9fd?auto=format&fit=crop&q=80&w=1200", 
-  QUARTZ: "https://images.unsplash.com/photo-1534073828943-f801091bb18c?auto=format&fit=crop&q=80&w=1200", 
+  QUARTZ: "https://futerno.com/wp-content/uploads/2023/09/ethereal-haze-hRYLSl7nWeo.jpeg", // Ethereal Haze Silestone
 
   // --- EXOTIC ---
+  EXOTIC: "https://images.unsplash.com/photo-1582128795907-2a544c9b1399?auto=format&fit=crop&q=80&w=1200",
   SEMIPRECIOUS: "https://images.unsplash.com/photo-1582736486022-723eb1b78298?auto=format&fit=crop&q=80&w=1200", 
   RARE_FINDS: "https://images.unsplash.com/photo-1582128795907-2a544c9b1399?auto=format&fit=crop&q=80&w=1200", 
   GEMSTONE: "https://images.unsplash.com/photo-1617056463996-3c0767711b71?auto=format&fit=crop&q=80&w=1200", 
