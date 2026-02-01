@@ -72,9 +72,9 @@ export const HeroManifesto: React.FC<HeroManifestoProps> = ({ onStartProject, on
           transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
           className="font-sans font-medium text-6xl lg:text-8xl text-white tracking-tighter leading-[0.9] mb-10"
         >
-          Integrity. <br/>
-          Craftsmanship. <br/>
-          <span className="text-gold italic font-serif">Quality.</span>
+          Integrity <br/>
+          Craftsmanship <br/>
+          <span className="text-gold italic font-serif">Quality</span>
         </motion.h1>
 
         <motion.p 
