@@ -6,6 +6,7 @@ import { Capabilities } from '../../widgets/Capabilities/index';
 import { MaterialVault } from '../../widgets/MaterialVault/index';
 import { Monuments } from '../../widgets/Monuments/index';
 import { Philosophy } from '../../widgets/Philosophy/index';
+import { RibbonCTA } from '../../shared/ui/RibbonCTA';
 
 interface HomePageProps {
   onStartProject?: () => void;
@@ -23,6 +24,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onStartProject }) => {
       {/* 3. Process & Technical Specs */}
       <Capabilities />
       
+      {/* 3.5. INTERCEPTOR RIBBON: Human & Inviting */}
+      <RibbonCTA 
+        heading="Ready to Begin Your Legacy?"
+        subheading="Whether you are in the planning phase or ready to build, our master fabricators are here to guide you."
+        buttonLabel="Start Your Project"
+        onClick={onStartProject}
+      />
+
       {/* 4. Inventory & Assets */}
       <MaterialVault onStartProject={onStartProject} />
 

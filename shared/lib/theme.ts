@@ -1,3 +1,4 @@
+
 export const COLORS = {
   // DEEP ONYX: Darker (14% Lightness) for a true "Void" look.
   primary: 'oklch(14% 0.01 80)', 
@@ -17,6 +18,13 @@ export const COLORS = {
   // TRANSLUCENTS
   goldDim: 'oklch(74% 0.16 82 / 0.1)', 
   surfaceHighlight: 'oklch(19% 0.01 80 / 0.8)',
+} as const;
+
+// HEX Fallbacks for Canvas/JS-only libraries (e.g. Confetti)
+export const HEX = {
+  gold: '#d4af37',   // Classic Metallic Gold
+  silver: '#e5e5e5', // Platinum/Silver
+  bronze: '#cd7f32', // Industrial Bronze
 } as const;
 
 export const PHYSICS = {

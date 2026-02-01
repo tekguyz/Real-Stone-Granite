@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
@@ -67,9 +68,9 @@ export const Footer: React.FC<FooterProps> = ({ onOpenStudio }) => {
                Explore
              </span>
              <nav className="flex flex-col gap-4">
+                <FooterLink label="Services" onClick={(e) => scrollToSection(e, 'capabilities')} />
+                <FooterLink label="Inventory" onClick={(e) => scrollToSection(e, 'materials')} />
                 <FooterLink label="Monuments" onClick={(e) => scrollToSection(e, 'monuments')} />
-                <FooterLink label="Materials" onClick={(e) => scrollToSection(e, 'materials')} />
-                <FooterLink label="Capabilities" onClick={(e) => scrollToSection(e, 'capabilities')} />
                 <FooterLink label="Start Project" onClick={(e) => { e.preventDefault(); onOpenStudio?.(); }} />
              </nav>
           </div>

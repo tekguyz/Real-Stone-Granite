@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
 import { COMPANY_KB } from '../../entities/company/knowledge';
@@ -23,10 +24,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
     }
   });
 
+  // NAVIGATION ORDER: Services -> Inventory -> Monuments
   const navLinks = [
-    { name: 'Inventory', href: 'materials' },
     { name: 'Services', href: 'capabilities' },
-    { name: 'Gallery', href: 'monuments' },
+    { name: 'Inventory', href: 'materials' },
+    { name: 'Monuments', href: 'monuments' },
   ];
 
   const scrollToSection = (id: string) => {

@@ -16,7 +16,7 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
   // --- CONFIGURATION ---
   const LIGHT_RADIUS = 70;      // Size of the clear visibility circle (px)
   const GLOW_RADIUS = 90;       // Size of the soft outer glow (px)
-  const LIGHT_BRIGHTNESS = 1.5; // Image exposure (1.0 = normal, 2.0 = double brightness)
+  const LIGHT_BRIGHTNESS = 1.3; // Image exposure (1.0 = normal, 2.0 = double brightness)
   const GLOW_OPACITY = 0.15;    // Intensity of the atmospheric fog (0.0 to 1.0)
   // ---------------------
 

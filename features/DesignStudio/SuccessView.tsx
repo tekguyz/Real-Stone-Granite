@@ -1,9 +1,11 @@
-import React, { useEffect } from 'react';
+
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ShieldCheck, Download, Calendar, ArrowLeft } from 'lucide-react';
+import { ShieldCheck, Download, Calendar, ArrowLeft, Loader2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { PrecisionBtn } from '../../shared/ui/PrecisionBtn';
-import { PHYSICS } from '../../shared/lib/theme';
+import { PHYSICS, HEX } from '../../shared/lib/theme';
+import { useToast } from '../../shared/ui/Toast';
 
 interface SuccessViewProps {
   onClose: () => void;
@@ -11,12 +13,10 @@ interface SuccessViewProps {
 }
 
 export const SuccessView: React.FC<SuccessViewProps> = ({ onClose, projectRef }) => {
+  const { showToast } = useToast();
+  const [isDownloading, setIsDownloading] = useState(false);
+
   useEffect(() => {
-    // Industrial Luxury Palette
-    const gold = '#d4af37'; 
-    const silver = '#e5e5e5';
-    const bronze = '#cd7f32';
-    
     const fireMetallicShavings = () => {
       // Multiple bursts for a "high-end" feel
       const duration = 3 * 1000;
@@ -38,14 +38,14 @@ export const SuccessView: React.FC<SuccessViewProps> = ({ onClose, projectRef })
           ...defaults, 
           particleCount, 
           origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
-          colors: [gold, silver, bronze],
+          colors: [HEX.gold, HEX.silver, HEX.bronze],
           shapes: ['square'],
         });
         confetti({ 
           ...defaults, 
           particleCount, 
           origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
-          colors: [gold, silver, bronze],
+          colors: [HEX.gold, HEX.silver, HEX.bronze],
           shapes: ['square'],
         });
       }, 250);
@@ -57,7 +57,18 @@ export const SuccessView: React.FC<SuccessViewProps> = ({ onClose, projectRef })
   }, []);
 
   const handleDownload = () => {
-    alert("Project Overview downloaded.");
+    if (isDownloading) return;
+    setIsDownloading(true);
+
+    // Simulate PDF Generation Process
+    setTimeout(() => {
+      setIsDownloading(false);
+      showToast(`Dossier #${projectRef} Saved to Device`, 'success');
+    }, 1500);
+  };
+
+  const handleScheduling = () => {
+    showToast("Redirecting to Concierge Booking...", 'info');
   };
 
   return (
@@ -87,15 +98,22 @@ export const SuccessView: React.FC<SuccessViewProps> = ({ onClose, projectRef })
             onClick={handleDownload}
             variant="secondary"
             className="w-full h-14 border-gold/40 text-gold hover:bg-gold/5"
+            disabled={isDownloading}
           >
             <div className="flex items-center gap-3">
-              <Download className="w-4 h-4" />
-              <span className="font-mono text-[10px] font-bold tracking-[0.2em]">Save Summary</span>
+              {isDownloading ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <Download className="w-4 h-4" />
+              )}
+              <span className="font-mono text-[10px] font-bold tracking-[0.2em]">
+                {isDownloading ? "GENERATING PDF..." : "SAVE SUMMARY"}
+              </span>
             </div>
           </PrecisionBtn>
 
           <PrecisionBtn 
-            onClick={() => alert("Opening scheduling assistant...")}
+            onClick={handleScheduling}
             variant="primary"
             className="w-full h-14"
           >

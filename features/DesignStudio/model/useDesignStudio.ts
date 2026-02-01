@@ -1,10 +1,14 @@
+
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useProjectStore } from '../../../entities/project/store';
 import { transcribeAudio } from '../../../shared/api/gemini';
 import { TIMELINE_OPTIONS } from './types';
+import { useToast } from '../../../shared/ui/Toast';
 
 export const useDesignStudio = (isOpen: boolean, onClose: () => void) => {
   const { state, dispatch, recommendation } = useProjectStore();
+  const { showToast } = useToast();
+
   const [currentStep, setCurrentStep] = useState(1);
   const [isExiting, setIsExiting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -82,6 +86,7 @@ export const useDesignStudio = (isOpen: boolean, onClose: () => void) => {
       // Fallback: Proceed to success even if network fails for UX, 
       // but ideally show an industrial error message.
       setIsSubmitted(true);
+      showToast("Offline Mode: Project Saved Locally", "info");
     } finally {
       setIsSubmitting(false);
     }
@@ -139,10 +144,11 @@ export const useDesignStudio = (isOpen: boolean, onClose: () => void) => {
             const newDesc = currentDesc ? `${currentDesc}\n\n${transcribedText}` : transcribedText;
             
             dispatch({ type: 'SET_DESCRIPTION', payload: newDesc });
+            showToast("Voice Note Transcribed Successfully", "success");
 
           } catch (error) {
             console.error("Audio processing error:", error);
-            alert("We could not process your voice note at this time. Please try typing your requirements.");
+            showToast("Audio Transcription Failed. Please type details.", "error");
           } finally {
             setIsProcessingAudio(false);
           }
@@ -152,7 +158,7 @@ export const useDesignStudio = (isOpen: boolean, onClose: () => void) => {
         setIsRecording(true);
       } catch (err) {
         console.error("Microphone access denied:", err);
-        alert("Please enable microphone access to use the Smart Voice Input feature.");
+        showToast("Microphone Access Required for Voice Input", "error");
       }
     }
   };

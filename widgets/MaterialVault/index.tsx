@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { COMPANY_KB } from '../../entities/company/knowledge';
@@ -27,7 +28,8 @@ export const MaterialVault: React.FC<MaterialVaultProps> = ({ onStartProject }) 
   ];
 
   return (
-    <section id="materials" className="bg-primary border-b border-white/5 py-24 w-full overflow-hidden">
+    // Increased bottom padding (py-24 -> pt-24 pb-40) to separate from Monuments
+    <section id="materials" className="bg-primary border-b border-white/5 pt-24 pb-40 w-full overflow-hidden">
       
       {/* 1. Header & Controls */}
       <div className="w-full px-6 md:px-12 mb-16">

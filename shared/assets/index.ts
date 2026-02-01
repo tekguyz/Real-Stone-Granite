@@ -1,3 +1,4 @@
+
 import { 
   Layers, 
   Shield, 
@@ -52,6 +53,15 @@ export const TEXTURES = {
   GEMSTONE: "https://images.unsplash.com/photo-1617056463996-3c0767711b71?auto=format&fit=crop&q=80&w=1200", 
 };
 
+// Centralized Monument Images
+export const MONUMENTS = {
+  VIETNAM: "https://i.ibb.co/4ZMqJd8h/25-20230616152034-10397363-xlarge.jpg",
+  NAVY_SEAL: "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&q=80&w=800&sat=-100",
+  NINE_ELEVEN: "https://images.unsplash.com/photo-1518391846015-55a9cc003b25?auto=format&fit=crop&q=80&w=1200",
+  SPACE: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&q=80&w=1200",
+  GOLD_STAR: "https://images.unsplash.com/photo-1464692805480-a69dfaafdb0d?auto=format&fit=crop&q=80&w=1200"
+};
+
 export const MEDIA = {
   VIDEO_MACRO: "https://assets.mixkit.co/videos/preview/mixkit-black-marble-surface-view-4089-large.mp4",
   
@@ -59,7 +69,6 @@ export const MEDIA = {
   IMG_MACRO_POSTER: "https://images.unsplash.com/photo-1600607687940-4e789269c27b?auto=format&fit=crop&q=80&w=1920",
   
   VIDEO_CNC: "https://player.vimeo.com/external/494163956.sd.mp4?s=d00424578f773663a763d8e5793e7f9104192b67&profile_id=165",
-  IMG_TRIDENT: "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&q=80&w=800&sat=-100", 
 };
 
 export const ICONS = {

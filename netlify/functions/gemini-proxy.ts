@@ -19,8 +19,9 @@ export default async (req: Request) => {
   }
 
   try {
-    // 3. Request Parsing - Accepts prompt, systemInstruction, and optional audio data
-    const { prompt, systemInstruction, audio } = await req.json();
+    // 3. Request Parsing
+    // Accepts prompt, systemInstruction, temperature, and optional audio data
+    const { prompt, systemInstruction, audio, temperature } = await req.json();
 
     if (!process.env.API_KEY) {
       console.error("API_KEY is not defined in the environment.");
@@ -33,7 +34,7 @@ export default async (req: Request) => {
     // 5. Construct Multimodal Content
     const parts = [];
     
-    // Add audio part if present
+    // Add audio part if present (Critical for Voice Notes)
     if (audio && audio.data && audio.mimeType) {
       parts.push({
         inlineData: {
@@ -55,7 +56,7 @@ export default async (req: Request) => {
       contents: { parts },
       config: {
         systemInstruction: systemInstruction, 
-        temperature: 0.4, // Lower temperature for accurate transcription
+        temperature: temperature || 0.4, // Default to 0.4 if not specified
       },
     });
 

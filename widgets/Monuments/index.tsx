@@ -1,6 +1,7 @@
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MEDIA } from '../../shared/assets';
+import { MONUMENTS } from '../../shared/assets';
 import { PHYSICS } from '../../shared/lib/theme';
 
 interface MonumentProject {
@@ -22,17 +23,17 @@ const PROJECTS: MonumentProject[] = [
     material: "ABSOLUTE BLACK GRANITE",
     coords: "38.8913° N, 77.0477° W",
     completion: "Est. 1993",
-    image: "https://images.unsplash.com/photo-1599930113854-d6d7fd521f10?auto=format&fit=crop&q=80&w=1200", 
+    image: MONUMENTS.VIETNAM, 
     description: "The replication and maintenance of sacred names etched into the most reflective granite on Earth."
   },
   {
     id: "SEAL",
-    title: "Navy SEAL Museum",
+    title: "Navy SEAL Memorial",
     subtitle: "Muster Grounds",
     material: "JET BLACK GRANITE",
     coords: "27.4965° N, 80.3013° W",
     completion: "2010",
-    image: MEDIA.IMG_TRIDENT,
+    image: MONUMENTS.NAVY_SEAL,
     description: "Crafting the Trident-shaped sanctuary honoring the fallen frogmen of the U.S. Navy."
   },
   {
@@ -42,7 +43,7 @@ const PROJECTS: MonumentProject[] = [
     material: "VIRGINIA MIST GRANITE",
     coords: "40.7127° N, 74.0134° W",
     completion: "2011",
-    image: "https://images.unsplash.com/photo-1518391846015-55a9cc003b25?auto=format&fit=crop&q=80&w=1200", // FIXED URL
+    image: MONUMENTS.NINE_ELEVEN, 
     description: "Architectural cladding and monuments dedicated to the bravery of those at Ground Zero."
   },
   {
@@ -52,7 +53,7 @@ const PROJECTS: MonumentProject[] = [
     material: "POLISHED GRANITE",
     coords: "28.6139° N, 80.8015° W",
     completion: "Phase I-IV",
-    image: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&q=80&w=1200", 
+    image: MONUMENTS.SPACE, 
     description: "Monuments celebrating the pioneers of the Gemini and Apollo programs."
   },
   {
@@ -62,7 +63,7 @@ const PROJECTS: MonumentProject[] = [
     material: "INDIA BLACK GRANITE",
     coords: "27.4467° N, 80.3256° W",
     completion: "Ongoing",
-    image: "https://images.unsplash.com/photo-1464692805480-a69dfaafdb0d?auto=format&fit=crop&q=80&w=1200", // FIXED URL
+    image: MONUMENTS.GOLD_STAR, 
     description: "A tribute to the families who have sacrificed a loved one for our freedom."
   }
 ];
