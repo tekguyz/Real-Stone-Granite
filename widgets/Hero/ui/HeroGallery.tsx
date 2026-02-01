@@ -13,16 +13,24 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [hovering, setHovering] = useState(false);
 
+  // --- CONFIGURATION ---
+  const LIGHT_RADIUS = 70;      // Size of the clear visibility circle (px)
+  const GLOW_RADIUS = 90;       // Size of the soft outer glow (px)
+  const LIGHT_BRIGHTNESS = 1.5; // Image exposure (1.0 = normal, 2.0 = double brightness)
+  const GLOW_OPACITY = 0.15;    // Intensity of the atmospheric fog (0.0 to 1.0)
+  // ---------------------
+
   // Lighting Physics Engine
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const lightX = useSpring(mouseX, PHYSICS.industrial);
   const lightY = useSpring(mouseY, PHYSICS.industrial);
 
-  // REDUCED SIZE BY 30% (160px -> 110px) and (200px -> 140px)
-  // Sharpened the gradient stops to reduce "blurry" look
-  const maskImage = useMotionTemplate`radial-gradient(circle 110px at ${lightX}px ${lightY}px, black 30%, transparent 100%)`;
-  const glowGradient = useMotionTemplate`radial-gradient(circle 140px at ${lightX}px ${lightY}px, rgba(255,220,150,0.15) 0%, transparent 70%)`;
+  // Precision Lighting: Dynamic mask
+  const maskImage = useMotionTemplate`radial-gradient(circle ${LIGHT_RADIUS}px at ${lightX}px ${lightY}px, black 80%, transparent 100%)`;
+  
+  // Dynamic Atmosphere: Uses GLOW_OPACITY configuration
+  const glowGradient = useMotionTemplate`radial-gradient(circle ${GLOW_RADIUS}px at ${lightX}px ${lightY}px, rgba(255,220,150,${GLOW_OPACITY}) 0%, transparent 100%)`;
 
   function handleMouseMove({ clientX, clientY }: React.MouseEvent) {
     if (!galleryRef.current) return;
@@ -50,7 +58,7 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
     >
       <motion.div style={{ y: parallaxY }} className="w-full h-[120%] relative">
         <AnimatePresence mode="popLayout">
-          {/* Base Layer (Ambient) */}
+          {/* Base Layer (Ambient - Dark) */}
           <motion.div
             key={`base-${currentIndex}`}
             initial={{ opacity: 0 }}
@@ -68,7 +76,7 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
             />
           </motion.div>
 
-          {/* Reveal Layer (Backlit) - Controlled by Hover State */}
+          {/* Reveal Layer (Backlit - Lit Up) */}
           <motion.div
             key={`lit-${currentIndex}`}
             initial={{ opacity: 0 }}
@@ -85,34 +93,28 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
               className="absolute inset-0 bg-cover bg-center"
               style={{ 
                 backgroundImage: `url(${currentSlab.image})`,
-                filter: 'brightness(1.5) contrast(1.4) saturate(1.4) sepia(10%)' 
+                // Uses LIGHT_BRIGHTNESS configuration
+                filter: `brightness(${LIGHT_BRIGHTNESS}) contrast(1.4) saturate(1.4) sepia(10%)` 
               }}
             />
           </motion.div>
         </AnimatePresence>
         
-        {/* Atmosphere Bloom - Controlled by Hover State */}
+        {/* Atmosphere Bloom */}
         <motion.div
           className="absolute inset-0 z-20 pointer-events-none mix-blend-screen"
           animate={{ opacity: hovering ? 1 : 0 }}
           style={{ background: glowGradient }}
         />
 
-        {/* Custom Light Source Cursor - Controlled by Hover State */}
+        {/* Minimal Specular Highlight (Reflection Point) */}
         <motion.div
-          className="absolute z-30 pointer-events-none flex items-center gap-3"
+          className="absolute z-30 pointer-events-none"
           style={{ x: lightX, y: lightY }}
-          animate={{ opacity: hovering ? 1 : 0, scale: hovering ? 1 : 0.8 }}
+          animate={{ opacity: hovering ? 1 : 0, scale: hovering ? 1 : 0.5 }}
         >
-          {/* Reduced blur radius slightly */}
-          <div className="w-10 h-10 rounded-full border border-white/20 bg-white/5 backdrop-blur-[2px] flex items-center justify-center -translate-x-1/2 -translate-y-1/2">
-            <div className="w-1 h-1 bg-white rounded-full shadow-[0_0_15px_white]" />
-          </div>
-          <div className="bg-black/60 backdrop-blur-md px-3 py-1 border border-white/10 -translate-y-1/2">
-            <span className="text-[9px] font-mono text-gold uppercase tracking-widest whitespace-nowrap">
-              Inspect Selection
-            </span>
-          </div>
+          {/* Fixed width/height to standard Tailwind classes to ensure perfect circle */}
+          <div className="w-2 h-2 bg-white rounded-full shadow-[0_0_10px_2px_rgba(255,255,255,0.8)] -translate-x-1/2 -translate-y-1/2" />
         </motion.div>
 
         {/* Selection Info Card */}

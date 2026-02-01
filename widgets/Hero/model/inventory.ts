@@ -17,10 +17,10 @@ export const FEATURED_SLABS: FeaturedSlab[] = [
   },
   {
     id: "slab_02",
-    name: "Cristallo Quartzite",
+    name: "Emerald Quartzite",
     origin: "Brazil",
-    status: "Translucent",
-    image: "https://futerno.com/wp-content/uploads/2023/09/Cristallo-1536x1536.jpeg"
+    status: "Dark",
+    image: "https://futerno.com/wp-content/uploads/2023/09/nero-marinace-gCWmM5SMG28.jpeg"
   },
   {
     id: "slab_03",
