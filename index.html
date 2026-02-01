@@ -1,10 +1,52 @@
-
 <!DOCTYPE html>
 <html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Real Stone & Granite | Excellence in Stone</title>
+    <title>Real Stone & Granite | Excellence in Stone since 1993</title>
+    <meta name="description" content="Crafting distinguished architectural surfaces since 1993. High-performance custom fabrication, digital design verification, and monument-grade surfaces." />
+    <meta name="keywords" content="Granite Fort Pierce, Marble Countertops, Navy SEAL Museum, Stone Fabrication, Industrial Luxury, Architectural Surfaces, Bahamas Export, Treasure Coast Masonry" />
+    <meta name="theme-color" content="#1a1a1a" />
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="business.business" />
+    <meta property="og:title" content="Real Stone & Granite | Excellence in Stone" />
+    <meta property="og:description" content="Crafting distinguished architectural surfaces since 1993. South Florida's authority on natural stone." />
+    <meta property="og:image" content="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&q=80&w=800&sat=-100" />
+    
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "Real Stone & Granite Corp",
+        "image": "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&q=80&w=800&sat=-100",
+        "telephone": "(772) 489-9964",
+        "priceRange": "$$$",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "427 South Market Avenue",
+          "addressLocality": "Fort Pierce",
+          "addressRegion": "FL",
+          "postalCode": "34982",
+          "addressCountry": "US"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 27.424,
+          "longitude": -80.325
+        },
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+            "opens": "08:00",
+            "closes": "16:00"
+          }
+        ]
+      }
+    </script>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -44,16 +86,10 @@
     </script>
     <style type="text/css">
       :root {
-        /* OKLCH VALUES - TUNED FOR LUXURY */
-        /* Deep Onyx: Darker, denser black */
         --color-primary: oklch(14% 0.01 80); 
-        /* Gunmetal: Slightly lighter for cards */
         --color-surface: oklch(19% 0.01 80);
-        /* Rolex Gold: Richer, less "lemon", more "brass" */
         --color-gold: oklch(74% 0.16 82);
-        /* Pure White for text */
         --color-text-main: oklch(98% 0 0);
-        /* Muted Grey for subtitles */
         --color-text-muted: oklch(65% 0.01 80);
       }
 
@@ -72,21 +108,20 @@
     "react-dom": "https://esm.sh/react-dom@19.0.0",
     "react-dom/client": "https://esm.sh/react-dom@19.0.0/client",
     "react-router-dom": "https://esm.sh/react-router-dom@6.22.3?deps=react@19.0.0,react-dom@19.0.0",
-    "react-helmet-async": "https://esm.sh/react-helmet-async@2.0.4?deps=react@19.0.0,react-dom@19.0.0",
     "lucide-react": "https://esm.sh/lucide-react@0.475.0?deps=react@19.0.0",
     "framer-motion": "https://esm.sh/framer-motion@12.0.0-alpha.2?deps=react@19.0.0",
     "react-markdown": "https://esm.sh/react-markdown@9.0.1?deps=react@19.0.0,react-dom@19.0.0",
     "canvas-confetti": "https://esm.sh/canvas-confetti@1.9.3",
+    "@google/genai": "https://esm.sh/@google/genai@^1.39.0",
     "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
     "react/": "https://esm.sh/react@^19.2.4/",
-    "@google/genai": "https://esm.sh/@google/genai@^1.39.0"
+    "react-helmet-async": "https://esm.sh/react-helmet-async@^2.0.5"
   }
 }
 </script>
   </head>
   <body>
     <div id="root"></div>
-    <!-- Industrial Infrastructure: Entry point for the application lifecycle -->
     <script type="module" src="/index.tsx"></script>
   </body>
 </html>

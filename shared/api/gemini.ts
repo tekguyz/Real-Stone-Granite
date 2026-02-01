@@ -3,14 +3,11 @@ import { GoogleGenAI } from "@google/genai";
 /**
  * Gemini Intelligence Service
  * Handles direct communication with Google's Generative AI models.
+ * Strictly follows the required @google/genai coding guidelines.
  */
 
-export const getGeminiClient = () => {
-  return new GoogleGenAI({ apiKey: process.env.API_KEY });
-};
-
 export const generateText = async (prompt: string, systemInstruction: string) => {
-  const ai = getGeminiClient();
+  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
   const response = await ai.models.generateContent({
     model: 'gemini-3-flash-preview',
     contents: prompt,
@@ -23,7 +20,7 @@ export const generateText = async (prompt: string, systemInstruction: string) =>
 };
 
 export const transcribeAudio = async (base64Audio: string, mimeType: string, prompt: string) => {
-  const ai = getGeminiClient();
+  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
   const response = await ai.models.generateContent({
     model: 'gemini-3-flash-preview',
     contents: {
