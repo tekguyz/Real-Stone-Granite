@@ -42,11 +42,11 @@ export const TEXTURES = {
 
   // --- ENGINEERED ---
   DEKTON: "https://futerno.com/wp-content/uploads/2023/09/liquid-sky-ERIgP1vQoIY.jpeg", // Liquid Sky
-  PORCELAIN: "https://images.unsplash.com/photo-1622396481328-9b1b78cdd9fd?auto=format&fit=crop&q=80&w=1200", 
+  PORCELAIN: "https://futerno.com/wp-content/uploads/2024/01/506_Mirabel_3840X1812_RGB_181223-1536x725.jpg", // Mirabel
   QUARTZ: "https://futerno.com/wp-content/uploads/2023/09/ethereal-haze-hRYLSl7nWeo.jpeg", // Ethereal Haze Silestone
 
   // --- EXOTIC ---
-  EXOTIC: "https://images.unsplash.com/photo-1582128795907-2a544c9b1399?auto=format&fit=crop&q=80&w=1200",
+  EXOTIC: "https://futerno.com/wp-content/uploads/2023/09/onice-rosa-1jkv4Epcwsg.jpeg", // Onice Rosa Onyx
   SEMIPRECIOUS: "https://images.unsplash.com/photo-1582736486022-723eb1b78298?auto=format&fit=crop&q=80&w=1200", 
   RARE_FINDS: "https://images.unsplash.com/photo-1582128795907-2a544c9b1399?auto=format&fit=crop&q=80&w=1200", 
   GEMSTONE: "https://images.unsplash.com/photo-1617056463996-3c0767711b71?auto=format&fit=crop&q=80&w=1200", 

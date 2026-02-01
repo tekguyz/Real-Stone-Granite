@@ -56,7 +56,7 @@ export const COMPANY_KB = {
         attributes: ["Translucent", "Back-Lit Capable", "Decorative"]
       },
       {
-        type: "Exotic Stones",
+        type: "Exotic",
         description: "Rare, museum-grade materials personally hand-picked by our leadership for their distinctive features and singular beauty.",
         visualKeywords: "Rare bookmatch marble, unique granite slab pattern, exotic stone macro",
         attributes: ["Hand-Picked", "Distinctive", "Rare"]

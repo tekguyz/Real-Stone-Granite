@@ -15,14 +15,14 @@ export const MaterialVault: React.FC<MaterialVaultProps> = ({ onStartProject }) 
 
   // Helper to safely get texture from assets
   const getTexture = (type: string) => {
-    // Normalizes "Exotic Stones" -> "EXOTIC"
+    // Normalizes "Exotic" -> "EXOTIC"
     const key = type.split(' ')[0].toUpperCase(); 
     // @ts-ignore
     return TEXTURES[key] || TEXTURES.GRANITE;
   };
 
   const tabs: { key: TabKey; label: string }[] = [
-    { key: 'natural', label: 'Natural Stone Selection' },
+    { key: 'natural', label: 'Natural Selection' },
     { key: 'engineered', label: 'Engineered & Synthetic' },
   ];
 
@@ -46,7 +46,7 @@ export const MaterialVault: React.FC<MaterialVaultProps> = ({ onStartProject }) 
             </p>
           </div>
 
-          {/* The Toggle Switch (Clean, Architectural, No "Status Lights") */}
+          {/* The Toggle Switch */}
           <div className="flex flex-wrap gap-0 bg-white/5 p-1 border border-white/10">
             {tabs.map((tab) => {
               const isActive = activeTab === tab.key;
@@ -90,7 +90,7 @@ export const MaterialVault: React.FC<MaterialVaultProps> = ({ onStartProject }) 
                   initial={{ opacity: 0, scale: 0.98 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: idx * 0.03, ...PHYSICS.industrial }}
-                  className="group relative aspect-square w-full overflow-hidden bg-black cursor-pointer border border-white/5 hover:border-gold"
+                  className="group relative aspect-square w-full overflow-hidden bg-black cursor-pointer border border-white/5 hover:border-gold/30"
                   onClick={onStartProject}
                 >
                   {/* A. Visual Layer (Image) */}
@@ -106,10 +106,8 @@ export const MaterialVault: React.FC<MaterialVaultProps> = ({ onStartProject }) 
                   {/* B. Default State (Title Anchor) */}
                   <div className="absolute inset-0 p-8 flex flex-col justify-end z-10 pointer-events-none group-hover:opacity-0 transition-opacity duration-300">
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-80" />
+                    
                     <div className="relative">
-                      <span className="text-gold font-mono text-[9px] uppercase tracking-widest block mb-2 opacity-80">
-                          0{idx + 1}
-                      </span>
                       <h3 className="text-3xl lg:text-4xl font-sans font-black uppercase text-white tracking-tighter leading-none">
                         {material.type}
                       </h3>
