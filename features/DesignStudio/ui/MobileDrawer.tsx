@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Check, ChevronUp, ChevronDown } from 'lucide-react';
@@ -58,7 +59,8 @@ export const MobileSummaryDrawer: React.FC<MobileDrawerProps> = ({
              <div className="flex items-center gap-2 text-gold mb-1">
                <Check className="w-4 h-4" />
                <span className="text-lg font-medium uppercase tracking-tight">
-                  {state.stonePreference !== 'Light' ? state.stonePreference : recommendation.material}
+                  {/* Changed 'Light' check to 'Pending' to match ProjectStore's initial state */}
+                  {state.stonePreference !== 'Pending' ? state.stonePreference : recommendation.material}
                </span>
              </div>
            </div>

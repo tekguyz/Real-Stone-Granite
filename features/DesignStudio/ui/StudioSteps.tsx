@@ -1,10 +1,12 @@
+
 import React from 'react';
 import { ChevronRight, ArrowLeft } from 'lucide-react';
 import { ProjectState, Recommendation } from '../../../entities/project/store';
 import { PrecisionBtn } from '../../../shared/ui/PrecisionBtn';
 import { StudioHeader } from './StudioHeader';
 import { IdentityStep } from './steps/IdentityStep';
-import { TierStep } from './steps/TierStep';
+import { ScopeStep } from './steps/ScopeStep';
+import { IntensityStep } from './steps/IntensityStep';
 import { RecommendationStep } from './steps/RecommendationStep';
 import { DetailsStep } from './steps/DetailsStep';
 
@@ -57,9 +59,10 @@ export const StudioSteps: React.FC<StudioStepsProps> = ({
 
         {/* Form Content */}
         {currentStep === 1 && <IdentityStep state={state} dispatch={dispatch} />}
-        {currentStep === 2 && <TierStep state={state} dispatch={dispatch} />}
-        {currentStep === 3 && <RecommendationStep state={state} dispatch={dispatch} recommendation={recommendation} />}
-        {currentStep === 4 && (
+        {currentStep === 2 && <ScopeStep state={state} dispatch={dispatch} />}
+        {currentStep === 3 && <IntensityStep state={state} dispatch={dispatch} />}
+        {currentStep === 4 && <RecommendationStep state={state} dispatch={dispatch} recommendation={recommendation} />}
+        {currentStep === 5 && (
           <DetailsStep 
             state={state} 
             dispatch={dispatch} 
@@ -84,7 +87,7 @@ export const StudioSteps: React.FC<StudioStepsProps> = ({
           Back
         </button>
         
-        {currentStep < 4 && (
+        {currentStep < 5 && (
           <PrecisionBtn 
             variant="secondary" 
             onClick={handlers.nextStep} 

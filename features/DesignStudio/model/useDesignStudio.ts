@@ -72,7 +72,8 @@ export const useDesignStudio = (isOpen: boolean, onClose: () => void) => {
           "form-name": "project-inquiry",
           userRole: state.userRole,
           fabricationLevel: state.fabricationLevel,
-          projectType: state.projectType,
+          // Corrected from state.projectType to state.scope to resolve missing property error
+          projectType: state.scope,
           stonePreference: state.stonePreference,
           timeline: state.timeline,
           description: state.description,

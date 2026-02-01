@@ -3,20 +3,19 @@ import React, { createContext, useContext, useReducer, ReactNode, useMemo } from
 
 // --- Types ---
 
-export type ProjectType = 'Residential' | 'Commercial' | 'Monument';
-export type Environment = 'Indoor' | 'Outdoor';
-export type Maintenance = 'Low' | 'Standard';
-export type Style = 'Luxury' | 'Standard' | 'Industrial';
+export type ProjectScope = 'Culinary Surface' | 'Wet Environment' | 'Exterior Architecture' | 'Statement Piece';
+export type UsageIntensity = 'Visual Art' | 'Moderate Use' | 'Heavy Duty';
 export type UserRole = 'Private Residence' | 'Professional Partner';
+// FabricationLevel added to resolve missing property errors in Studio features
 export type FabricationLevel = 'Classic Selection' | 'Artisan Masterpiece';
 
 export interface ProjectState {
   userRole: UserRole;
+  reference: string;
+  scope: ProjectScope;
+  intensity: UsageIntensity;
+  // fabricationLevel added to ProjectState
   fabricationLevel: FabricationLevel;
-  projectType: ProjectType;
-  environment: Environment;
-  maintenance: Maintenance;
-  style: Style;
   timeline: string;
   stonePreference: string; 
   description: string;
@@ -25,42 +24,20 @@ export interface ProjectState {
 export interface Recommendation {
   material: string;
   reason: string;
-}
-
-export interface LeadDossier {
-  leadId: string;
-  timestamp: string;
-  identity: {
-    role: UserRole;
-    type: string; 
-  };
-  specification: {
-    tier: FabricationLevel;
-    projectType: ProjectType;
-    environment: Environment;
-    style: Style;
-    timeline: string;
-    preferredMaterial: string;
-    description: string;
-  };
-  aiRecommendation: Recommendation;
-  metadata: {
-    source: string;
-    version: string;
-  };
+  warning?: string;
 }
 
 // --- Initial State ---
 
 const initialState: ProjectState = {
   userRole: 'Private Residence',
+  reference: '',
+  scope: 'Culinary Surface',
+  intensity: 'Moderate Use',
+  // Default fabricationLevel set to Classic Selection
   fabricationLevel: 'Classic Selection',
-  projectType: 'Residential',
-  environment: 'Indoor',
-  maintenance: 'Standard',
-  style: 'Standard',
   timeline: 'Planning Phase (1-3 Months)',
-  stonePreference: 'Light',
+  stonePreference: 'Pending',
   description: '',
 };
 
@@ -68,11 +45,10 @@ const initialState: ProjectState = {
 
 type Action =
   | { type: 'SET_USER_ROLE'; payload: UserRole }
+  | { type: 'SET_REFERENCE'; payload: string }
+  | { type: 'SET_SCOPE'; payload: ProjectScope }
+  | { type: 'SET_INTENSITY'; payload: UsageIntensity }
   | { type: 'SET_FABRICATION_LEVEL'; payload: FabricationLevel }
-  | { type: 'SET_PROJECT_TYPE'; payload: ProjectType }
-  | { type: 'SET_ENVIRONMENT'; payload: Environment }
-  | { type: 'SET_MAINTENANCE'; payload: Maintenance }
-  | { type: 'SET_STYLE'; payload: Style }
   | { type: 'SET_TIMELINE'; payload: string }
   | { type: 'SET_STONE_PREFERENCE'; payload: string }
   | { type: 'SET_DESCRIPTION'; payload: string }
@@ -84,16 +60,15 @@ function projectReducer(state: ProjectState, action: Action): ProjectState {
   switch (action.type) {
     case 'SET_USER_ROLE':
       return { ...state, userRole: action.payload };
+    case 'SET_REFERENCE':
+      return { ...state, reference: action.payload };
+    case 'SET_SCOPE':
+      return { ...state, scope: action.payload };
+    case 'SET_INTENSITY':
+      return { ...state, intensity: action.payload };
+    // Handler for SET_FABRICATION_LEVEL to update state
     case 'SET_FABRICATION_LEVEL':
       return { ...state, fabricationLevel: action.payload };
-    case 'SET_PROJECT_TYPE':
-      return { ...state, projectType: action.payload };
-    case 'SET_ENVIRONMENT':
-      return { ...state, environment: action.payload };
-    case 'SET_MAINTENANCE':
-      return { ...state, maintenance: action.payload };
-    case 'SET_STYLE':
-      return { ...state, style: action.payload };
     case 'SET_TIMELINE':
       return { ...state, timeline: action.payload };
     case 'SET_STONE_PREFERENCE':
@@ -110,39 +85,47 @@ function projectReducer(state: ProjectState, action: Action): ProjectState {
 // --- Designer Logic Engine (Consultant Persona) ---
 
 export const getRecommendation = (state: ProjectState): Recommendation => {
-  if (state.environment === 'Outdoor') {
+  // 1. EXTERIOR LOGIC
+  if (state.scope === 'Exterior Architecture') {
     return { 
-      material: 'Dekton', 
-      reason: 'For outdoor applications, Dekton is unparalleled. Its ultra-compact molecular structure makes it essentially immune to UV rays and thermal shock, ensuring your space remains pristine through the seasons.' 
+      material: 'Dekton or Dense Granite', 
+      reason: 'UV Stability and thermal shock resistance are mandatory for Florida exteriors. Standard Quartz will yellow, and soft Marbles will etch and lose their polish under tropical UV levels.',
+      warning: 'Avoid Soft Marbles or standard engineered Quartz outdoors.'
     };
   }
-  if (state.maintenance === 'Low') {
+
+  // 2. HEAVY KITCHEN LOGIC
+  if (state.scope === 'Culinary Surface' && state.intensity === 'Heavy Duty') {
     return { 
-      material: 'Quartz', 
-      reason: 'If ease of use is your priority, Quartz is the ideal companion. It offers the high-end aesthetic of natural stone with a non-porous surface that never requires sealing or specialized care.' 
+      material: 'Natural Quartzite', 
+      reason: 'Diamond-level hardness. You need a material that can withstand high-acidity (lemon juice/wine) and high heat. Quartzite provides marble aesthetics with granite durability.',
+      warning: 'Marble is highly prone to permanent etching in high-intensity kitchens.'
     };
   }
-  if (state.style === 'Luxury' || state.fabricationLevel === 'Artisan Masterpiece') {
+
+  // 3. STATEMENT PIECE LOGIC
+  if (state.scope === 'Statement Piece' && state.intensity === 'Visual Art') {
     return { 
-      material: 'Quartzite', 
-      reason: 'Quartzite offers the rare combination of marble’s ethereal beauty with the structural hardness of granite. It is a sophisticated choice for high-traffic kitchens that refuse to sacrifice elegance.' 
+      material: 'Onyx or Semi-Precious', 
+      reason: 'For pure aesthetic impact, we suggest Translucent Onyx. It allows for backlighting and creates a focal point that natural stone slabs simply cannot match.',
+      warning: 'These materials are soft and high-maintenance; keep away from high-traffic zones.'
     };
   }
-  if (state.projectType === 'Monument') {
+
+  // 4. WET ENVIRONMENT LOGIC
+  if (state.scope === 'Wet Environment') {
     return { 
-      material: 'Granite', 
-      reason: 'Granite is the standard for permanence. Its crystalline density provides the atmospheric resistance required for works intended to honor history for centuries to come.' 
+      material: 'Marble or Porcelain', 
+      reason: 'Classical luxury for spas and master baths. Marble’s cool temperature and organic flow are perfect for low-traffic wellness spaces.',
+      warning: 'Ensure a professional-grade sealer is applied annually.'
     };
   }
-  if (state.projectType === 'Commercial') {
-    return { 
-      material: 'Porcelain', 
-      reason: 'For modern commercial environments, large-format Porcelain provides a sleek, lightweight profile with exceptional durability against the rigors of public interaction.' 
-    };
-  }
+
+  // DEFAULT
   return { 
-    material: 'Marble', 
-    reason: 'We suggest Marble for its timeless aesthetic; its unique veining creates a natural organic flow that brings a distinct sense of character and luxury to refined residential interiors.' 
+    material: 'Premium Quartzite', 
+    reason: 'A versatile choice for moderate use. It offers the best balance of longevity and high-end design.',
+    warning: 'Always request a physical slab viewing to verify veining patterns.'
   };
 };
 

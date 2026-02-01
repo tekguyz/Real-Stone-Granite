@@ -1,11 +1,12 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ShieldCheck, Download, Calendar, ArrowLeft, Loader2 } from 'lucide-react';
+import { ShieldCheck, Download, Calendar, ArrowLeft, Loader2, FileText, Check } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { PrecisionBtn } from '../../shared/ui/PrecisionBtn';
 import { PHYSICS, HEX } from '../../shared/lib/theme';
 import { useToast } from '../../shared/ui/Toast';
+import { useProjectStore } from '../../entities/project/store';
 
 interface SuccessViewProps {
   onClose: () => void;
@@ -14,12 +15,12 @@ interface SuccessViewProps {
 
 export const SuccessView: React.FC<SuccessViewProps> = ({ onClose, projectRef }) => {
   const { showToast } = useToast();
+  const { state, recommendation } = useProjectStore();
   const [isDownloading, setIsDownloading] = useState(false);
 
   useEffect(() => {
     const fireMetallicShavings = () => {
-      // Multiple bursts for a "high-end" feel
-      const duration = 3 * 1000;
+      const duration = 2 * 1000;
       const animationEnd = Date.now() + duration;
       const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 30000 };
 
@@ -27,13 +28,9 @@ export const SuccessView: React.FC<SuccessViewProps> = ({ onClose, projectRef })
 
       const interval: any = setInterval(function() {
         const timeLeft = animationEnd - Date.now();
+        if (timeLeft <= 0) return clearInterval(interval);
 
-        if (timeLeft <= 0) {
-          return clearInterval(interval);
-        }
-
-        const particleCount = 50 * (timeLeft / duration);
-        // since particles fall down, start a bit higher than random
+        const particleCount = 40 * (timeLeft / duration);
         confetti({ 
           ...defaults, 
           particleCount, 
@@ -51,7 +48,6 @@ export const SuccessView: React.FC<SuccessViewProps> = ({ onClose, projectRef })
       }, 250);
     };
 
-    // Delay to ensure the SuccessView transition is complete and z-index is settled
     const timer = setTimeout(fireMetallicShavings, 400);
     return () => clearTimeout(timer);
   }, []);
@@ -59,16 +55,10 @@ export const SuccessView: React.FC<SuccessViewProps> = ({ onClose, projectRef })
   const handleDownload = () => {
     if (isDownloading) return;
     setIsDownloading(true);
-
-    // Simulate PDF Generation Process
     setTimeout(() => {
       setIsDownloading(false);
       showToast(`Dossier #${projectRef} Saved to Device`, 'success');
     }, 1500);
-  };
-
-  const handleScheduling = () => {
-    showToast("Redirecting to Concierge Booking...", 'info');
   };
 
   return (
@@ -77,58 +67,87 @@ export const SuccessView: React.FC<SuccessViewProps> = ({ onClose, projectRef })
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={PHYSICS.snappy}
-        className="max-w-xl w-full flex flex-col items-center text-center"
+        className="max-w-2xl w-full"
       >
-        <div className="w-16 h-16 border border-gold/30 bg-gold/5 flex items-center justify-center mb-8 rounded-full">
-          <ShieldCheck className="w-8 h-8 text-gold" strokeWidth={1} />
-        </div>
+        {/* THE SPEC SHEET (Technical Document Style) */}
+        <div className="bg-surface border border-white/10 p-8 md:p-12 shadow-2xl relative mb-12">
+            
+            {/* Corner Decorative */}
+            <div className="absolute top-0 right-0 w-12 h-12 border-t border-r border-gold/40" />
+            <div className="absolute bottom-0 left-0 w-12 h-12 border-b border-l border-gold/40" />
 
-        <h2 className="text-3xl md:text-4xl font-sans font-bold uppercase text-white tracking-tight mb-4">
-          Inquiry Received
-        </h2>
-
-        <div className="space-y-6 mb-12 px-4">
-          <p className="text-white/60 font-sans text-sm md:text-base leading-relaxed max-w-md mx-auto">
-            Thank you for reaching out. Your reference number is <span className="text-white font-mono font-bold tracking-tight">#{projectRef}</span>. Our team will review your specifications and contact you shortly to discuss your vision.
-          </p>
-        </div>
-
-        <div className="w-full max-w-sm space-y-4">
-          <PrecisionBtn 
-            onClick={handleDownload}
-            variant="secondary"
-            className="w-full h-14 border-gold/40 text-gold hover:bg-gold/5"
-            disabled={isDownloading}
-          >
-            <div className="flex items-center gap-3">
-              {isDownloading ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <Download className="w-4 h-4" />
-              )}
-              <span className="font-mono text-[10px] font-bold tracking-[0.2em]">
-                {isDownloading ? "GENERATING PDF..." : "SAVE SUMMARY"}
-              </span>
+            <div className="flex flex-col md:flex-row md:items-start justify-between gap-8 mb-12 pb-8 border-b border-white/5">
+                <div>
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-2 h-2 bg-gold rotate-45" />
+                    <span className="font-mono text-[10px] text-gold uppercase tracking-[0.4em] font-bold">Preliminary Spec Sheet</span>
+                  </div>
+                  <h2 className="text-3xl font-sans font-black uppercase text-white tracking-tighter">Inquiry # {projectRef}</h2>
+                  <p className="text-white/40 font-mono text-[10px] mt-2 uppercase tracking-widest">Drafted: {new Date().toLocaleDateString()}</p>
+                </div>
+                <div className="flex flex-col items-end">
+                   <span className="px-3 py-1 bg-gold/10 border border-gold/30 text-gold font-mono text-[10px] uppercase tracking-widest font-bold">Queued for Review</span>
+                </div>
             </div>
-          </PrecisionBtn>
 
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
+                <div className="space-y-6">
+                   <div>
+                      <span className="block font-mono text-[9px] text-white/30 uppercase tracking-[0.2em] mb-2 font-bold">Role</span>
+                      <span className="text-white text-base font-medium">{state.userRole}</span>
+                   </div>
+                   <div>
+                      <span className="block font-mono text-[9px] text-white/30 uppercase tracking-[0.2em] mb-2 font-bold">Context</span>
+                      <span className="text-white text-base font-medium">{state.scope}</span>
+                   </div>
+                   <div>
+                      <span className="block font-mono text-[9px] text-white/30 uppercase tracking-[0.2em] mb-2 font-bold">Physics</span>
+                      <span className="text-white text-base font-medium">{state.intensity}</span>
+                   </div>
+                </div>
+                <div className="space-y-6">
+                   <div className="p-4 bg-white/[0.03] border border-white/5">
+                      <span className="block font-mono text-[9px] text-gold uppercase tracking-[0.2em] mb-3 font-bold">Intelligence Result</span>
+                      <div className="flex items-center gap-3 text-white mb-2">
+                         <Check className="w-4 h-4 text-gold" />
+                         <span className="text-lg font-bold uppercase tracking-tight">
+                            {state.stonePreference !== 'Pending' ? state.stonePreference : recommendation.material}
+                         </span>
+                      </div>
+                      <p className="text-[10px] text-white/50 leading-relaxed italic">
+                         {recommendation.reason.substring(0, 100)}...
+                      </p>
+                   </div>
+                </div>
+            </div>
+
+            <div className="bg-black/40 p-6 flex flex-col md:flex-row items-center justify-between gap-6">
+               <p className="text-[11px] text-white/40 font-light max-w-sm text-center md:text-left">
+                  Our senior fabrication team will verify your specifications against current block availability and contact you within 24 business hours.
+               </p>
+               <PrecisionBtn onClick={handleDownload} variant="secondary" className="h-10 px-6 text-[9px] whitespace-nowrap min-w-0">
+                  {isDownloading ? <Loader2 className="w-3 h-3 animate-spin" /> : <Download className="w-3 h-3" />}
+                  Download Dossier
+               </PrecisionBtn>
+            </div>
+        </div>
+
+        <div className="flex flex-col items-center gap-6">
           <PrecisionBtn 
-            onClick={handleScheduling}
+            onClick={() => showToast("Redirecting to Concierge Calendar...", 'info')}
             variant="primary"
-            className="w-full h-14"
+            className="w-full h-14 max-w-sm"
           >
-            <div className="flex items-center gap-3">
-              <Calendar className="w-4 h-4" />
-              <span className="font-mono text-[10px] font-bold tracking-[0.2em]">Book Consultation</span>
-            </div>
+            <Calendar className="w-4 h-4" />
+            <span className="font-mono text-[10px] font-bold tracking-[0.2em]">Book Consultation</span>
           </PrecisionBtn>
 
           <button 
             onClick={onClose}
-            className="pt-6 text-white/40 hover:text-white font-mono text-[10px] uppercase tracking-[0.4em] transition-colors flex items-center justify-center gap-2 group mx-auto"
+            className="text-white/40 hover:text-white font-mono text-[10px] uppercase tracking-[0.4em] transition-colors flex items-center gap-2 group"
           >
             <ArrowLeft className="w-3 h-3 group-hover:-translate-x-1 transition-transform" />
-            Return to Home
+            Exit Designer
           </button>
         </div>
       </motion.div>
