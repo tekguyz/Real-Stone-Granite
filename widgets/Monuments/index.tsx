@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MEDIA } from '../../shared/assets';
@@ -43,7 +42,7 @@ const PROJECTS: MonumentProject[] = [
     material: "VIRGINIA MIST GRANITE",
     coords: "40.7127° N, 74.0134° W",
     completion: "2011",
-    image: "https://images.unsplash.com/photo-1581440051300-84469e068c2d?auto=format&fit=crop&q=80&w=1200",
+    image: "https://images.unsplash.com/photo-1518391846015-55a9cc003b25?auto=format&fit=crop&q=80&w=1200", // FIXED URL
     description: "Architectural cladding and monuments dedicated to the bravery of those at Ground Zero."
   },
   {
@@ -63,7 +62,7 @@ const PROJECTS: MonumentProject[] = [
     material: "INDIA BLACK GRANITE",
     coords: "27.4467° N, 80.3256° W",
     completion: "Ongoing",
-    image: "https://images.unsplash.com/photo-1595842886364-4e421062b325?auto=format&fit=crop&q=80&w=1200", 
+    image: "https://images.unsplash.com/photo-1464692805480-a69dfaafdb0d?auto=format&fit=crop&q=80&w=1200", // FIXED URL
     description: "A tribute to the families who have sacrificed a loved one for our freedom."
   }
 ];
@@ -74,7 +73,7 @@ export const Monuments: React.FC = () => {
   return (
     <section id="monuments" className="relative h-screen bg-black overflow-hidden flex flex-col">
       
-      {/* 1. The Monolith Header (Anchored Left, Edge-to-Edge) */}
+      {/* 1. The Monolith Header */}
       <div className="absolute top-0 left-0 w-full p-8 md:p-12 z-20 pointer-events-none">
         <div className="flex flex-col items-start gap-4">
            <div className="flex items-center gap-3">
@@ -121,7 +120,7 @@ export const Monuments: React.FC = () => {
             {/* C. The Glow Border */}
             <div className="absolute inset-0 border-[0.5px] border-transparent group-hover:border-gold/30 transition-colors duration-500 z-[2]" />
 
-            {/* D. Vertical Title (Collapsed State) */}
+            {/* D. Vertical Title */}
             <div className="absolute bottom-12 left-0 w-full pointer-events-none z-30 overflow-hidden mix-blend-screen">
                <motion.div 
                  initial={false}
@@ -134,12 +133,11 @@ export const Monuments: React.FC = () => {
                   <span className={`font-mono text-xl md:text-3xl font-black uppercase tracking-tighter transition-colors duration-500 ${hoveredId === project.id ? 'text-gold' : 'text-white/40'}`}>
                     {project.title}
                   </span>
-                  {/* Decorative Line */}
                   <div className={`w-24 h-[1px] transition-colors duration-500 ${hoveredId === project.id ? 'bg-gold' : 'bg-white/20'}`} />
                </motion.div>
             </div>
 
-            {/* E. Expanded "Museum Plaque" HUD */}
+            {/* E. Expanded HUD */}
             <AnimatePresence>
               {hoveredId === project.id && (
                 <motion.div 
@@ -149,7 +147,6 @@ export const Monuments: React.FC = () => {
                   transition={{ duration: 0.5, delay: 0.1 }}
                   className="absolute inset-0 z-40 pointer-events-none p-6 md:p-12 flex flex-col justify-between"
                 >
-                  {/* Top Right: GPS Coords */}
                   <div className="self-end group/label">
                      <div className="flex flex-col items-end">
                         <span className="text-[10px] font-mono text-gold uppercase tracking-[0.3em] font-bold">
@@ -159,14 +156,12 @@ export const Monuments: React.FC = () => {
                      </div>
                   </div>
 
-                  {/* Center: Completion Date Watermark */}
                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-20 pointer-events-none">
                      <span className="font-mono text-[10vw] text-transparent" style={{ WebkitTextStroke: '1px white' }}>
                         {project.completion}
                      </span>
                   </div>
 
-                  {/* Bottom Right: The Plaque */}
                   <div className="self-end max-w-sm">
                      <motion.div 
                         initial={{ y: 40, opacity: 0 }}
@@ -174,7 +169,6 @@ export const Monuments: React.FC = () => {
                         transition={{ ...PHYSICS.industrial, delay: 0.1 }}
                         className="relative p-8 bg-black/60 backdrop-blur-md border border-gold/20"
                      >
-                        {/* Plaque Corner Screws */}
                         <div className="absolute top-2 left-2 w-1 h-1 rounded-full bg-gold/50" />
                         <div className="absolute top-2 right-2 w-1 h-1 rounded-full bg-gold/50" />
                         <div className="absolute bottom-2 left-2 w-1 h-1 rounded-full bg-gold/50" />
@@ -208,7 +202,6 @@ export const Monuments: React.FC = () => {
         ))}
       </div>
 
-      {/* 3. Footer Ticker */}
       <div className="h-12 border-t border-white/5 bg-primary flex items-center justify-center z-20 shrink-0">
          <div className="flex items-center gap-8 opacity-40">
             <span className="text-[8px] font-mono text-text-muted uppercase tracking-[0.5em]">

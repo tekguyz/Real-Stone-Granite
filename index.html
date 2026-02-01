@@ -3,20 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Real Stone & Granite | Excellence in Stone since 1993</title>
+    <title>Real Stone | Excellence in Stone since 1993</title>
     
     <!-- SEO Metadata -->
     <meta name="description" content="Crafting distinguished architectural surfaces since 1993. South Florida's authority on natural stone fabrication, digital design verification, and monument-grade surfaces." />
     <meta name="keywords" content="Granite Fort Pierce, Marble Countertops, Navy SEAL Museum, Stone Fabrication, Industrial Luxury, Architectural Surfaces, Bahamas Export, Treasure Coast Masonry, Quartzite Slabs" />
     <meta name="theme-color" content="#1a1a1a" />
     
-    <!-- Brand Favicon (Bolder Staggered RS Monogram) -->
+    <!-- Resource Prioritization -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Brand Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%23d4af37'/%3E%3Ctext font-family='sans-serif' font-weight='900' font-size='320' fill='%231a1a1a'%3E%3Ctspan x='40' y='280'%3ER%3C/tspan%3E%3Ctspan x='220' y='460'%3ES%3C/tspan%3E%3C/text%3E%3C/svg%3E" />
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&family=Inter:wght@100..900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    
     <script>
       window.tailwind.config = {
         darkMode: 'class',
@@ -88,7 +91,6 @@
   <body>
     <div id="root"></div>
 
-    <!-- NETLIFY SHADOW FORM: Required for detection in dynamic React apps -->
     <form name="project-inquiry" data-netlify="true" hidden>
       <input type="text" name="userRole" />
       <input type="text" name="fabricationLevel" />

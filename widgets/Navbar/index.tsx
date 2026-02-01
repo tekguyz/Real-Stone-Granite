@@ -14,10 +14,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
   const [activeSection, setActiveSection] = useState('');
   const { scrollY } = useScroll();
 
-  // Smart Scroll Logic: Hide on down, Show on up
   useMotionValueEvent(scrollY, "change", (latest) => {
     const previous = scrollY.getPrevious() || 0;
-    // Add a buffer so it doesn't flicker on tiny movements
     if (latest > previous && latest > 150) {
       setHidden(true);
     } else {
@@ -34,7 +32,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
-      // Offset for the fixed header
       const yOffset = -100; 
       const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
       window.scrollTo({ top: y, behavior: 'smooth' });
@@ -45,19 +42,17 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
 
   return (
     <>
-      {/* THE FLOATING PLINTH */}
       <motion.nav
         initial={{ y: -100, opacity: 0 }}
         animate={hidden ? { y: -100, opacity: 0 } : { y: 0, opacity: 1 }}
-        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }} // "Hydraulic" Ease
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         className="fixed top-6 left-0 right-0 z-[9999] flex justify-center pointer-events-none"
       >
-        {/* The Container - Glass & Steel */}
-        <div className="pointer-events-auto bg-[#0a0a0a]/80 backdrop-blur-md border border-white/10 px-1.5 py-1.5 flex items-center gap-1.5 shadow-2xl shadow-black/80 rounded-sm">
+        <div className="pointer-events-auto bg-[#0a0a0a]/90 backdrop-blur-md border border-white/10 px-1.5 py-1.5 flex items-center gap-1.5 shadow-2xl shadow-black/80 rounded-sm">
           
-          {/* 1. LOGO MARK (Stamped Plate) */}
           <a 
             href="#" 
+            aria-label="Real Stone & Granite Home"
             onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
             className="h-9 px-4 flex items-center bg-white/5 border border-white/5 hover:border-gold/50 hover:bg-white/10 transition-all duration-300 group"
           >
@@ -66,7 +61,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
              </span>
           </a>
 
-          {/* 2. LINKS (Desktop) - Technical Tab Style */}
           <div className="hidden md:flex items-center bg-black/40 border border-white/5 h-9 px-1">
             {navLinks.map((link) => (
               <button
@@ -77,24 +71,23 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
                 }`}
               >
                 {link.name}
-                {/* Subtle Hover Line */}
                 <span className="absolute bottom-0 left-0 w-full h-[1px] bg-gold scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
               </button>
             ))}
           </div>
 
-          {/* 3. CTA */}
           <PrecisionBtn 
             variant="primary" 
             onClick={onOpenStudio} 
             className="h-9 px-5 text-[10px]"
+            aria-label="Start Project Planner"
           >
             Start Project
           </PrecisionBtn>
 
-          {/* 4. MOBILE TRIGGER */}
           <button 
             onClick={() => setIsMobileOpen(true)}
+            aria-label="Open Mobile Menu"
             className="md:hidden w-9 h-9 flex items-center justify-center border border-white/10 text-white bg-white/5 active:scale-95 transition-transform"
           >
             <ICONS.Menu className="w-4 h-4" />
@@ -103,7 +96,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
         </div>
       </motion.nav>
 
-      {/* MOBILE FULLSCREEN MENU (The "Curtain") */}
       <AnimatePresence>
         {isMobileOpen && (
           <motion.div
@@ -113,18 +105,17 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
             transition={{ duration: 0.4, ease: "easeInOut" }}
             className="fixed inset-0 z-[10000] bg-[#050505] flex flex-col p-8"
           >
-            {/* Header */}
             <div className="flex justify-between items-center mb-16 border-b border-white/10 pb-6">
                <span className="font-mono text-gold text-xs uppercase tracking-widest">System Navigation</span>
                <button 
                 onClick={() => setIsMobileOpen(false)} 
+                aria-label="Close Mobile Menu"
                 className="w-10 h-10 flex items-center justify-center border border-white/10 text-white hover:border-gold hover:text-gold transition-colors"
                >
                   <ICONS.Close className="w-5 h-5" />
                </button>
             </div>
 
-            {/* Staggered Links */}
             <div className="flex flex-col gap-8">
               {navLinks.map((link, idx) => (
                 <motion.button
@@ -145,7 +136,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
               ))}
             </div>
 
-            {/* Footer info */}
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

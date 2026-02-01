@@ -10,16 +10,12 @@ interface HeroManifestoProps {
 
 export const HeroManifesto: React.FC<HeroManifestoProps> = ({ onStartProject, onExplore }) => {
   return (
-    // CHANGED: Removed justify-center, added justify-between and h-screen (or min-h-screen)
-    // This allows Flexbox to manage the vertical spacing naturally
     <div className="w-full md:w-1/2 min-h-screen flex flex-col justify-between relative z-20 bg-primary border-r border-white/5">
       <div className="absolute top-0 left-8 w-[1px] h-full bg-white/5" />
       <div className="absolute top-0 right-8 w-[1px] h-full bg-white/5" />
 
-      {/* Spacer to push content to visual center */}
       <div className="flex-none h-24 md:h-32" />
 
-      {/* Main Content Area - Flex-1 allows it to take up available space */}
       <div className="relative z-10 px-8 md:px-16 lg:px-24 flex-1 flex flex-col justify-center">
         <motion.div 
           initial={{ opacity: 0, x: -20 }}
@@ -33,10 +29,9 @@ export const HeroManifesto: React.FC<HeroManifestoProps> = ({ onStartProject, on
           </span>
         </motion.div>
 
+        {/* LCP PRIORITY H1 */}
         <motion.h1 
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          initial={{ opacity: 1, y: 0 }}
           className="font-sans font-medium text-6xl lg:text-8xl text-white tracking-tighter leading-[0.9] mb-10"
         >
           Weight. <br/>
@@ -71,8 +66,6 @@ export const HeroManifesto: React.FC<HeroManifestoProps> = ({ onStartProject, on
         </motion.div>
       </div>
 
-      {/* Stats Section - CHANGED: Removed absolute positioning. 
-          Now sits naturally at bottom of flex column with mt-auto */}
       <div className="w-full px-8 md:px-16 lg:px-24 flex gap-12 border-t border-white/5 pt-8 pb-12 mt-auto relative z-10 bg-primary">
         <div>
           <span className="block text-2xl text-white font-light">30+</span>

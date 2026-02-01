@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 import { HomePage } from './pages/home';
 import { Navbar } from './widgets/Navbar';
 import { Footer } from './widgets/Footer';
-import { DesignStudio } from './features/DesignStudio';
-import { StoneCurator } from './features/StoneCurator';
+
+// LAZY LOAD HEAVY MODULES
+const DesignStudio = lazy(() => import('./features/DesignStudio').then(module => ({ default: module.DesignStudio })));
+const StoneCurator = lazy(() => import('./features/StoneCurator').then(module => ({ default: module.StoneCurator })));
 
 const App: React.FC = () => {
   const [isStudioOpen, setIsStudioOpen] = useState(false);
@@ -19,12 +21,14 @@ const App: React.FC = () => {
         <HomePage onStartProject={() => setIsStudioOpen(true)} />
       </main>
       
-      {/* Global Features (Overlays) */}
-      <StoneCurator 
-        onLaunchStudio={() => setIsStudioOpen(true)} 
-        isStudioOpen={isStudioOpen}
-      />
-      <DesignStudio isOpen={isStudioOpen} onClose={() => setIsStudioOpen(false)} />
+      {/* Global Features (Lazy Loaded) */}
+      <Suspense fallback={null}>
+        <StoneCurator 
+          onLaunchStudio={() => setIsStudioOpen(true)} 
+          isStudioOpen={isStudioOpen}
+        />
+        <DesignStudio isOpen={isStudioOpen} onClose={() => setIsStudioOpen(false)} />
+      </Suspense>
 
       {/* Footer Layer */}
       <Footer onOpenStudio={() => setIsStudioOpen(true)} />

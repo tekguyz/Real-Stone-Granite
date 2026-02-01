@@ -26,6 +26,7 @@ export const FloatingControls: React.FC<FloatingControlsProps> = ({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 10 }}
             onClick={scrollToTop}
+            aria-label="Scroll to Top"
             className="w-10 h-10 bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/50 hover:text-gold hover:border-gold transition-all rounded-sm"
           >
             <ArrowUp className="w-4 h-4" />
@@ -33,7 +34,7 @@ export const FloatingControls: React.FC<FloatingControlsProps> = ({
         )}
       </AnimatePresence>
 
-      {/* Main Chat Trigger - CLEAN & ELEGANT */}
+      {/* Main Chat Trigger */}
       <AnimatePresence>
         {showChatFab && !isOpen && (
           <motion.button
@@ -42,20 +43,16 @@ export const FloatingControls: React.FC<FloatingControlsProps> = ({
             animate={{ opacity: 1, scale: 1, x: 0 }}
             exit={{ opacity: 0, scale: 0.8, x: 20 }}
             onClick={openChat}
+            aria-label="Chat with Stone Concierge"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             transition={PHYSICS.snappy}
             className="group relative w-16 h-16 bg-primary border border-white/10 flex items-center justify-center shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)] overflow-hidden"
           >
-            {/* Subtle Gold Pulse on Hover */}
             <div className="absolute inset-0 bg-gold/5 opacity-0 group-hover:opacity-100 transition-opacity" />
             
             <MessageSquare className="w-6 h-6 text-gold relative z-10" strokeWidth={1.5} />
             
-            {/* REMOVED: Technical Corners */}
-            {/* REMOVED: Sensor Scan Effect */}
-            
-            {/* Tooltip Label */}
             <div className="absolute right-full mr-4 bg-black/90 px-4 py-2 border border-white/10 text-[10px] font-mono text-white uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none backdrop-blur-md">
                 Chat with Us
             </div>
