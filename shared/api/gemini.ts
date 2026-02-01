@@ -16,6 +16,7 @@ export const generateText = async (prompt: string, systemInstruction: string) =>
       temperature: 0.7,
     },
   });
+  // Rule: Do not use response.text() as a method; it is a getter property.
   return response.text;
 };
 
@@ -39,5 +40,6 @@ export const transcribeAudio = async (base64Audio: string, mimeType: string, pro
       temperature: 0.2,
     },
   });
+  // Rule: Do not use response.text() as a method; it is a getter property.
   return response.text;
 };
