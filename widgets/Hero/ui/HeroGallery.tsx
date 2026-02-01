@@ -148,7 +148,7 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
             />
           </div>
           
-          <div className="mt-3 flex justify-between text-[9px] font-mono text-white/50 uppercase tracking-widest">
+          <div className="mt-3 flex justify-start text-[9px] font-mono text-white/50 uppercase tracking-widest">
             <AnimatePresence mode="wait">
               <motion.span 
                 key={currentSlab.origin}
@@ -159,7 +159,6 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
                 Origin: {currentSlab.origin}
               </motion.span>
             </AnimatePresence>
-            <span>ID: {currentSlab.id}</span>
           </div>
         </motion.div>
       </motion.div>
