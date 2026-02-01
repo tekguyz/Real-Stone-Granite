@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { PrecisionBtn } from '../../../shared/ui/PrecisionBtn';
@@ -11,11 +10,17 @@ interface HeroManifestoProps {
 
 export const HeroManifesto: React.FC<HeroManifestoProps> = ({ onStartProject, onExplore }) => {
   return (
-    <div className="w-full md:w-1/2 h-screen flex flex-col justify-center px-8 md:px-16 lg:px-24 relative z-20 bg-primary border-r border-white/5">
+    // CHANGED: Removed justify-center, added justify-between and h-screen (or min-h-screen)
+    // This allows Flexbox to manage the vertical spacing naturally
+    <div className="w-full md:w-1/2 min-h-screen flex flex-col justify-between relative z-20 bg-primary border-r border-white/5">
       <div className="absolute top-0 left-8 w-[1px] h-full bg-white/5" />
       <div className="absolute top-0 right-8 w-[1px] h-full bg-white/5" />
 
-      <div className="relative z-10">
+      {/* Spacer to push content to visual center */}
+      <div className="flex-none h-24 md:h-32" />
+
+      {/* Main Content Area - Flex-1 allows it to take up available space */}
+      <div className="relative z-10 px-8 md:px-16 lg:px-24 flex-1 flex flex-col justify-center">
         <motion.div 
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -66,7 +71,9 @@ export const HeroManifesto: React.FC<HeroManifestoProps> = ({ onStartProject, on
         </motion.div>
       </div>
 
-      <div className="absolute bottom-12 left-0 w-full px-16 flex gap-12 border-t border-white/5 pt-8">
+      {/* Stats Section - CHANGED: Removed absolute positioning. 
+          Now sits naturally at bottom of flex column with mt-auto */}
+      <div className="w-full px-8 md:px-16 lg:px-24 flex gap-12 border-t border-white/5 pt-8 pb-12 mt-auto relative z-10 bg-primary">
         <div>
           <span className="block text-2xl text-white font-light">30+</span>
           <span className="text-[9px] text-white/40 uppercase tracking-widest font-mono">Years</span>

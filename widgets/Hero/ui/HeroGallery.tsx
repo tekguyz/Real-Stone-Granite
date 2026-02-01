@@ -1,4 +1,3 @@
-
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring, useMotionTemplate } from 'framer-motion';
 import { FEATURED_SLABS } from '../model/inventory';
@@ -12,16 +11,18 @@ interface HeroGalleryProps {
 export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
   const galleryRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [hovering, setHovering] = useState(false);
 
-  // Lighting Physics Engine - Switched to Standard Theme
+  // Lighting Physics Engine
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const lightX = useSpring(mouseX, PHYSICS.industrial);
   const lightY = useSpring(mouseY, PHYSICS.industrial);
 
-  // Reduced radius for a smaller, more precise "High-End" spotlight effect
-  const maskImage = useMotionTemplate`radial-gradient(circle 160px at ${lightX}px ${lightY}px, black 10%, transparent 100%)`;
-  const glowGradient = useMotionTemplate`radial-gradient(circle 200px at ${lightX}px ${lightY}px, rgba(255,220,150,0.18) 0%, transparent 80%)`;
+  // REDUCED SIZE BY 30% (160px -> 110px) and (200px -> 140px)
+  // Sharpened the gradient stops to reduce "blurry" look
+  const maskImage = useMotionTemplate`radial-gradient(circle 110px at ${lightX}px ${lightY}px, black 30%, transparent 100%)`;
+  const glowGradient = useMotionTemplate`radial-gradient(circle 140px at ${lightX}px ${lightY}px, rgba(255,220,150,0.15) 0%, transparent 70%)`;
 
   function handleMouseMove({ clientX, clientY }: React.MouseEvent) {
     if (!galleryRef.current) return;
@@ -43,6 +44,8 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
     <div 
       className="w-full md:w-1/2 h-[50vh] md:h-screen relative overflow-hidden bg-black cursor-none"
       onMouseMove={handleMouseMove}
+      onMouseEnter={() => setHovering(true)}
+      onMouseLeave={() => setHovering(false)}
       ref={galleryRef}
     >
       <motion.div style={{ y: parallaxY }} className="w-full h-[120%] relative">
@@ -65,13 +68,13 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
             />
           </motion.div>
 
-          {/* Reveal Layer (Backlit) */}
+          {/* Reveal Layer (Backlit) - Controlled by Hover State */}
           <motion.div
             key={`lit-${currentIndex}`}
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            animate={{ opacity: hovering ? 1 : 0 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 1.5 }}
+            transition={{ duration: 0.5 }}
             className="absolute inset-0 w-full h-full z-10"
             style={{ 
               WebkitMaskImage: maskImage,
@@ -88,18 +91,21 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
           </motion.div>
         </AnimatePresence>
         
-        {/* Atmosphere Bloom */}
+        {/* Atmosphere Bloom - Controlled by Hover State */}
         <motion.div
           className="absolute inset-0 z-20 pointer-events-none mix-blend-screen"
+          animate={{ opacity: hovering ? 1 : 0 }}
           style={{ background: glowGradient }}
         />
 
-        {/* Custom Light Source Cursor */}
+        {/* Custom Light Source Cursor - Controlled by Hover State */}
         <motion.div
           className="absolute z-30 pointer-events-none flex items-center gap-3"
           style={{ x: lightX, y: lightY }}
+          animate={{ opacity: hovering ? 1 : 0, scale: hovering ? 1 : 0.8 }}
         >
-          <div className="w-10 h-10 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm flex items-center justify-center -translate-x-1/2 -translate-y-1/2">
+          {/* Reduced blur radius slightly */}
+          <div className="w-10 h-10 rounded-full border border-white/20 bg-white/5 backdrop-blur-[2px] flex items-center justify-center -translate-x-1/2 -translate-y-1/2">
             <div className="w-1 h-1 bg-white rounded-full shadow-[0_0_15px_white]" />
           </div>
           <div className="bg-black/60 backdrop-blur-md px-3 py-1 border border-white/10 -translate-y-1/2">
@@ -114,7 +120,7 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 1, duration: 1 }}
-          className="absolute bottom-32 right-12 md:right-24 bg-surface/90 backdrop-blur-xl border border-white/10 p-6 max-w-xs z-40 shadow-2xl pointer-events-auto"
+          className="absolute bottom-32 right-6 md:right-12 lg:right-24 bg-surface/90 backdrop-blur-xl border border-white/10 p-6 max-w-xs z-40 shadow-2xl pointer-events-auto"
         >
           <div className="flex items-center gap-3 mb-4">
             <div className="w-8 h-8 bg-gold rounded-full flex items-center justify-center text-primary">
