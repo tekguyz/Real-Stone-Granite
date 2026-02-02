@@ -1,4 +1,3 @@
-
 /* 
   MASTER DESIGN SYSTEM 
   Industrial Luxury Theme - Single Source of Truth
@@ -23,8 +22,7 @@
 
 /* 
   2. ATMOSPHERIC OVERLAYS
-  PERFORMANCE FIX: Replaced feTurbulence with a lighter repeating noise pattern.
-  SVG filters on the whole body are a major cause of mobile lag.
+  PERFORMANCE FIX: Replaced feTurbulence with a static noise texture.
 */
 body::before {
   content: "";
@@ -46,12 +44,16 @@ html {
 }
 
 /* 
-  3. PERFORMANCE HINTS
+  3. PERFORMANCE & STACKING HINTS
 */
 .gpu-accel {
   will-change: transform, opacity;
   backface-visibility: hidden;
   transform: translateZ(0);
+}
+
+.isolate-layer {
+  isolation: isolate;
 }
 
 /* 

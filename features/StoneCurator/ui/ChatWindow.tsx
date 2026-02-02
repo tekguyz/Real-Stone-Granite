@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { X, Send, ChevronRight, MessageSquare } from 'lucide-react';
@@ -27,7 +26,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
       animate={{ x: '0%' }}
       exit={{ x: '100%' }}
       transition={{ type: "spring", damping: 35, stiffness: 350 }}
-      className="absolute top-0 right-0 h-full w-full md:w-[500px] bg-primary border-l border-white/10 shadow-[-50px_0_100px_rgba(0,0,0,0.8)] flex flex-col pointer-events-auto z-[12001] gpu-accel"
+      className="absolute top-0 right-0 h-full w-full md:w-[500px] bg-primary border-l border-white/10 shadow-[-50px_0_100px_rgba(0,0,0,0.8)] flex flex-col pointer-events-auto z-[12001] gpu-accel isolate-layer"
     >
       {/* Texture Overlay - Optimized Static */}
       <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/asfalt-dark.png')] opacity-[0.03] pointer-events-none mix-blend-overlay" />

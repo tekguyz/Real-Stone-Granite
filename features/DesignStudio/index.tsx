@@ -52,7 +52,7 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: '100%' }}
           transition={PHYSICS.snappy}
-          className="fixed inset-0 z-[20000] bg-primary flex flex-col overflow-hidden h-[100dvh] text-white"
+          className="fixed inset-0 z-[20000] bg-primary flex flex-col overflow-hidden h-[100dvh] text-white isolate-layer gpu-accel"
         >
           {/* 1. ATMOSPHERE */}
           <div className="absolute inset-0 pointer-events-none opacity-[0.03] z-0">

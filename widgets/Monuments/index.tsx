@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MONUMENTS } from '../../shared/assets';
@@ -113,7 +112,16 @@ export const Monuments: React.FC = () => {
                 filter: hoveredId === project.id ? 'grayscale(0%) brightness(100%)' : 'grayscale(100%) brightness(30%)',
                 scale: hoveredId === project.id ? 1.05 : 1
               }}
-            />
+            >
+              {/* IMAGE DEFERRAL FIX: Added hidden <img> for proper lazy loading browser hints */}
+              <img 
+                src={project.image} 
+                alt={project.title} 
+                loading="lazy" 
+                decoding="async"
+                className="hidden" 
+              />
+            </motion.div>
 
             {/* B. Vignette Overlay */}
             <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-transparent to-black/90 z-[1] opacity-80" />

@@ -50,7 +50,7 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
 
   return (
     <div 
-      className="w-full md:w-1/2 h-[50vh] md:h-screen relative overflow-hidden bg-black cursor-none"
+      className="w-full md:w-1/2 h-[50vh] md:h-screen relative overflow-hidden bg-black cursor-none gpu-accel"
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => setHovering(false)}
@@ -93,7 +93,6 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
               className="absolute inset-0 bg-cover bg-center"
               style={{ 
                 backgroundImage: `url(${currentSlab.image})`,
-                // Uses LIGHT_BRIGHTNESS configuration
                 filter: `brightness(${LIGHT_BRIGHTNESS}) contrast(1.4) saturate(1.4) sepia(10%)` 
               }}
             />
@@ -113,7 +112,6 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
           style={{ x: lightX, y: lightY }}
           animate={{ opacity: hovering ? 1 : 0, scale: hovering ? 1 : 0.5 }}
         >
-          {/* Fixed width/height to standard Tailwind classes to ensure perfect circle */}
           <div className="w-2 h-2 bg-white rounded-full shadow-[0_0_10px_2px_rgba(255,255,255,0.8)] -translate-x-1/2 -translate-y-1/2" />
         </motion.div>
 
