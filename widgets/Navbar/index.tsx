@@ -23,8 +23,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
     }
   });
 
-  // NAVIGATION ORDER: Services -> Inventory -> Monuments
+  // NAVIGATION ORDER: Our Story -> Capabilities -> Materials -> Monuments
   const navLinks = [
+    { name: 'Our Story', href: 'about' }, // New Link
     { name: 'Services', href: 'capabilities' },
     { name: 'Inventory', href: 'materials' },
     { name: 'Monuments', href: 'monuments' },
@@ -33,7 +34,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
-      const yOffset = -100; 
+      const yOffset = -80; // Adjusted offset for fixed header
       const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
       window.scrollTo({ top: y, behavior: 'smooth' });
       setActiveSection(id);
@@ -51,6 +52,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
       >
         <div className="pointer-events-auto bg-[#0a0a0a]/90 backdrop-blur-md border border-white/10 px-1.5 py-1.5 flex items-center gap-1.5 shadow-2xl shadow-black/80 rounded-sm">
           
+          {/* LOGO HOME BUTTON */}
           <a 
             href="#" 
             aria-label="Real Stone & Granite Home"
@@ -62,6 +64,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
              </span>
           </a>
 
+          {/* DESKTOP NAV LINKS */}
           <div className="hidden md:flex items-center bg-black/40 border border-white/5 h-9 px-1">
             {navLinks.map((link) => (
               <button
@@ -77,6 +80,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
             ))}
           </div>
 
+          {/* CTA BUTTON */}
           <PrecisionBtn 
             variant="primary" 
             onClick={onOpenStudio} 
@@ -86,6 +90,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
             Start Project
           </PrecisionBtn>
 
+          {/* MOBILE MENU TOGGLE */}
           <button 
             onClick={() => setIsMobileOpen(true)}
             aria-label="Open Mobile Menu"
@@ -97,6 +102,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
         </div>
       </motion.nav>
 
+      {/* MOBILE MENU OVERLAY */}
       <AnimatePresence>
         {isMobileOpen && (
           <motion.div

@@ -11,9 +11,9 @@ const SERVICES = [
   "5-Axis Waterjet Cutting"
 ];
 
-export const TheDossier: React.FC = () => {
+export const About: React.FC = () => {
   return (
-    <section className="w-full bg-primary py-24 md:py-32 px-6 md:px-12 border-b border-white/5 relative overflow-hidden">
+    <section id="about" className="w-full bg-primary py-16 md:py-32 px-6 md:px-12 border-b border-white/5 relative overflow-hidden">
       
       {/* 1. Atmospheric Overlay (Grainy Noise - Subtle Texture) */}
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay" />
@@ -56,7 +56,7 @@ export const TheDossier: React.FC = () => {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="text-lg text-text-muted font-light leading-relaxed"
+              className="text-lg text-white/70 font-light leading-relaxed"
             >
               Real Stone & Granite is not just a fabrication shop; we are South Florida’s authority on natural stone. For over 30 years, we have combined old-world artisanry with state-of-the-art 5-axis waterjet and CNC milling technology.
             </motion.p>
@@ -65,7 +65,7 @@ export const TheDossier: React.FC = () => {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.3 }}
-              className="text-lg text-text-muted font-light leading-relaxed"
+              className="text-lg text-white/70 font-light leading-relaxed"
             >
               From monolithic columns and grand staircases to intricate laser engravings, we treat every slab as a potential work of art. We stand behind every cut with a reputation built on craftsmanship and honor.
             </motion.p>
@@ -114,7 +114,7 @@ export const TheDossier: React.FC = () => {
             </div>
           </div>
 
-          {/* THE PLAQUE (Replaced Sci-Fi Box with Luxury Badge) */}
+          {/* THE PLAQUE (Luxury Trust Badge) */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -128,7 +128,7 @@ export const TheDossier: React.FC = () => {
               <div className="flex items-center gap-3 mb-4">
                  <ICONS.Durability className="w-5 h-5 text-gold" strokeWidth={1.5} />
                  <h4 className="text-white font-mono text-[11px] font-bold uppercase tracking-[0.2em]">
-                    MIA Accredited
+                   MIA Accredited
                  </h4>
               </div>
               

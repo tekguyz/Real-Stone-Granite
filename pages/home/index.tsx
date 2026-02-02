@@ -1,6 +1,6 @@
 import React from 'react';
 import { Hero } from '../../widgets/Hero/index';
-import { TheDossier } from '../../widgets/TheDossier/index';
+import { About } from '../../widgets/About/index';
 import { Capabilities } from '../../widgets/Capabilities/index';
 import { MaterialVault } from '../../widgets/MaterialVault/index';
 import { Monuments } from '../../widgets/Monuments/index';
@@ -18,7 +18,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onStartProject }) => {
       <Hero onStartProject={onStartProject} />
 
       {/* 2. The Operational Handshake (Ethos & Data) */}
-      <TheDossier />
+      <About />
       
       {/* 3. Process & Technical Specs */}
       <Capabilities />

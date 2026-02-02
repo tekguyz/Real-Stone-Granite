@@ -1,97 +1,80 @@
 import React from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { PrecisionBtn } from '../../shared/ui/PrecisionBtn';
-import { ICONS, TEXTURES } from '../../shared/assets';
-import { PHYSICS } from '../../shared/lib/theme';
+import { TEXTURES } from '../../shared/assets';
 
 interface FinalCTAProps {
   onStartProject?: () => void;
 }
 
 export const FinalCTA: React.FC<FinalCTAProps> = ({ onStartProject }) => {
-  const { scrollYProgress } = useScroll();
-  // Subtler parallax effect for better performance
-  const yBg = useTransform(scrollYProgress, [0.5, 1], [0, 50]);
-  const opacity = useTransform(scrollYProgress, [0.7, 1], [0, 1]);
-
   return (
-    <section className="relative w-full min-h-[70vh] flex flex-col items-center justify-center overflow-hidden border-t border-white/5 bg-black py-20">
+    <section className="relative w-full py-24 md:py-32 bg-black flex flex-col items-center justify-center overflow-hidden border-t border-white/5">
       
-      {/* 1. THE MATERIAL BASE (Parallax Slab) */}
-      <motion.div 
-        style={{ y: yBg }}
-        className="absolute inset-0 z-0 opacity-[0.15] pointer-events-none mix-blend-overlay"
-      >
+      {/* 1. BACKGROUND TEXTURE (Subtle & Organic) */}
+      <div className="absolute inset-0 opacity-[0.2] pointer-events-none mix-blend-overlay">
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url(${TEXTURES.QUARTZITE})` }}
         />
-      </motion.div>
+      </div>
 
-      {/* 2. ATMOSPHERIC GRADIENTS (Vignette) */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black z-10" />
-      <div className="absolute inset-0 bg-radial-gradient from-transparent via-black/40 to-black z-10" />
+      {/* 2. LIGHTING (The 'Showroom' Spotlight Effect) */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black z-10" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-full bg-gold/5 blur-[120px] rounded-full pointer-events-none" />
 
-      {/* 3. TYPOGRAPHIC LOCKUP */}
-      <div className="relative z-20 w-full max-w-7xl mx-auto px-6 text-center">
+      {/* 3. CONTENT LAYER */}
+      <div className="relative z-20 w-full max-w-4xl mx-auto px-6 text-center">
+        
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-10%" }}
-          transition={PHYSICS.smooth}
+          transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          {/* Top Label */}
-          <div className="flex items-center justify-center gap-4 mb-8 md:mb-12 opacity-50">
-            <div className="w-8 md:w-12 h-[1px] bg-gold/50" />
-            <span className="text-gold font-mono text-[9px] md:text-[10px] uppercase tracking-[0.4em] font-bold whitespace-nowrap">
-              Ready to build?
-            </span>
-            <div className="w-8 md:w-12 h-[1px] bg-gold/50" />
-          </div>
+          {/* Simple Eyebrow Text */}
+          <span className="block text-gold/80 font-mono text-[10px] md:text-xs uppercase tracking-[0.3em] mb-6 md:mb-8">
+            EST. 1995 &mdash; Fort Pierce, FL
+          </span>
 
-          {/* Main Headline - Responsive Text Sizing */}
-          <h2 className="text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-sans font-light text-white tracking-tighter leading-[0.9] mb-12 md:mb-16">
-            Crafted to <br className="hidden md:block"/>
-            <span className="text-gold italic font-serif relative inline-block">
-              Endure.
-              {/* Subtle underline decoration */}
-              <motion.span 
-                initial={{ width: 0 }}
-                whileInView={{ width: '100%' }}
-                transition={{ delay: 0.5, duration: 1 }}
-                className="absolute bottom-2 left-0 h-[2px] bg-gold opacity-50 hidden md:block"
-              />
-            </span>
+          {/* Main Headline: Warm & Emotional */}
+          <h2 className="text-4xl sm:text-5xl md:text-7xl font-sans font-light text-white tracking-tight leading-[1.1] mb-6 md:mb-8">
+            Ready to build <br className="hidden md:block" />
+            <span className="text-gold font-serif italic">something permanent?</span>
           </h2>
 
-          {/* CTA & Scroll Indicator */}
-          <div className="flex flex-col items-center gap-10">
+          {/* Subtext: Clear Value Proposition */}
+          <p className="text-white/60 text-sm md:text-lg font-light max-w-xl mx-auto mb-10 md:mb-12 leading-relaxed">
+            Skip the guesswork. Get a direct quote, a clear timeline, and a recommendation from the experts who built the Navy SEAL Memorial.
+          </p>
+
+          {/* The Button: Big, Clear, Clickable */}
+          <div className="flex justify-center w-full">
             <PrecisionBtn 
               variant="primary" 
               onClick={onStartProject}
-              className="w-full max-w-[280px] md:max-w-md h-14 md:h-16 text-sm md:text-lg shadow-[0_20px_60px_-15px_rgba(212,175,55,0.15)]"
+              className="w-full max-w-[300px] md:max-w-sm h-14 md:h-16 text-base md:text-lg shadow-2xl shadow-gold/10"
             >
               Start Your Project
             </PrecisionBtn>
           </div>
+
+          {/* Trust Marker (Simple, not Technical) */}
+          <div className="mt-16 md:mt-20 flex flex-col md:flex-row items-center justify-center gap-3 md:gap-8 opacity-40">
+             <div className="flex items-center gap-2">
+                <span className="text-[10px] text-white uppercase tracking-widest">Family Owned</span>
+             </div>
+             <div className="hidden md:block w-1 h-1 bg-white rounded-full" />
+             <div className="flex items-center gap-2">
+                <span className="text-[10px] text-white uppercase tracking-widest">Custom Fabrication</span>
+             </div>
+             <div className="hidden md:block w-1 h-1 bg-white rounded-full" />
+             <div className="flex items-center gap-2">
+                <span className="text-[10px] text-white uppercase tracking-widest">Licensed & Insured</span>
+             </div>
+          </div>
+
         </motion.div>
-      </div>
-
-      {/* 4. THE SPEC STAMP */}
-      <div className="absolute bottom-6 left-6 z-30 opacity-40">
-        <div className="flex flex-col border-l border-gold/30 pl-4">
-          <span className="text-gold font-mono text-[9px] uppercase tracking-[0.2em]">
-            Est. 1995
-          </span>
-          <span className="text-white/30 font-mono text-[8px] uppercase tracking-widest mt-1">
-            Fort Pierce, FL
-          </span>
-        </div>
-      </div>
-
-      {/* 5. INDUSTRIAL WATERMARK (Right) */}
-      <div className="absolute bottom-0 right-0 p-6 md:p-12 z-10 opacity-[0.03] pointer-events-none">
-         <ICONS.Craft className="w-24 h-24 md:w-40 md:h-40 text-white transform rotate-12" />
       </div>
 
     </section>
