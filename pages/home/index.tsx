@@ -1,11 +1,10 @@
-
 import React from 'react';
 import { Hero } from '../../widgets/Hero/index';
 import { TheDossier } from '../../widgets/TheDossier/index';
 import { Capabilities } from '../../widgets/Capabilities/index';
 import { MaterialVault } from '../../widgets/MaterialVault/index';
 import { Monuments } from '../../widgets/Monuments/index';
-import { Philosophy } from '../../widgets/Philosophy/index';
+import { FinalCTA } from '../../widgets/FinalCTA/index';
 import { RibbonCTA } from '../../shared/ui/RibbonCTA';
 
 interface HomePageProps {
@@ -38,8 +37,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onStartProject }) => {
       {/* 5. Social Proof & Legacy */}
       <Monuments />
 
-      {/* 6. Thematic Closer: Philosophy (The Initiation Deck) */}
-      <Philosophy onStartProject={onStartProject} />
+      {/* 6. Thematic Closer: Final Call to Action & Philosophy */}
+      <FinalCTA onStartProject={onStartProject} />
     </div>
   );
 };

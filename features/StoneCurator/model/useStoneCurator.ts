@@ -38,6 +38,7 @@ const constructSystemPrompt = () => {
     1. **Zero Tech-Speak:** Never mention being an AI, language model, or database.
     2. **Conciseness:** Keep responses under 75 words unless explaining a complex process.
     3. **Action Trigger:** If the user wants to start a project, asks for pricing, or wants to submit plans, END your response with: [ACTION_LAUNCH_STUDIO].
+    4. **No XML:** Never output raw XML tags or brackets unless it is the specific [ACTION_LAUNCH_STUDIO] trigger.
   `;
 };
 
@@ -46,7 +47,7 @@ export const useStoneCurator = (onLaunchStudio: () => void, isStudioOpen: boolea
   const [scrollY, setScrollY] = useState(0);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [hasUnread, setHasUnread] = useState(true); // Start with true for initial greeting
+  const [hasUnread, setHasUnread] = useState(true); 
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 'init-1',
@@ -69,9 +70,17 @@ export const useStoneCurator = (onLaunchStudio: () => void, isStudioOpen: boolea
   useEffect(() => {
     if (isOpen) {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-      setHasUnread(false); // Clear unread status when opened
+      setHasUnread(false);
     }
   }, [messages, isOpen]);
+
+  const sanitizeResponse = (text: string) => {
+    // Remove any raw XML tags like <changes>, <change>, etc. if they accidentally leak
+    return text
+      .replace(/<[^>]*>?/gm, '') // Remove all HTML/XML-like tags
+      .replace(/\[ACTION_LAUNCH_STUDIO\]/g, '') // Remove action trigger (it's handled separately)
+      .trim();
+  };
 
   const handleSend = async (text: string = input) => {
     if (!text.trim() || isLoading) return;
@@ -82,15 +91,13 @@ export const useStoneCurator = (onLaunchStudio: () => void, isStudioOpen: boolea
     setIsLoading(true);
 
     try {
-      const responseText = await generateText(text, constructSystemPrompt());
+      const responseRaw = await generateText(text, constructSystemPrompt());
       
-      let aiText = responseText || "I'm sorry, I couldn't process that request.";
-      let triggerAction = false;
+      let aiText = responseRaw || "I'm sorry, I couldn't process that request.";
+      const triggerAction = responseRaw?.includes('[ACTION_LAUNCH_STUDIO]') || false;
 
-      if (aiText.includes('[ACTION_LAUNCH_STUDIO]')) {
-        aiText = aiText.replace('[ACTION_LAUNCH_STUDIO]', '').trim();
-        triggerAction = true;
-      }
+      // Clean the text for UI display
+      aiText = sanitizeResponse(aiText);
 
       const aiMsg: Message = {
         id: (Date.now() + 1).toString(),
