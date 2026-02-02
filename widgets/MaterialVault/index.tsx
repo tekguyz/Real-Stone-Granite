@@ -85,7 +85,6 @@ export const MaterialVault: React.FC<MaterialVaultProps> = ({ onStartProject }) 
 
       <div className="flex-1 flex flex-col lg:flex-row relative overflow-hidden">
         
-        {/* SIDEBAR: Reduced width for sleeker look */}
         <div 
           ref={scrollRef}
           className={`
@@ -104,7 +103,6 @@ export const MaterialVault: React.FC<MaterialVaultProps> = ({ onStartProject }) 
                  `}
                >
                  <div className="flex flex-col gap-1 relative z-10">
-                   {/* Typography: Tighter, smaller, more precise */}
                    <h3 className={`text-sm md:text-base lg:text-xl font-sans font-medium tracking-wide transition-all duration-500 ${isSelected ? 'text-white' : 'text-white/40'}`}>
                      {material.type}
                    </h3>
@@ -153,6 +151,7 @@ export const MaterialVault: React.FC<MaterialVaultProps> = ({ onStartProject }) 
                   src={getTexture(selectedMaterial.type)} 
                   alt={selectedMaterial.type}
                   className="w-full h-full object-cover filter brightness-[0.6] lg:brightness-[0.6] contrast-[1.1]"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-transparent hidden lg:block" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
@@ -162,7 +161,6 @@ export const MaterialVault: React.FC<MaterialVaultProps> = ({ onStartProject }) 
 
           <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.05] pointer-events-none mix-blend-overlay z-10" />
 
-          {/* HUD AREA: Reduced padding and sizes */}
           <div className="mt-auto w-full p-5 md:p-12 z-20 pointer-events-none pb-20 lg:pb-12">
             <motion.div 
               key={selectedMaterial.type + '-hud'}

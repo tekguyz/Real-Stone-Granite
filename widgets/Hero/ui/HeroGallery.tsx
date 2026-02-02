@@ -84,6 +84,8 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
               alt={currentSlab.name}
               className="absolute inset-0 w-full h-full object-cover pointer-events-none"
               style={{ filter: 'brightness(0.35) contrast(1.1) grayscale(30%)' }}
+              fetchpriority={currentIndex === 0 ? "high" : "auto"}
+              loading={currentIndex === 0 ? "eager" : "lazy"}
             />
           </motion.div>
 
@@ -101,6 +103,7 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
               alt=""
               className="absolute inset-0 w-full h-full object-cover pointer-events-none"
               style={{ filter: `brightness(${LIGHT_BRIGHTNESS}) contrast(1.4) saturate(1.4) sepia(10%)` }}
+              loading="lazy"
             />
           </motion.div>
         </AnimatePresence>
@@ -118,7 +121,6 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
           style={{ x: lightX, y: lightY, translateX: '-50%', translateY: '-50%' }}
           animate={{ opacity: hovering ? 1 : 0, scale: hovering ? 1 : 0.5 }}
         >
-          {/* Centered precision dot - Ensure perfect roundness and zero square artifacts */}
           <div className="w-2 h-2 bg-white rounded-full shadow-[0_0_15px_6px_rgba(255,255,255,0.7)]" />
         </motion.div>
 

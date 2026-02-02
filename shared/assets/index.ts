@@ -1,3 +1,4 @@
+
 import { 
   Layers, 
   Shield, 
@@ -27,9 +28,9 @@ import {
   Award
 } from 'lucide-react';
 
-// OPTIMIZATION: Use WebP (fm=webp), reduced quality (q=70), and smaller widths (w=800) for better LCP/FCP.
-const UNSPLASH_PARAMS = "?auto=format&fit=crop&q=70&w=800&fm=webp";
-const FUTARNO_PREFIX = "https://futerno.com/wp-content/uploads"; // Futerno images are static, can't easily param optimize without CDN
+// OPTIMIZATION: Default to smaller widths and higher compression for textures.
+const UNSPLASH_PARAMS = "?auto=format&fit=crop&q=60&w=600&fm=webp";
+const FUTARNO_PREFIX = "https://futerno.com/wp-content/uploads";
 
 export const TEXTURES = {
   // --- IGNEOUS & METAMORPHIC ---
@@ -65,7 +66,7 @@ export const MONUMENTS = {
 
 export const MEDIA = {
   VIDEO_MACRO: "https://assets.mixkit.co/videos/preview/mixkit-black-marble-surface-view-4089-large.mp4",
-  IMG_MACRO_POSTER: `https://images.unsplash.com/photo-1600607687940-4e789269c27b${UNSPLASH_PARAMS}&w=1600`,
+  IMG_MACRO_POSTER: `https://images.unsplash.com/photo-1600607687940-4e789269c27b?auto=format&fit=crop&q=60&w=1200&fm=webp`,
   VIDEO_CNC: "https://player.vimeo.com/external/494163956.sd.mp4?s=d00424578f773663a763d8e5793e7f9104192b67&profile_id=165",
 };
 
