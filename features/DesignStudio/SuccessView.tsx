@@ -121,28 +121,20 @@ export const SuccessView: React.FC<SuccessViewProps> = ({ onClose, projectRef })
         const visionText = doc.splitTextToSize(state.description || "Awaiting final architectural detail.", 160);
         doc.text(visionText, 20, yPos);
 
-        // 7. INTERNAL TECHNICAL METADATA (Professional Encoding)
-        // Hidden in plain sight at the bottom
-        const markers = state.internalMarkers;
-        const urgencyCode = markers.urgency === 'High' ? 'PRIORITY-A' : 'PRIORITY-B';
-        const engagementCode = markers.engagement.toUpperCase();
-        const dispositionCode = markers.disposition.toUpperCase();
-
+        // 7. FOOTER & SEAL (CLEAN WITH CONTACT INFO)
         doc.setDrawColor(lightGray[0], lightGray[1], lightGray[2]);
-        doc.line(20, 255, 190, 255);
+        doc.line(20, 260, 190, 260);
         
-        doc.setFont('courier', 'bold');
-        doc.setFontSize(7);
-        doc.setTextColor(lightGray[0], lightGray[1], lightGray[2]);
-        doc.text(`TECH-REF: [${urgencyCode}] | SIG-ENG: [${engagementCode}] | MOD-DIS: [${dispositionCode}]`, 20, 260);
-
         doc.setFont('courier', 'normal');
         doc.setFontSize(7);
-        doc.text('This document serves as a digital record of architectural intent. Site verification required.', 20, 268, { maxWidth: 160 });
+        doc.setTextColor(lightGray[0], lightGray[1], lightGray[2]);
+        doc.text('This document serves as a digital record of architectural intent. All structural measurements are subject to site verification by our Master Masons.', 20, 268, { maxWidth: 160 });
         
+        // ADDED REFINED CONTACT INFO LINE
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(8);
-        doc.text('REAL STONE & GRANITE CORP | SOUTH FLORIDA AUTHORITY ON STONE', 20, 275);
+        doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
+        doc.text('REAL STONE & GRANITE CORP | 427 SOUTH MARKET AVE, FORT PIERCE, FL | (772) 489-9964', 20, 275);
 
         // Download
         doc.save(`RSG-Manifesto-${projectRef}.pdf`);
