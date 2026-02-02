@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useScroll, useTransform } from 'framer-motion';
 import { HeroManifesto } from './ui/HeroManifesto';
