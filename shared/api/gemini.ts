@@ -1,12 +1,3 @@
-
-/**
- * Gemini Intelligence Service (Client Proxy)
- * 
- * ARCHITECTURE NOTE:
- * This module routes all AI requests through our secure Netlify Function (gemini-proxy).
- * This prevents exposure of the API_KEY in the browser client.
- */
-
 export const generateText = async (prompt: string, systemInstruction: string) => {
   try {
     const response = await fetch('/.netlify/functions/gemini-proxy', {
@@ -15,19 +6,19 @@ export const generateText = async (prompt: string, systemInstruction: string) =>
       body: JSON.stringify({
         prompt,
         systemInstruction,
-        temperature: 0.7 // Higher creativity for conversation
+        temperature: 0.7 
       })
     });
 
     if (!response.ok) {
-      throw new Error(`Proxy Error: ${response.statusText}`);
+      throw new Error(`Connection issue`);
     }
 
     const data = await response.json();
     return data.text;
   } catch (error) {
-    console.error("AI Service Unavailable:", error);
-    return "Our consultants are currently assisting other clients. Please try again in a moment.";
+    console.error("Connection problem:", error);
+    return "I’m sorry, I’m having trouble reaching the team right now. Please try again in a few moments.";
   }
 };
 
@@ -38,23 +29,23 @@ export const transcribeAudio = async (base64Audio: string, mimeType: string, pro
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         prompt,
-        systemInstruction: "You are a specialized transcription tool for an architectural stone company. Focus on clarity and professional formatting.",
+        systemInstruction: "You are helping a customer describe their stone project. Take their spoken words and write them down clearly.",
         audio: {
           data: base64Audio,
           mimeType: mimeType
         },
-        temperature: 0.2 // Lower temperature for accurate transcription
+        temperature: 0.2 
       })
     });
 
     if (!response.ok) {
-       throw new Error(`Proxy Error: ${response.statusText}`);
+       throw new Error(`Could not process note`);
     }
 
     const data = await response.json();
     return data.text;
   } catch (error) {
-    console.error("Audio Processing Error:", error);
+    console.error("Audio problem:", error);
     throw error;
   }
 };

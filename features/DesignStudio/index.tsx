@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ProjectProvider } from '../../entities/project/store';
@@ -41,7 +40,6 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
     isRecording,
     isProcessingAudio,
     toggleRecording,
-    // Add missing isStepValid from hook return
     isStepValid
   } = useDesignStudio(isOpen, onClose);
 
@@ -57,22 +55,18 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
           transition={PHYSICS.snappy}
           className="fixed inset-0 z-[20000] bg-primary flex flex-col overflow-hidden h-[100dvh] text-white isolate-layer gpu-accel"
         >
-          {/* 1. ATMOSPHERE */}
           <div className="absolute inset-0 pointer-events-none opacity-[0.03] z-0">
              <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay" />
           </div>
 
-          {/* 2. STUDIO HEADER (Minimalist) */}
           <div className="h-20 w-full bg-primary border-b border-white/5 flex items-center justify-between px-6 md:px-12 flex-shrink-0 relative z-50">
-             {/* Left: Identity */}
              <div className="flex items-center gap-4">
                 <span className="font-sans font-bold text-lg tracking-tight text-white">Project Planner</span>
                 <span className="font-mono text-[10px] text-white/40 uppercase tracking-widest px-2 py-1 border border-white/10 rounded-sm">
-                   Drafting Mode
+                   Planning Phase
                 </span>
              </div>
 
-             {/* Right: Controls */}
              <button 
                onClick={handleClose} 
                className="group flex items-center gap-3 text-white/60 hover:text-white transition-colors"
@@ -84,13 +78,10 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
              </button>
           </div>
 
-          {/* 3. MAIN WORKSPACE */}
           {isSubmitted ? (
             <SuccessView onClose={handleClose} projectRef={projectRef} />
           ) : (
             <div className="flex-1 w-full grid grid-cols-1 lg:grid-cols-12 overflow-hidden relative z-10">
-              
-              {/* MODULE A: NAVIGATION (Sidebar) */}
               <div className="lg:col-span-2 border-r border-white/5 bg-primary/50 flex flex-col relative z-20 backdrop-blur-sm">
                   <Sidebar 
                     currentStep={currentStep} 
@@ -99,7 +90,6 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
                   />
               </div>
 
-              {/* MODULE B: CONTENT (Steps) */}
               <div className="lg:col-span-7 relative flex flex-col overflow-hidden bg-primary">
                  <StudioSteps 
                     currentStep={currentStep}
@@ -110,7 +100,6 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
                     attachedFile={attachedFile}
                     fileInputRef={fileInputRef}
                     isSubmitting={isSubmitting}
-                    // Pass isStepValid to satisfy the StudioStepsProps requirement
                     isStepValid={isStepValid}
                     handlers={{
                       handleFileClick,
@@ -127,7 +116,6 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
                   />
               </div>
 
-              {/* MODULE C: SUMMARY (Sidebar) */}
               <div className="hidden lg:flex lg:col-span-3 border-l border-white/5 bg-primary/50 flex-col relative z-20 backdrop-blur-sm">
                   <SummaryPanel 
                     state={state} 
@@ -137,7 +125,6 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
                   />
               </div>
 
-              {/* MOBILE OVERLAY */}
               <MobileSummaryDrawer 
                 isOpen={isDrawerOpen} 
                 onToggle={() => setIsDrawerOpen(!isDrawerOpen)} 
@@ -145,10 +132,8 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
                 recommendation={recommendation} 
                 projectRef={projectRef} 
               />
-
             </div>
           )}
-
         </motion.div>
       )}
     </AnimatePresence>

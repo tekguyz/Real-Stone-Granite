@@ -1,7 +1,5 @@
-
 import React, { createContext, useContext, useReducer, ReactNode, useMemo, useEffect } from 'react';
 
-// --- Types ---
 export type ProjectScope = 'Culinary Surface' | 'Wet Environment' | 'Exterior Architecture' | 'Statement Piece';
 export type UsageIntensity = 'Visual Art' | 'Moderate Use' | 'Heavy Duty';
 export type UserRole = 'Private Residence' | 'Professional Partner';
@@ -24,7 +22,6 @@ export interface Recommendation {
   warning?: string;
 }
 
-// --- Initial State ---
 const initialState: ProjectState = {
   userRole: 'Private Residence',
   reference: '',
@@ -38,7 +35,6 @@ const initialState: ProjectState = {
 
 const STORAGE_KEY = 'rsg_project_draft';
 
-// --- Actions ---
 type Action =
   | { type: 'SET_USER_ROLE'; payload: UserRole }
   | { type: 'SET_REFERENCE'; payload: string }
@@ -51,7 +47,6 @@ type Action =
   | { type: 'HYDRATE'; payload: ProjectState }
   | { type: 'RESET' };
 
-// --- Reducer ---
 function projectReducer(state: ProjectState, action: Action): ProjectState {
   switch (action.type) {
     case 'SET_USER_ROLE': return { ...state, userRole: action.payload };
@@ -70,28 +65,25 @@ function projectReducer(state: ProjectState, action: Action): ProjectState {
   }
 }
 
-// --- Designer Logic Engine ---
 export const getRecommendation = (state: ProjectState): Recommendation => {
-  if (!state.scope) return { material: 'Awaiting Context', reason: 'Select a project scope to initiate the recommendation engine.' };
-  if (state.scope === 'Exterior Architecture') return { material: 'Dekton or Dense Granite', reason: 'UV Stability is mandatory for Florida exteriors.', warning: 'Avoid Soft Marbles outdoors.' };
-  if (state.scope === 'Culinary Surface' && state.intensity === 'Heavy Duty') return { material: 'Natural Quartzite', reason: 'Diamond-level hardness for high-acidity environments.' };
-  if (state.scope === 'Statement Piece' && state.intensity === 'Visual Art') return { material: 'Onyx or Semi-Precious', reason: 'Translucent properties allow for backlighting.' };
-  return { material: 'Premium Quartzite', reason: 'The ideal balance of longevity and design.' };
+  if (!state.scope) return { material: 'Tell us about your project', reason: 'Choose a project area so we can suggest the best materials for your needs.' };
+  if (state.scope === 'Exterior Architecture') return { material: 'Dekton or Dense Granite', reason: 'These stones stand up beautifully to the Florida sun and salt air.', warning: 'We recommend avoiding soft marbles for outdoor projects.' };
+  if (state.scope === 'Culinary Surface' && state.intensity === 'Heavy Duty') return { material: 'Natural Quartzite', reason: 'It has the hardness of a diamond, making it perfect for busy kitchens.' };
+  if (state.scope === 'Statement Piece' && state.intensity === 'Visual Art') return { material: 'Onyx or Semi-Precious', reason: 'These materials look stunning when backlit and create a focal point.' };
+  return { material: 'Premium Quartzite', reason: 'A beautiful, long-lasting choice that fits almost any design.' };
 };
 
-// --- Context & Provider ---
 const ProjectContext = createContext<{ state: ProjectState; dispatch: React.Dispatch<Action>; recommendation: Recommendation } | undefined>(undefined);
 
 export const ProjectProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(projectReducer, initialState);
 
-  // Persistence Layer
   useEffect(() => {
     const saved = sessionStorage.getItem(STORAGE_KEY);
     if (saved) {
       try {
         dispatch({ type: 'HYDRATE', payload: JSON.parse(saved) });
-      } catch (e) { console.error("Hydration failed", e); }
+      } catch (e) { console.error("Could not load draft", e); }
     }
   }, []);
 

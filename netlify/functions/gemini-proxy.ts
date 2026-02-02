@@ -1,8 +1,6 @@
-
 import { GoogleGenAI } from "@google/genai";
 
 export default async (req: Request) => {
-  // 1. CORS Preflight Handling
   if (req.method === "OPTIONS") {
     return new Response(null, {
       headers: {
@@ -13,28 +11,20 @@ export default async (req: Request) => {
     });
   }
 
-  // 2. Method Validation
   if (req.method !== "POST") {
-    return new Response("Method Not Allowed", { status: 405 });
+    return new Response("Not allowed", { status: 405 });
   }
 
   try {
-    // 3. Request Parsing
-    // Accepts prompt, systemInstruction, temperature, and optional audio data
     const { prompt, systemInstruction, audio, temperature } = await req.json();
 
     if (!process.env.API_KEY) {
-      console.error("API_KEY is not defined in the environment.");
-      throw new Error("Server Configuration Error");
+      throw new Error("Configuration issue");
     }
 
-    // 4. Gemini Client Initialization
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-
-    // 5. Construct Multimodal Content
     const parts = [];
     
-    // Add audio part if present (Critical for Voice Notes)
     if (audio && audio.data && audio.mimeType) {
       parts.push({
         inlineData: {
@@ -44,23 +34,19 @@ export default async (req: Request) => {
       });
     }
 
-    // Add text prompt if present
     if (prompt) {
       parts.push({ text: prompt });
     }
 
-    // 6. Generate Content
-    // Using 'gemini-3-flash-preview' for efficient multimodal processing
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: { parts },
       config: {
         systemInstruction: systemInstruction, 
-        temperature: temperature || 0.4, // Default to 0.4 if not specified
+        temperature: temperature || 0.4,
       },
     });
 
-    // 7. Success Response
     return new Response(JSON.stringify({ 
       text: response.text 
     }), {
@@ -71,10 +57,8 @@ export default async (req: Request) => {
     });
 
   } catch (error: any) {
-    console.error("Gemini Proxy Error:", error);
-    
     return new Response(JSON.stringify({ 
-      error: "Architectural Intelligence System Offline.",
+      error: "We're having trouble connecting to our design assistant. Please try again.",
       details: error.message 
     }), {
       status: 500,
