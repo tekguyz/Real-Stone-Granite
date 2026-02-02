@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, ArrowLeft, Loader2, Check, FileText } from 'lucide-react';
@@ -23,7 +24,7 @@ export const SuccessView: React.FC<SuccessViewProps> = ({ onClose, projectRef })
     if (isDownloading) return;
     setIsDownloading(true);
     
-    // Subtle delay to mimic "Sealing" the document
+    // Subtle delay to mimic processing
     setTimeout(() => {
       try {
         const doc = new jsPDF({
@@ -60,24 +61,24 @@ export const SuccessView: React.FC<SuccessViewProps> = ({ onClose, projectRef })
         doc.setFont('courier', 'bold');
         doc.setFontSize(12);
         doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
-        doc.text(`PROJECT MANIFESTO: #${projectRef}`, 20, 55);
+        doc.text(`PROJECT BRIEF: #${projectRef}`, 20, 55);
         doc.setFontSize(8);
-        doc.text(`DATE OF VERIFICATION: ${new Date().toLocaleDateString().toUpperCase()}`, 20, 60);
+        doc.text(`DATE PREPARED: ${new Date().toLocaleDateString().toUpperCase()}`, 20, 60);
 
         // 4. TECHNICAL SPECIFICATIONS
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(10);
-        doc.text('TECHNICAL SPECIFICATIONS', 20, 75);
+        doc.text('PROJECT OVERVIEW', 20, 75);
         doc.setLineWidth(0.2);
         doc.line(20, 77, 80, 77);
 
         const specs = [
-          ['CLIENT PROFILE:', state.userRole],
-          ['REFERENCE:', state.reference || 'DIRECT INQUIRY'],
+          ['CLIENT TYPE:', state.userRole],
+          ['REFERRAL:', state.reference || 'DIRECT INQUIRY'],
           ['PROJECT AREA:', state.scope || 'PENDING'],
-          ['CRAFTSMANSHIP:', state.fabricationLevel],
+          ['FINISH LEVEL:', state.fabricationLevel],
           ['TIMELINE:', state.timeline],
-          ['SPECIFIED MATERIAL:', state.stonePreference !== 'Pending' ? state.stonePreference : recommendation.material]
+          ['MATERIAL SELECTION:', state.stonePreference !== 'Pending' ? state.stonePreference : recommendation.material]
         ];
 
         let yPos = 85;
@@ -98,7 +99,7 @@ export const SuccessView: React.FC<SuccessViewProps> = ({ onClose, projectRef })
         yPos += 10;
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(10);
-        doc.text('FABRICATION INSIGHT', 20, yPos);
+        doc.text('MATERIAL INSIGHT', 20, yPos);
         doc.line(20, yPos + 2, 80, yPos + 2);
         
         yPos += 10;
@@ -112,37 +113,36 @@ export const SuccessView: React.FC<SuccessViewProps> = ({ onClose, projectRef })
         // 6. VISION NOTES
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(10);
-        doc.text('PROJECT VISION & NOTES', 20, yPos);
+        doc.text('CLIENT VISION & NOTES', 20, yPos);
         doc.line(20, yPos + 2, 80, yPos + 2);
         
         yPos += 10;
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(10);
-        const visionText = doc.splitTextToSize(state.description || "Awaiting final architectural detail.", 160);
+        const visionText = doc.splitTextToSize(state.description || "No specific details provided yet.", 160);
         doc.text(visionText, 20, yPos);
 
-        // 7. FOOTER & SEAL (CLEAN WITH CONTACT INFO)
+        // 7. FOOTER
         doc.setDrawColor(lightGray[0], lightGray[1], lightGray[2]);
         doc.line(20, 260, 190, 260);
         
         doc.setFont('courier', 'normal');
         doc.setFontSize(7);
         doc.setTextColor(lightGray[0], lightGray[1], lightGray[2]);
-        doc.text('This document serves as a digital record of architectural intent. All structural measurements are subject to site verification by our Master Masons.', 20, 268, { maxWidth: 160 });
+        doc.text('This document serves as a preliminary design brief. Final measurements subject to site visit.', 20, 268, { maxWidth: 160 });
         
-        // ADDED REFINED CONTACT INFO LINE
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(8);
         doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
         doc.text('REAL STONE & GRANITE CORP | 427 SOUTH MARKET AVE, FORT PIERCE, FL | (772) 489-9964', 20, 275);
 
         // Download
-        doc.save(`RSG-Manifesto-${projectRef}.pdf`);
+        doc.save(`RSG-Brief-${projectRef}.pdf`);
         
-        showToast(`Document Sealed & Downloaded`, 'success');
+        showToast(`Brief Saved to Device`, 'success');
       } catch (err) {
         console.error(err);
-        showToast("Error generating PDF", "error");
+        showToast("Error saving PDF", "error");
       } finally {
         setIsDownloading(false);
       }
@@ -168,10 +168,10 @@ export const SuccessView: React.FC<SuccessViewProps> = ({ onClose, projectRef })
                     <div>
                       <div className="flex items-center gap-3 mb-2">
                         <div className="w-2 h-2 bg-gold rotate-45" />
-                        <span className="font-mono text-[10px] text-gold uppercase tracking-[0.4em] font-bold">Project Manifesto</span>
+                        <span className="font-mono text-[10px] text-gold uppercase tracking-[0.4em] font-bold">Design Brief</span>
                       </div>
                       <h2 className="text-3xl font-sans font-black uppercase text-white tracking-tighter">REF: {projectRef}</h2>
-                      <p className="text-white/40 font-mono text-[10px] mt-2 uppercase tracking-widest leading-none">Status: Architecture Verified</p>
+                      <p className="text-white/40 font-mono text-[10px] mt-2 uppercase tracking-widest leading-none">Status: Ready for Review</p>
                     </div>
                     <div className="flex flex-col items-end">
                        <div className="w-10 h-10 border border-gold/20 flex items-center justify-center bg-gold/5">
@@ -183,18 +183,18 @@ export const SuccessView: React.FC<SuccessViewProps> = ({ onClose, projectRef })
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
                     <div className="space-y-6">
                        <div>
-                          <span className="block font-mono text-[9px] text-white/30 uppercase tracking-[0.2em] mb-2 font-bold">Stakeholder</span>
+                          <span className="block font-mono text-[9px] text-white/30 uppercase tracking-[0.2em] mb-2 font-bold">Client</span>
                           <span className="text-white text-base font-medium">{state.userRole}</span>
                        </div>
                        <div>
-                          <span className="block font-mono text-[9px] text-white/30 uppercase tracking-[0.2em] mb-2 font-bold">Intent</span>
+                          <span className="block font-mono text-[9px] text-white/30 uppercase tracking-[0.2em] mb-2 font-bold">Project Scope</span>
                           <span className="text-white text-base font-medium">{state.scope}</span>
                        </div>
                     </div>
                     <div className="space-y-6">
                        <div className="p-6 bg-white/[0.02] border border-white/5 relative">
                           <div className="absolute top-0 left-0 w-1 h-1 bg-gold/40" />
-                          <span className="block font-mono text-[9px] text-gold uppercase tracking-[0.2em] mb-3 font-bold">Specified Slab</span>
+                          <span className="block font-mono text-[9px] text-gold uppercase tracking-[0.2em] mb-3 font-bold">Selected Material</span>
                           <div className="flex items-center gap-3 text-white">
                              <span className="text-lg font-bold uppercase tracking-tight">
                                 {state.stonePreference !== 'Pending' ? state.stonePreference : recommendation.material}
@@ -206,11 +206,11 @@ export const SuccessView: React.FC<SuccessViewProps> = ({ onClose, projectRef })
 
                 <div className="bg-black/40 p-6 flex flex-col md:flex-row items-center justify-between gap-6">
                    <p className="text-[11px] text-white/40 font-light max-w-sm text-center md:text-left leading-relaxed">
-                      Your technical brief is ready. This document will serve as our primary reference during the fabrication phase.
+                      Your summary is ready. You can save this for your records or bring it to your consultation.
                    </p>
                    <PrecisionBtn onClick={generatePDF} variant="secondary" className="h-12 px-6 text-[9px] whitespace-nowrap min-w-0">
                       {isDownloading ? <Loader2 className="w-3 h-3 animate-spin mr-3" /> : <FileText className="w-3.5 h-3.5 mr-3" />}
-                      {isDownloading ? "Sealing PDF..." : "Save PDF Manifesto"}
+                      {isDownloading ? "Saving..." : "Download Brief"}
                    </PrecisionBtn>
                 </div>
             </div>
@@ -218,7 +218,7 @@ export const SuccessView: React.FC<SuccessViewProps> = ({ onClose, projectRef })
             <div className="flex flex-col items-center gap-6">
               <PrecisionBtn onClick={() => setView('booking')} variant="primary" className="w-full h-16 max-w-sm">
                 <Calendar className="w-4 h-4 mr-3" />
-                <span className="font-mono text-[11px] font-bold tracking-[0.3em]">Schedule Workshop Visit</span>
+                <span className="font-mono text-[11px] font-bold tracking-[0.3em]">Schedule Visit</span>
               </PrecisionBtn>
 
               <button onClick={onClose} className="text-white/40 hover:text-white font-mono text-[10px] uppercase tracking-[0.4em] transition-colors flex items-center gap-2 group">

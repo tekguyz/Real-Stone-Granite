@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, Clock, ChevronRight, ArrowLeft, CheckCircle2 } from 'lucide-react';
@@ -34,11 +35,11 @@ export const BookingStudio: React.FC<BookingStudioProps> = ({ onBack, onSuccess 
   };
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center p-6 bg-primary z-30">
+    <div className="w-full h-full flex flex-col items-center bg-primary z-30 overflow-y-auto custom-scrollbar">
       <motion.div 
         initial={{ opacity: 0, y: 20 }} 
         animate={{ opacity: 1, y: 0 }} 
-        className="max-w-xl w-full"
+        className="max-w-xl w-full py-12 px-6 pb-32 md:my-auto"
       >
         <button 
           onClick={onBack}
@@ -108,7 +109,7 @@ export const BookingStudio: React.FC<BookingStudioProps> = ({ onBack, onSuccess 
             variant="primary" 
             disabled={selectedDate === null || selectedTime === null || isBooking}
             onClick={handleBook}
-            className="w-full h-16"
+            className="w-full h-16 mt-8"
           >
             {isBooking ? (
               <CheckCircle2 className="w-5 h-5 animate-pulse" />
