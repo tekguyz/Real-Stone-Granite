@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
+
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { PrecisionBtn } from '../../shared/ui/PrecisionBtn';
 import { ICONS } from '../../shared/assets';
 
@@ -11,16 +12,36 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [activeSection, setActiveSection] = useState('');
-  const { scrollY } = useScroll();
+  
+  // NATIVE SCROLL TRACKING (Robust)
+  const lastScrollY = useRef(0);
 
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    const previous = scrollY.getPrevious() || 0;
-    if (latest > previous && latest > 150) {
-      setHidden(true);
-    } else {
-      setHidden(false);
-    }
-  });
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentY = window.scrollY;
+      const diff = currentY - lastScrollY.current;
+
+      // Logic:
+      // 1. If at top (< 50px), ALWAYS SHOW.
+      // 2. If scrolling DOWN (diff > 0) and not at top, HIDE.
+      // 3. If scrolling UP (diff < 0), SHOW.
+      
+      if (currentY < 50) {
+        setHidden(false);
+      } else if (Math.abs(diff) > 10) { // 10px buffer to prevent jitter
+        if (diff > 0) {
+          setHidden(true);
+        } else {
+          setHidden(false);
+        }
+      }
+
+      lastScrollY.current = currentY;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const navLinks = [
     { name: 'Our Story', href: 'about' },
@@ -43,9 +64,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
   return (
     <>
       <motion.nav
-        initial={{ y: -100, opacity: 0 }}
-        animate={hidden ? { y: -100, opacity: 0 } : { y: 0, opacity: 1 }}
-        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        initial={{ y: 0 }}
+        // Force -140px to clear the top-6 (24px) margin + height of navbar
+        animate={{ y: hidden ? -140 : 0 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
         className="fixed top-6 left-0 right-0 z-[9999] flex justify-center pointer-events-none"
       >
         <div className="pointer-events-auto bg-[#0a0a0a]/95 backdrop-blur-md border border-white/20 px-1.5 py-1.5 flex items-center gap-1.5 shadow-2xl shadow-black/80 rounded-sm">

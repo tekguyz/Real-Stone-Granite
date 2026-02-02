@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { COMPANY_KB } from '../../entities/company/knowledge';
@@ -61,18 +62,18 @@ export const MaterialVault: React.FC<MaterialVaultProps> = ({ onStartProject }) 
   return (
     <section id="materials" className="bg-primary min-h-screen w-full flex flex-col relative overflow-hidden border-t border-white/5">
       
-      <div className="w-full py-6 md:py-8 px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-6 border-b border-white/5 z-30 bg-primary">
-        <div className="flex items-center gap-4">
-          <div className="w-2 h-2 bg-gold rotate-45" />
-          <h2 className="text-lg md:text-xl font-sans font-bold uppercase tracking-widest text-white">Our Collection</h2>
+      <div className="w-full py-4 px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-4 border-b border-white/5 z-30 bg-primary">
+        <div className="flex items-center gap-3">
+          <div className="w-1.5 h-1.5 bg-gold rotate-45" />
+          <h2 className="text-sm md:text-base font-sans font-bold uppercase tracking-widest text-white">Our Collection</h2>
         </div>
         
-        <div className="flex bg-white/5 border border-white/10 p-1">
+        <div className="flex bg-white/5 border border-white/10 p-1 rounded-sm">
           {(['natural', 'engineered'] as TabKey[]).map((tab) => (
             <button
               key={tab}
               onClick={() => handleTabChange(tab)}
-              className={`px-4 md:px-6 py-2 text-[9px] md:text-[10px] font-mono uppercase tracking-[0.2em] transition-all duration-500 ${
+              className={`px-4 py-1.5 text-[9px] font-mono uppercase tracking-[0.2em] transition-all duration-500 rounded-sm ${
                 activeTab === tab ? 'bg-gold text-primary font-bold' : 'text-white/40 hover:text-white'
               }`}
             >
@@ -84,10 +85,11 @@ export const MaterialVault: React.FC<MaterialVaultProps> = ({ onStartProject }) 
 
       <div className="flex-1 flex flex-col lg:flex-row relative overflow-hidden">
         
+        {/* SIDEBAR: Reduced width for sleeker look */}
         <div 
           ref={scrollRef}
           className={`
-            w-full lg:w-[400px] xl:w-[500px] border-b lg:border-b-0 lg:border-r border-white/5 flex flex-row lg:flex-col bg-primary/80 backdrop-blur-md z-30 overflow-x-auto lg:overflow-y-auto scrollbar-hide lg:custom-scrollbar flex-shrink-0
+            w-full lg:w-[320px] xl:w-[380px] border-b lg:border-b-0 lg:border-r border-white/5 flex flex-row lg:flex-col bg-primary/80 backdrop-blur-md z-30 overflow-x-auto lg:overflow-y-auto scrollbar-hide lg:custom-scrollbar flex-shrink-0
           `}
         >
            {activeMaterials.map((material, idx) => {
@@ -97,24 +99,25 @@ export const MaterialVault: React.FC<MaterialVaultProps> = ({ onStartProject }) 
                  key={material.type}
                  onClick={() => handleSelectMaterial(idx)}
                  className={`
-                   flex-shrink-0 lg:w-full text-left p-6 lg:p-12 border-r lg:border-r-0 lg:border-b border-white/5 transition-all duration-500 relative group
+                   flex-shrink-0 lg:w-full text-left p-4 lg:p-8 border-r lg:border-r-0 lg:border-b border-white/5 transition-all duration-500 relative group min-w-[140px] lg:min-w-0
                    ${isSelected ? 'bg-white/[0.05]' : 'hover:bg-white/[0.02]'}
                  `}
                >
-                 <div className="flex flex-col gap-1 lg:gap-2 relative z-10">
-                   <h3 className={`text-base lg:text-4xl font-sans font-light tracking-tighter whitespace-nowrap lg:whitespace-normal transition-all duration-500 ${isSelected ? 'text-white scale-105 lg:scale-110 origin-left' : 'text-white/40'}`}>
+                 <div className="flex flex-col gap-1 relative z-10">
+                   {/* Typography: Tighter, smaller, more precise */}
+                   <h3 className={`text-sm md:text-base lg:text-xl font-sans font-medium tracking-wide transition-all duration-500 ${isSelected ? 'text-white' : 'text-white/40'}`}>
                      {material.type}
                    </h3>
                    
                    <AnimatePresence>
                      {isSelected && (
                        <motion.div 
-                         initial={{ opacity: 0, y: 5 }} 
-                         animate={{ opacity: 1, y: 0 }} 
-                         className="hidden lg:flex flex-wrap gap-2 mt-4"
+                         initial={{ opacity: 0, height: 0 }} 
+                         animate={{ opacity: 1, height: 'auto' }} 
+                         className="hidden lg:flex flex-wrap gap-2 mt-2"
                        >
-                         {material.attributes?.map(attr => (
-                           <span key={attr} className="text-[8px] font-mono uppercase tracking-widest text-gold/60 px-2 py-0.5 border border-gold/20">
+                         {material.attributes?.slice(0, 2).map(attr => (
+                           <span key={attr} className="text-[9px] font-mono uppercase tracking-widest text-gold/60">
                              {attr}
                            </span>
                          ))}
@@ -126,7 +129,7 @@ export const MaterialVault: React.FC<MaterialVaultProps> = ({ onStartProject }) 
                  {isSelected && (
                    <motion.div 
                      layoutId="activeIndicator"
-                     className="absolute left-0 right-0 bottom-0 lg:right-auto lg:bottom-0 lg:top-0 w-full lg:w-1 h-0.5 lg:h-auto bg-gold"
+                     className="absolute left-0 right-0 bottom-0 lg:right-auto lg:bottom-0 lg:top-0 w-full lg:w-0.5 h-0.5 lg:h-auto bg-gold"
                    />
                  )}
                </button>
@@ -159,24 +162,25 @@ export const MaterialVault: React.FC<MaterialVaultProps> = ({ onStartProject }) 
 
           <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.05] pointer-events-none mix-blend-overlay z-10" />
 
-          <div className="mt-auto w-full p-8 md:p-16 z-20 pointer-events-none pb-24 lg:pb-16">
+          {/* HUD AREA: Reduced padding and sizes */}
+          <div className="mt-auto w-full p-5 md:p-12 z-20 pointer-events-none pb-20 lg:pb-12">
             <motion.div 
               key={selectedMaterial.type + '-hud'}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="max-w-2xl bg-black/20 backdrop-blur-sm lg:bg-transparent p-6 lg:p-0 border lg:border-0 border-white/5"
+              transition={{ delay: 0.3 }}
+              className="max-w-xl bg-black/40 backdrop-blur-md lg:bg-transparent lg:backdrop-blur-none p-5 lg:p-0 border border-white/5 lg:border-0 rounded-sm lg:rounded-none"
             >
-              <div className="flex items-center gap-4 mb-4 lg:mb-6">
-                <div className="h-px w-8 lg:w-12 bg-gold" />
-                <span className="text-gold font-mono text-[9px] lg:text-[10px] uppercase tracking-[0.5em] font-bold">Selection Detail</span>
+              <div className="flex items-center gap-3 mb-3 lg:mb-4">
+                <div className="h-px w-6 lg:w-8 bg-gold" />
+                <span className="text-gold font-mono text-[9px] uppercase tracking-[0.4em] font-bold">Selection Detail</span>
               </div>
               
-              <h4 className="text-3xl md:text-6xl font-sans font-black uppercase text-white tracking-tighter mb-4 lg:mb-8 leading-none">
+              <h4 className="text-2xl md:text-5xl font-sans font-medium uppercase text-white tracking-tight mb-3 lg:mb-6 leading-none">
                 {selectedMaterial.type}
               </h4>
               
-              <p className="text-white/60 text-sm md:text-xl font-light leading-relaxed mb-8 lg:mb-10 max-w-xl">
+              <p className="text-white/70 text-[10px] md:text-base font-light leading-relaxed mb-6 lg:mb-8 max-w-md">
                 {selectedMaterial.description}
               </p>
 
@@ -184,7 +188,7 @@ export const MaterialVault: React.FC<MaterialVaultProps> = ({ onStartProject }) 
                 <PrecisionBtn 
                   variant="primary" 
                   onClick={handleProjectInquiry}
-                  className="w-full sm:w-auto h-12 lg:h-14 px-10"
+                  className="w-full sm:w-auto h-10 lg:h-12 px-8 py-0 text-[10px]"
                 >
                   Ask about {selectedMaterial.type}
                 </PrecisionBtn>
@@ -201,15 +205,15 @@ export const MaterialVault: React.FC<MaterialVaultProps> = ({ onStartProject }) 
         </div>
       </div>
 
-      <div className="w-full py-4 border-t border-white/5 bg-primary/80 backdrop-blur-md px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-4 z-30">
+      <div className="w-full py-3 border-t border-white/5 bg-primary/80 backdrop-blur-md px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-3 z-30">
         <span className="text-[8px] font-mono text-white/20 uppercase tracking-[0.5em] text-center md:text-left">Current Collection: Hand-Selected in Fort Pierce</span>
         <div className="flex gap-6 md:gap-8">
            <div className="flex items-center gap-2">
-              <div className="w-1.5 h-1.5 bg-gold/40 rounded-full" />
+              <div className="w-1 h-1 bg-gold/40 rounded-full" />
               <span className="text-[8px] font-mono text-white/40 uppercase tracking-widest">Master Inspected</span>
            </div>
            <div className="flex items-center gap-2">
-              <div className="w-1.5 h-1.5 bg-gold/40 rounded-full" />
+              <div className="w-1 h-1 bg-gold/40 rounded-full" />
               <span className="text-[8px] font-mono text-white/40 uppercase tracking-widest">Guaranteed Quality</span>
            </div>
         </div>
