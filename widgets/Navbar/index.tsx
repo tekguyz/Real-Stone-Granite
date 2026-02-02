@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
 import { COMPANY_KB } from '../../entities/company/knowledge';
@@ -27,7 +26,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
   const navLinks = [
     { name: 'Our Story', href: 'about' },
     { name: 'Services', href: 'capabilities' },
-    { name: 'Inventory', href: 'materials' },
+    { name: 'Collection', href: 'materials' },
     { name: 'Monuments', href: 'monuments' },
   ];
 
@@ -51,7 +50,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
         className="fixed top-6 left-0 right-0 z-[9999] flex justify-center pointer-events-none"
       >
         <div className="pointer-events-auto bg-[#0a0a0a]/90 backdrop-blur-md border border-white/10 px-1.5 py-1.5 flex items-center gap-1.5 shadow-2xl shadow-black/80 rounded-sm">
-          
           <a 
             href="#" 
             aria-label="Real Stone & Granite Home"
@@ -82,19 +80,16 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
             variant="primary" 
             onClick={onOpenStudio} 
             className="h-9 px-5 text-[10px]"
-            aria-label="Start Project Planner"
           >
             Talk to us
           </PrecisionBtn>
 
           <button 
             onClick={() => setIsMobileOpen(true)}
-            aria-label="Open Mobile Menu"
-            className="md:hidden w-9 h-9 flex items-center justify-center border border-white/10 text-white bg-white/5 active:scale-95 transition-transform"
+            className="md:hidden w-9 h-9 flex items-center justify-center border border-white/10 text-white bg-white/5"
           >
             <ICONS.Menu className="w-4 h-4" />
           </button>
-
         </div>
       </motion.nav>
 
@@ -109,15 +104,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
           >
             <div className="flex justify-between items-center mb-16 border-b border-white/10 pb-6">
                <span className="font-mono text-gold text-xs uppercase tracking-widest">Menu</span>
-               <button 
-                onClick={() => setIsMobileOpen(false)} 
-                aria-label="Close Mobile Menu"
-                className="w-10 h-10 flex items-center justify-center border border-white/10 text-white hover:border-gold hover:text-gold transition-colors"
-               >
+               <button onClick={() => setIsMobileOpen(false)} className="w-10 h-10 flex items-center justify-center border border-white/10 text-white hover:border-gold hover:text-gold transition-colors">
                   <ICONS.Close className="w-5 h-5" />
                </button>
             </div>
-
             <div className="flex flex-col gap-8">
               {navLinks.map((link, idx) => (
                 <motion.button
@@ -137,21 +127,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
                 </motion.button>
               ))}
             </div>
-
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-              className="mt-auto border-t border-white/10 pt-8 flex justify-between items-end"
-            >
-               <div>
-                 <span className="block text-gold/60 font-mono text-[10px] uppercase tracking-widest mb-2">Direct Line</span>
-                 <span className="text-white text-xl font-light">{COMPANY_KB.contact.phone}</span>
-               </div>
-               <div className="text-right">
-                 <span className="block text-white/20 font-mono text-[10px] uppercase tracking-widest">Fort Pierce, FL</span>
-               </div>
-            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

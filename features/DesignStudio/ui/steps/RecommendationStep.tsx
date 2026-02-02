@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Fingerprint, Info, ShieldCheck, Layers, Gauge, Thermometer, Droplets } from 'lucide-react';
@@ -24,16 +23,12 @@ const MetricItem = ({ icon: Icon, label, value }: { icon: any, label: string, va
 export const RecommendationStep: React.FC<RecommendationStepProps> = ({ state, dispatch, recommendation }) => {
   const materials = ['Granite', 'Marble', 'Quartzite', 'Quartz', 'Dekton', 'Onyx'];
 
-  // Derived Performance data
   const isQuartzite = recommendation.material.toLowerCase().includes('quartzite');
   const isDekton = recommendation.material.toLowerCase().includes('dekton');
 
-  // FIXED LOGIC: Uses word boundaries to distinguish between "Quartz" and "Quartzite"
   const checkIsRecommended = (m: string) => {
     const recText = recommendation.material.toLowerCase();
     const materialKey = m.toLowerCase();
-    
-    // Exact word match to prevent "Quartzite" matching "Quartz"
     const regex = new RegExp(`\\b${materialKey}\\b`, 'i');
     return regex.test(recText);
   };
@@ -69,7 +64,7 @@ export const RecommendationStep: React.FC<RecommendationStepProps> = ({ state, d
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 py-8 border-y border-white/5">
             <MetricItem icon={Gauge} label="Hardness" value={isQuartzite ? "7.5 MOHS" : "6.0 MOHS"} />
-            <MetricItem icon={Thermometer} label="Heat Tol." value={isDekton ? "1200°F" : "450°F"} />
+            <MetricItem icon={Thermometer} label="Heat Resistance" value={isDekton ? "1200°F" : "450°F"} />
             <MetricItem icon={Droplets} label="Porosity" value="Low" />
             <MetricItem icon={Fingerprint} label="Origin" value="Global Sourced" />
           </div>

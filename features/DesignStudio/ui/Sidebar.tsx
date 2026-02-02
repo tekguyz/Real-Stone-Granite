@@ -17,7 +17,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentStep, setCurrentStep, h
         
         {/* Mobile Title */}
         <div className="lg:hidden flex items-center gap-4">
-          <span className="font-mono font-bold text-white tracking-[0.2em] text-[10px] uppercase">Navigation</span>
+          <span className="font-mono font-bold text-white tracking-[0.2em] text-[10px] uppercase">Outline</span>
         </div>
         
         <div className="hidden lg:flex flex-col w-full space-y-0.5 px-0">
@@ -37,7 +37,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentStep, setCurrentStep, h
             >
               <div className="flex flex-col">
                 <span className={`font-mono text-[9px] font-bold tracking-[0.2em] uppercase mb-0.5 ${currentStep === step.id ? 'text-gold' : 'opacity-30'}`}>
-                  Phase {step.id}
+                  Step {step.id}
                 </span>
                 <span className="font-sans text-[13px] tracking-wide font-light">{step.label}</span>
               </div>

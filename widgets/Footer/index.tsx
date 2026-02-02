@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
@@ -8,7 +7,6 @@ interface FooterProps {
 
 const FooterLink = ({ label, onClick }: { label: string, onClick: (e: React.MouseEvent) => void }) => {
   const [hover, setHover] = useState(false);
-  
   return (
       <a 
           href="#"
@@ -29,7 +27,6 @@ const FooterLink = ({ label, onClick }: { label: string, onClick: (e: React.Mous
 }
 
 export const Footer: React.FC<FooterProps> = ({ onOpenStudio }) => {
-
   const scrollToSection = (e: React.MouseEvent, id: string) => {
     e.preventDefault();
     const element = document.getElementById(id);
@@ -40,13 +37,8 @@ export const Footer: React.FC<FooterProps> = ({ onOpenStudio }) => {
 
   return (
     <footer className="w-full bg-black relative overflow-hidden border-t border-white/10 flex flex-col z-20">
-       
-       {/* Background Noise */}
        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 pointer-events-none mix-blend-overlay" />
-
        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 w-full divide-y md:divide-y-0 md:divide-x divide-white/10 border-b border-white/10">
-          
-          {/* COLUMN 1: BRAND */}
           <div className="p-12 flex flex-col justify-between min-h-[300px]">
              <div>
                 <h2 className="text-3xl font-black text-white tracking-tighter leading-none uppercase mb-6">
@@ -61,26 +53,21 @@ export const Footer: React.FC<FooterProps> = ({ onOpenStudio }) => {
                 Est. 1993
              </span>
           </div>
-
-          {/* COLUMN 2: NAVIGATION */}
           <div className="p-12 flex flex-col">
              <span className="text-gold font-mono text-[10px] uppercase tracking-[0.2em] mb-8 block font-bold">
                Explore
              </span>
              <nav className="flex flex-col gap-4">
                 <FooterLink label="Services" onClick={(e) => scrollToSection(e, 'capabilities')} />
-                <FooterLink label="Inventory" onClick={(e) => scrollToSection(e, 'materials')} />
+                <FooterLink label="Collection" onClick={(e) => scrollToSection(e, 'materials')} />
                 <FooterLink label="Monuments" onClick={(e) => scrollToSection(e, 'monuments')} />
                 <FooterLink label="Start Project" onClick={(e) => { e.preventDefault(); onOpenStudio?.(); }} />
              </nav>
           </div>
-
-          {/* COLUMN 3: VISIT US */}
           <div className="p-12 flex flex-col">
              <span className="text-gold font-mono text-[10px] uppercase tracking-[0.2em] mb-8 block font-bold">
                Visit Us
              </span>
-             
              <div className="space-y-8">
                 <div>
                    <p className="text-white text-sm font-light leading-relaxed mb-1">
@@ -90,7 +77,6 @@ export const Footer: React.FC<FooterProps> = ({ onOpenStudio }) => {
                       Fort Pierce, FL 34982
                    </p>
                 </div>
-
                 <div>
                    <p className="text-white/60 text-xs font-mono uppercase tracking-widest mb-2">
                       Office Hours
@@ -101,13 +87,10 @@ export const Footer: React.FC<FooterProps> = ({ onOpenStudio }) => {
                 </div>
              </div>
           </div>
-
-          {/* COLUMN 4: SERVICE AREA */}
           <div className="p-12 flex flex-col">
              <span className="text-gold font-mono text-[10px] uppercase tracking-[0.2em] mb-8 block font-bold">
                Service Area
              </span>
-             
              <div className="space-y-6">
                  <p className="text-white text-sm font-light leading-relaxed">
                     Proudly serving the Treasure Coast and South Florida region.
@@ -115,21 +98,9 @@ export const Footer: React.FC<FooterProps> = ({ onOpenStudio }) => {
                  <p className="text-white/60 text-sm font-light leading-relaxed">
                     Export services available for Bahamas & Caribbean.
                  </p>
-                 
-                 <div className="pt-4 mt-auto">
-                    <div className="inline-flex items-center gap-2 border border-white/10 px-3 py-1 bg-white/5">
-                        <div className="w-1 h-1 bg-gold rounded-full" />
-                        <span className="text-gold text-[9px] font-mono uppercase tracking-widest font-bold">
-                           ANSI / NSF Certified
-                        </span>
-                    </div>
-                 </div>
              </div>
           </div>
-
        </div>
-
-       {/* COPYRIGHT */}
        <div className="w-full py-6 flex items-center justify-center bg-black border-t border-white/5">
           <span className="text-white/30 font-mono text-[10px] uppercase tracking-widest">
              © {new Date().getFullYear()} Real Stone & Granite Corp.

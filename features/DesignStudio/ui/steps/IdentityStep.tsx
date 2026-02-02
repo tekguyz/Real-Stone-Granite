@@ -19,7 +19,7 @@ export const IdentityStep: React.FC<IdentityStepProps> = ({ state, dispatch }) =
       {/* 1. COMPACT ROLE SELECTOR */}
       <div className="space-y-4">
         <label className="text-[9px] font-mono text-white/30 uppercase tracking-[0.4em] font-bold block ml-1">
-          Client Category
+          How you'll work with us
         </label>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -91,7 +91,7 @@ export const IdentityStep: React.FC<IdentityStepProps> = ({ state, dispatch }) =
       <div className="pt-4 opacity-30 flex items-center gap-3 justify-center">
          <div className="h-px w-6 bg-white/20" />
          <p className="text-[9px] font-mono uppercase tracking-[0.2em] whitespace-nowrap">
-            Personalizing your design suite
+            Tailoring your experience
          </p>
          <div className="h-px w-6 bg-white/20" />
       </div>

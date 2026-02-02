@@ -1,4 +1,3 @@
-
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring, useMotionTemplate } from 'framer-motion';
 import { FEATURED_SLABS } from '../model/inventory';
@@ -14,16 +13,14 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [hovering, setHovering] = useState(false);
 
-  // --- CONFIGURATION ---
   const LIGHT_RADIUS = 80;      
   const GLOW_RADIUS = 100;       
   const LIGHT_BRIGHTNESS = 1.3; 
   const GLOW_OPACITY = 0.15;    
-  // ---------------------
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  const lightX = useSpring(mouseX, { stiffness: 150, damping: 25 }); // Reduced stiffness for performance
+  const lightX = useSpring(mouseX, { stiffness: 150, damping: 25 }); 
   const lightY = useSpring(mouseY, { stiffness: 150, damping: 25 });
 
   const maskImage = useMotionTemplate`radial-gradient(circle ${LIGHT_RADIUS}px at ${lightX}px ${lightY}px, black 80%, transparent 100%)`;
@@ -53,7 +50,6 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
       onMouseLeave={() => setHovering(false)}
       ref={galleryRef}
     >
-      {/* 1. PARALLAX IMAGE LAYER */}
       <motion.div style={{ y: parallaxY }} className="absolute inset-0 w-full h-[120%] z-0">
         <AnimatePresence mode="popLayout">
           <motion.div
@@ -66,13 +62,9 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
           >
             <img 
               src={currentSlab.image}
-              alt={`Texture of ${currentSlab.name}`}
+              alt={currentSlab.name}
               className="absolute inset-0 w-full h-full object-cover"
-              style={{ 
-                filter: 'brightness(0.35) contrast(1.1) grayscale(30%)'
-              }}
-              fetchPriority="high"
-              decoding="async"
+              style={{ filter: 'brightness(0.35) contrast(1.1) grayscale(30%)' }}
             />
           </motion.div>
 
@@ -83,19 +75,13 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
             className="absolute inset-0 w-full h-full z-10"
-            style={{ 
-              WebkitMaskImage: maskImage,
-              maskImage: maskImage
-            }}
+            style={{ WebkitMaskImage: maskImage, maskImage: maskImage }}
           >
             <img 
               src={currentSlab.image}
               alt=""
               className="absolute inset-0 w-full h-full object-cover"
-              style={{ 
-                filter: `brightness(${LIGHT_BRIGHTNESS}) contrast(1.4) saturate(1.4) sepia(10%)` 
-              }}
-              loading="lazy"
+              style={{ filter: `brightness(${LIGHT_BRIGHTNESS}) contrast(1.4) saturate(1.4) sepia(10%)` }}
             />
           </motion.div>
         </AnimatePresence>
@@ -107,7 +93,6 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
         />
       </motion.div>
 
-      {/* 2. STATIC UI LAYER */}
       <div className="absolute inset-0 pointer-events-none z-30">
         <motion.div
           className="absolute"
@@ -117,7 +102,6 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
           <div className="w-1.5 h-1.5 bg-white rounded-full shadow-[0_0_10px_2px_rgba(255,255,255,0.8)] -translate-x-1/2 -translate-y-1/2" />
         </motion.div>
 
-        {/* Selection Info Card - Redesigned to be compact & flushed */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -130,7 +114,7 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
             </div>
             <div className="overflow-hidden">
               <span className="block text-gold font-bold text-[8px] md:text-[10px] uppercase tracking-wide leading-none mb-0.5">
-                {currentSlab.status}
+                {currentSlab.character}
               </span>
               <AnimatePresence mode="wait">
                 <motion.span 

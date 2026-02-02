@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Gauge, ShieldAlert, Sparkles } from 'lucide-react';
@@ -67,7 +68,7 @@ export const IntensityStep: React.FC<IntensityStepProps> = ({ state, dispatch })
       <div className="p-4 bg-white/[0.02] border border-white/5 flex items-start gap-3">
          <div className="mt-1.5 w-1 h-1 bg-gold rotate-45 shrink-0" />
          <p className="text-[10px] font-light text-white/30 leading-relaxed italic">
-            Note: Durability ratings are based on stone hardness and resistance to daily wear.
+            An Expert Note: We measure durability based on natural stone density and expected daily wear.
          </p>
       </div>
     </motion.div>

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { X, Send, ChevronRight, MessageSquare } from 'lucide-react';
@@ -30,7 +31,6 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
     >
       <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/asfalt-dark.png')] opacity-[0.02] pointer-events-none mix-blend-overlay" />
 
-      {/* REFINED HEADER: Slimmer, low-profile */}
       <div className="h-16 border-b border-white/10 bg-black/60 flex items-center justify-between pl-6 pr-0 flex-shrink-0 relative z-20">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-gold/5 border border-gold/20 flex items-center justify-center rounded-none">
@@ -54,7 +54,6 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
         </button>
       </div>
 
-      {/* REFINED MESSAGE AREA: Tighter spacing, technical font sizing */}
       <div className="flex-1 overflow-y-auto p-5 md:p-8 space-y-6 z-10 custom-scrollbar scroll-smooth bg-primary/98">
         
         {messages.length === 0 && (
@@ -62,7 +61,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
             <div className="w-10 h-10 border border-white/5 mx-auto mb-4 flex items-center justify-center bg-white/[0.02]">
               <MessageSquare className="w-4 h-4 text-white/10" />
             </div>
-            <p className="font-mono text-[9px] text-white/20 uppercase tracking-[0.4em]">Establish Connection</p>
+            <p className="font-mono text-[9px] text-white/20 uppercase tracking-[0.4em]">Connecting with the workshop</p>
           </div>
         )}
 
@@ -71,7 +70,6 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
             key={msg.id} 
             className={`flex flex-col ${msg.role === 'user' ? 'items-end pl-8' : 'items-start pr-8'}`}
           >
-            {/* TAG: To differentiate source visually in an industrial way */}
             <span className={`font-mono text-[8px] uppercase tracking-widest mb-1.5 ${msg.role === 'user' ? 'text-white/20' : 'text-gold/40'}`}>
               {msg.role === 'user' ? 'Client' : 'RSG Curator'}
             </span>
@@ -95,7 +93,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
                   className="w-full flex items-center justify-between group h-11 text-[9px] px-6"
                   onClick={onLaunchStudio}
                 >
-                  <span className="font-mono tracking-widest uppercase">Launch Project Planner</span>
+                  <span className="font-mono tracking-widest uppercase">Start Project Planner</span>
                   <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                 </PrecisionBtn>
               </div>
@@ -108,13 +106,12 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
               <div className="w-1 h-1 bg-gold rounded-full animate-pulse" />
               <div className="w-1 h-1 bg-gold rounded-full animate-pulse [animation-delay:0.2s]" />
               <div className="w-1 h-1 bg-gold rounded-full animate-pulse [animation-delay:0.4s]" />
-              <span className="ml-2 text-[9px] font-mono text-gold uppercase tracking-widest font-bold">Processing Request</span>
+              <span className="ml-2 text-[9px] font-mono text-gold uppercase tracking-widest font-bold">Consulting our records</span>
           </div>
         )}
         <div ref={messagesEndRef} />
       </div>
 
-      {/* REFINED INPUT CONTROLS: Integrated suggestions */}
       <div className="bg-black/40 border-t border-white/5 p-4 md:p-6 relative z-20">
         
         <div className="flex overflow-x-auto gap-2 mb-4 scrollbar-hide pb-2 no-scrollbar">
@@ -135,7 +132,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-            placeholder="Type your inquiry..."
+            placeholder="How can we help you today?"
             className="w-full h-11 bg-transparent px-4 text-white text-sm font-sans outline-none placeholder:text-white/10 placeholder:font-light"
           />
           <button 

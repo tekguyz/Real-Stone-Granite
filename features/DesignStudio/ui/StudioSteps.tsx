@@ -109,7 +109,7 @@ export const StudioSteps: React.FC<StudioStepsProps> = ({
               disabled={isSubmitting}
             >
               <span className="font-mono text-[10px] uppercase tracking-widest font-bold">
-                {isStepValid ? "Continue" : "Select to proceed"}
+                {isStepValid ? "Continue" : "Tell us more to continue"}
               </span>
               {isStepValid ? (
                 <ChevronRight className="w-4 h-4 ml-3 group-hover:translate-x-1 transition-transform" />

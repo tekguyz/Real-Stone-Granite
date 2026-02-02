@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AlertCircle, CheckCircle2, Info, X } from 'lucide-react';
@@ -79,7 +80,7 @@ export const ToastProvider: React.FC<{ children: ReactNode }> = ({ children }) =
                 {/* Content */}
                 <div className="flex-1 mr-4">
                   <p className="font-mono text-[11px] uppercase tracking-widest text-white/40 mb-1 leading-none">
-                    Update
+                    Studio Note
                   </p>
                   <p className="font-sans text-sm text-white font-medium leading-tight">
                     {toast.message}
