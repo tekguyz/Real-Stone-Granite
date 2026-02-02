@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
-import { COMPANY_KB } from '../../entities/company/knowledge';
 import { PrecisionBtn } from '../../shared/ui/PrecisionBtn';
 import { ICONS } from '../../shared/assets';
 
@@ -49,7 +48,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         className="fixed top-6 left-0 right-0 z-[9999] flex justify-center pointer-events-none"
       >
-        <div className="pointer-events-auto bg-[#0a0a0a]/90 backdrop-blur-md border border-white/10 px-1.5 py-1.5 flex items-center gap-1.5 shadow-2xl shadow-black/80 rounded-sm">
+        <div className="pointer-events-auto bg-[#0a0a0a]/95 backdrop-blur-md border border-white/20 px-1.5 py-1.5 flex items-center gap-1.5 shadow-2xl shadow-black/80 rounded-sm">
           <a 
             href="#" 
             aria-label="Real Stone & Granite Home"
@@ -67,7 +66,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
                 key={link.name}
                 onClick={() => scrollToSection(link.href)}
                 className={`px-5 h-full text-[10px] font-mono uppercase tracking-[0.2em] transition-all relative overflow-hidden group ${
-                  activeSection === link.href ? 'text-gold' : 'text-white/60 hover:text-white'
+                  activeSection === link.href ? 'text-gold' : 'text-white/70 hover:text-white'
                 }`}
               >
                 {link.name}
@@ -86,7 +85,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
 
           <button 
             onClick={() => setIsMobileOpen(true)}
-            className="md:hidden w-9 h-9 flex items-center justify-center border border-white/10 text-white bg-white/5"
+            aria-label="Open navigation menu"
+            className="md:hidden w-9 h-9 flex items-center justify-center border border-white/10 text-white bg-white/5 hover:bg-white/10 transition-colors"
           >
             <ICONS.Menu className="w-4 h-4" />
           </button>
@@ -103,8 +103,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
             className="fixed inset-0 z-[10000] bg-[#050505] flex flex-col p-8"
           >
             <div className="flex justify-between items-center mb-16 border-b border-white/10 pb-6">
-               <span className="font-mono text-gold text-xs uppercase tracking-widest">Menu</span>
-               <button onClick={() => setIsMobileOpen(false)} className="w-10 h-10 flex items-center justify-center border border-white/10 text-white hover:border-gold hover:text-gold transition-colors">
+               <span className="font-mono text-gold text-xs uppercase tracking-widest font-bold">Menu</span>
+               <button 
+                 onClick={() => setIsMobileOpen(false)} 
+                 aria-label="Close navigation menu"
+                 className="w-10 h-10 flex items-center justify-center border border-white/10 text-white hover:border-gold hover:text-gold transition-colors"
+               >
                   <ICONS.Close className="w-5 h-5" />
                </button>
             </div>
@@ -118,7 +122,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
                   onClick={() => scrollToSection(link.href)}
                   className="text-left text-4xl md:text-5xl font-light text-white font-sans uppercase tracking-tight group flex items-start"
                 >
-                  <span className="text-xs font-mono text-gold/40 mt-2 mr-6 block border-b border-gold/20 pb-1 w-8">
+                  <span className="text-xs font-mono text-gold/60 mt-2 mr-6 block border-b border-gold/40 pb-1 w-8">
                     {idx + 1}
                   </span>
                   <span className="group-hover:text-gold group-hover:translate-x-4 transition-all duration-300">

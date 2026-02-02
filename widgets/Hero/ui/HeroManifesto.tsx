@@ -27,14 +27,14 @@ const StatItem = ({ value, label, delay }: { value: string, label: string, delay
       whileInView={{ width: 32 }}
       viewport={{ once: true }}
       transition={{ duration: 0.8, delay: delay + 0.2, ease: "easeOut" }}
-      className="h-[1px] bg-white/10 my-3 group-hover:bg-gold transition-colors duration-500" 
+      className="h-[1px] bg-white/20 my-3 group-hover:bg-gold transition-colors duration-500" 
     />
     <motion.span 
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.8, delay: delay + 0.3 }}
-      className="text-[10px] text-white/40 uppercase tracking-widest font-mono leading-tight whitespace-nowrap"
+      className="text-[10px] text-white/70 uppercase tracking-widest font-mono leading-tight whitespace-nowrap font-bold"
     >
       {label}
     </motion.span>
@@ -59,8 +59,8 @@ export const HeroManifesto: React.FC<HeroManifestoProps> = ({ onStartProject, on
             <span className="font-mono text-gold text-[9px] md:text-[10px] uppercase tracking-[0.5em] font-bold">
               Since 1993
             </span>
-            <div className="w-1 h-1 bg-gold/40 rotate-45" />
-            <span className="font-mono text-white/60 text-[9px] md:text-[10px] uppercase tracking-[0.5em]">
+            <div className="w-1 h-1 bg-gold/60 rotate-45" />
+            <span className="font-mono text-white/80 text-[9px] md:text-[10px] uppercase tracking-[0.5em] font-bold">
               Master Fabricators
             </span>
           </div>
@@ -81,7 +81,7 @@ export const HeroManifesto: React.FC<HeroManifestoProps> = ({ onStartProject, on
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-white/60 font-light text-sm md:text-base leading-relaxed max-w-md mb-12 border-l border-gold/30 pl-6"
+          className="text-white/80 font-light text-sm md:text-base leading-relaxed max-w-md mb-12 border-l border-gold/50 pl-6"
         >
           Defining the standard of stone fabrication since 1993. 
           Where old-world values meet modern precision engineering.
@@ -97,7 +97,7 @@ export const HeroManifesto: React.FC<HeroManifestoProps> = ({ onStartProject, on
             Start Project
           </PrecisionBtn>
           
-          <button onClick={onExplore} className="group flex items-center justify-center sm:justify-start gap-3 text-white/50 hover:text-gold transition-colors py-2">
+          <button onClick={onExplore} className="group flex items-center justify-center sm:justify-start gap-3 text-white/70 hover:text-gold transition-colors py-2 font-bold">
             <span className="font-mono text-[10px] uppercase tracking-widest">Explore Stone</span>
             <ICONS.ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </button>
@@ -110,7 +110,7 @@ export const HeroManifesto: React.FC<HeroManifestoProps> = ({ onStartProject, on
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
         transition={PHYSICS.smooth}
-        className="w-full px-6 md:pl-16 md:pr-12 lg:pl-24 lg:pr-32 border-t border-white/5 pt-8 pb-12 mt-auto relative z-10 bg-primary"
+        className="w-full px-6 md:pl-16 md:pr-12 lg:pl-24 lg:pr-32 border-t border-white/10 pt-8 pb-12 mt-auto relative z-10 bg-primary"
       >
         <div className="grid grid-cols-3 gap-4 md:gap-8">
           <StatItem value="20k" label="Facility Size" delay={0.1} />
