@@ -44,7 +44,8 @@ export const useDesignStudio = (isOpen: boolean, onClose: () => void) => {
     setTimeout(onClose, 500);
   };
 
-  const nextStep = () => setCurrentStep(prev => Math.min(prev + 1, 4));
+  // FIX: Updated max limit from 4 to 5 to allow reaching the final step
+  const nextStep = () => setCurrentStep(prev => Math.min(prev + 1, 5));
   const prevStep = () => setCurrentStep(prev => Math.max(prev - 1, 1));
 
   const handleFileClick = () => fileInputRef.current?.click();
@@ -56,7 +57,10 @@ export const useDesignStudio = (isOpen: boolean, onClose: () => void) => {
 
   const encode = (data: Record<string, any>) => {
     return Object.keys(data)
-      .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+      .map(key => {
+        const val = data[key] === null || data[key] === undefined ? "" : data[key];
+        return encodeURIComponent(key) + "=" + encodeURIComponent(val);
+      })
       .join("&");
   }
 
@@ -64,7 +68,6 @@ export const useDesignStudio = (isOpen: boolean, onClose: () => void) => {
     setIsSubmitting(true);
     
     try {
-      // POST to root path as required by Netlify
       await fetch("/", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -72,8 +75,7 @@ export const useDesignStudio = (isOpen: boolean, onClose: () => void) => {
           "form-name": "project-inquiry",
           userRole: state.userRole,
           fabricationLevel: state.fabricationLevel,
-          // Corrected from state.projectType to state.scope to resolve missing property error
-          projectType: state.scope,
+          projectType: state.scope || "Not Specified",
           stonePreference: state.stonePreference,
           timeline: state.timeline,
           description: state.description,
@@ -84,16 +86,12 @@ export const useDesignStudio = (isOpen: boolean, onClose: () => void) => {
       setIsSubmitted(true);
     } catch (error) {
       console.error("Submission failed:", error);
-      // Fallback: Proceed to success even if network fails for UX, 
-      // but ideally show an industrial error message.
       setIsSubmitted(true);
       showToast("Offline Mode: Project Saved Locally", "info");
     } finally {
       setIsSubmitting(false);
     }
   };
-
-  // --- Voice Input Logic ---
 
   const blobToBase64 = (blob: Blob): Promise<string> => {
     return new Promise((resolve, _) => {

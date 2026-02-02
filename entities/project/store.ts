@@ -6,15 +6,13 @@ import React, { createContext, useContext, useReducer, ReactNode, useMemo } from
 export type ProjectScope = 'Culinary Surface' | 'Wet Environment' | 'Exterior Architecture' | 'Statement Piece';
 export type UsageIntensity = 'Visual Art' | 'Moderate Use' | 'Heavy Duty';
 export type UserRole = 'Private Residence' | 'Professional Partner';
-// FabricationLevel added to resolve missing property errors in Studio features
 export type FabricationLevel = 'Classic Selection' | 'Artisan Masterpiece';
 
 export interface ProjectState {
   userRole: UserRole;
   reference: string;
-  scope: ProjectScope;
-  intensity: UsageIntensity;
-  // fabricationLevel added to ProjectState
+  scope: ProjectScope | null; // Allow null for empty state
+  intensity: UsageIntensity | null; // Allow null for empty state
   fabricationLevel: FabricationLevel;
   timeline: string;
   stonePreference: string; 
@@ -32,9 +30,8 @@ export interface Recommendation {
 const initialState: ProjectState = {
   userRole: 'Private Residence',
   reference: '',
-  scope: 'Culinary Surface',
-  intensity: 'Moderate Use',
-  // Default fabricationLevel set to Classic Selection
+  scope: null, // Initially null
+  intensity: null, // Initially null
   fabricationLevel: 'Classic Selection',
   timeline: 'Planning Phase (1-3 Months)',
   stonePreference: 'Pending',
@@ -66,7 +63,6 @@ function projectReducer(state: ProjectState, action: Action): ProjectState {
       return { ...state, scope: action.payload };
     case 'SET_INTENSITY':
       return { ...state, intensity: action.payload };
-    // Handler for SET_FABRICATION_LEVEL to update state
     case 'SET_FABRICATION_LEVEL':
       return { ...state, fabricationLevel: action.payload };
     case 'SET_TIMELINE':
@@ -85,6 +81,13 @@ function projectReducer(state: ProjectState, action: Action): ProjectState {
 // --- Designer Logic Engine (Consultant Persona) ---
 
 export const getRecommendation = (state: ProjectState): Recommendation => {
+  if (!state.scope) {
+    return {
+      material: 'Awaiting Context',
+      reason: 'Select a project scope to initiate the recommendation engine.'
+    };
+  }
+
   // 1. EXTERIOR LOGIC
   if (state.scope === 'Exterior Architecture') {
     return { 
