@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { COMPANY_KB } from '../../../entities/company/knowledge';
 import { generateText } from '../../../shared/api/gemini';
@@ -22,7 +23,7 @@ const constructSystemPrompt = () => {
     THE "SHOP FLOOR" FILTER (Crucial):
     - **No Textbooks:** Do not sound like a geologist. Sound like a mason.
     - **Use Analogies:** Explain concepts using construction or physical comparisons.
-      - *Example:* Instead of "Calcium carbonate reacts with acid," say "Think of marble like a sponge; if you leave a lemon on it, the acid eats the polish. That's etching."
+      - *Example:** Instead of "Calcium carbonate reacts with acid," say "Think of marble like a sponge; if you leave a lemon on it, the acid eats the polish. That's etching."
     - **Experience Markers:** Use phrases like "On the saw table...", "When we seal this...", or "In my 30 years...".
 
     CONSULTATION GUIDELINES:
@@ -45,6 +46,7 @@ export const useStoneCurator = (onLaunchStudio: () => void, isStudioOpen: boolea
   const [scrollY, setScrollY] = useState(0);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [hasUnread, setHasUnread] = useState(true); // Start with true for initial greeting
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 'init-1',
@@ -67,6 +69,7 @@ export const useStoneCurator = (onLaunchStudio: () => void, isStudioOpen: boolea
   useEffect(() => {
     if (isOpen) {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+      setHasUnread(false); // Clear unread status when opened
     }
   }, [messages, isOpen]);
 
@@ -96,6 +99,10 @@ export const useStoneCurator = (onLaunchStudio: () => void, isStudioOpen: boolea
         hasAction: triggerAction
       };
       setMessages(prev => [...prev, aiMsg]);
+      
+      if (!isOpen) {
+        setHasUnread(true);
+      }
 
     } catch (error) {
       setMessages(prev => [...prev, {
@@ -126,6 +133,7 @@ export const useStoneCurator = (onLaunchStudio: () => void, isStudioOpen: boolea
     handleSend,
     scrollToTop,
     showChatFab,
-    showTopBtn
+    showTopBtn,
+    hasUnread
   };
 };

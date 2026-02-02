@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { StoneCuratorProps } from './model/types';
@@ -17,7 +18,8 @@ export const StoneCurator: React.FC<StoneCuratorProps> = ({ onLaunchStudio, isSt
     handleSend,
     scrollToTop,
     showChatFab,
-    showTopBtn
+    showTopBtn,
+    hasUnread
   } = useStoneCurator(onLaunchStudio, isStudioOpen);
 
   return (
@@ -45,6 +47,7 @@ export const StoneCurator: React.FC<StoneCuratorProps> = ({ onLaunchStudio, isSt
         showTopBtn={showTopBtn}
         showChatFab={showChatFab}
         isOpen={isOpen}
+        hasUnread={hasUnread}
         scrollToTop={scrollToTop}
         openChat={() => setIsOpen(true)}
       />

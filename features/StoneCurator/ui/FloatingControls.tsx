@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUp, MessageSquare } from 'lucide-react';
@@ -7,12 +8,13 @@ interface FloatingControlsProps {
   showTopBtn: boolean;
   showChatFab: boolean;
   isOpen: boolean;
+  hasUnread: boolean;
   scrollToTop: () => void;
   openChat: () => void;
 }
 
 export const FloatingControls: React.FC<FloatingControlsProps> = ({
-  showTopBtn, showChatFab, isOpen, scrollToTop, openChat
+  showTopBtn, showChatFab, isOpen, hasUnread, scrollToTop, openChat
 }) => {
   return (
     <div className="fixed bottom-8 right-8 flex flex-col items-center gap-4 z-[12000] pointer-events-auto">
@@ -51,7 +53,21 @@ export const FloatingControls: React.FC<FloatingControlsProps> = ({
           >
             <div className="absolute inset-0 bg-gold/5 opacity-0 group-hover:opacity-100 transition-opacity" />
             
-            <MessageSquare className="w-6 h-6 text-gold relative z-10" strokeWidth={1.5} />
+            <div className="relative">
+              <MessageSquare className="w-6 h-6 text-gold relative z-10" strokeWidth={1.5} />
+              
+              {/* Minimal Unread Indicator */}
+              <AnimatePresence>
+                {hasUnread && (
+                  <motion.div 
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    exit={{ scale: 0 }}
+                    className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-gold border border-primary z-20"
+                  />
+                )}
+              </AnimatePresence>
+            </div>
             
             <div className="absolute right-full mr-4 bg-black/90 px-4 py-2 border border-white/10 text-[10px] font-mono text-white uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none backdrop-blur-md">
                 Chat with Us
