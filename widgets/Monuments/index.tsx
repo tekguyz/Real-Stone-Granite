@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MONUMENTS } from '../../shared/assets';
+import { MONUMENTS, ICONS } from '../../shared/assets';
 import { PHYSICS } from '../../shared/lib/theme';
 
 interface MonumentProject {
   id: string;
+  ref: string;
   title: string;
   subtitle: string;
   material: string;
@@ -16,197 +17,183 @@ interface MonumentProject {
 const PROJECTS: MonumentProject[] = [
   {
     id: "VIETNAM",
+    ref: "MA-01",
     title: "Vietnam Veterans Memorial",
-    subtitle: "Traveling Replica",
+    subtitle: "Sacred Replication",
     material: "ABSOLUTE BLACK GRANITE",
-    completion: "Est. 1993",
+    completion: "1993",
     image: MONUMENTS.VIETNAM, 
-    description: "The replication and maintenance of sacred names etched into the most reflective granite on Earth."
+    description: "Digital verification and replication of sacred names etched into the world's most reflective natural granite."
   },
   {
     id: "SEAL",
+    ref: "MA-02",
     title: "Navy SEAL Memorial",
-    subtitle: "Muster Grounds",
+    subtitle: "Frogman Sanctuary",
     material: "JET BLACK GRANITE",
     completion: "2010",
     image: MONUMENTS.NAVY_SEAL,
-    description: "Crafting the Trident-shaped sanctuary honoring the fallen frogmen of the U.S. Navy."
+    description: "A trident-shaped installation honoring the fallen frogmen. Precisely engineered to withstand the Atlantic salt air."
   },
   {
     id: "NINE_ELEVEN",
+    ref: "MA-03",
     title: "9/11 First Responders",
-    subtitle: "Ground Zero Cladding",
+    subtitle: "Honor Guard Cladding",
     material: "VIRGINIA MIST GRANITE",
     completion: "2011",
     image: MONUMENTS.NINE_ELEVEN, 
-    description: "Architectural cladding and monuments dedicated to the bravery of those at Ground Zero."
+    description: "Monolithic architectural cladding dedicated to the endurance and bravery of those at Ground Zero."
   },
   {
     id: "SPACE",
+    ref: "MA-04",
     title: "Space Walk of Fame",
     subtitle: "Titusville, FL",
     material: "POLISHED GRANITE",
-    completion: "Phase I-IV",
+    completion: "PHASE I-IV",
     image: MONUMENTS.SPACE, 
-    description: "Monuments celebrating the pioneers of the Gemini and Apollo programs."
+    description: "Commemorative monuments celebrating the pioneers of the Gemini and Apollo space programs."
   },
   {
     id: "GOLD_STAR",
+    ref: "MA-05",
     title: "Gold Star Families",
-    subtitle: "Statewide Memorials",
+    subtitle: "Statewide Tribute",
     material: "INDIA BLACK GRANITE",
-    completion: "Ongoing",
+    completion: "ONGOING",
     image: MONUMENTS.GOLD_STAR, 
-    description: "A tribute to the families who have sacrificed a loved one for our freedom."
+    description: "A permanent tribute to the families who have sacrificed a loved one for our freedom."
   }
 ];
 
 export const Monuments: React.FC = () => {
-  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [activeId, setActiveId] = useState<string | null>(null);
 
   return (
-    <section id="monuments" className="relative h-screen bg-black overflow-hidden flex flex-col">
+    <section id="monuments" className="relative min-h-screen bg-black overflow-hidden flex flex-col border-t border-white/10 py-24 md:py-32">
       
-      {/* 1. The Monolith Header */}
-      <div className="absolute top-0 left-0 w-full p-8 md:p-12 z-20 pointer-events-none">
-        <div className="flex flex-col items-start gap-4">
-           <div className="flex items-center gap-3">
+      {/* 1. ATMOSPHERIC HEADER */}
+      <div className="w-full px-6 md:px-12 mb-20 z-50">
+        <div className="max-w-screen-2xl mx-auto flex flex-col gap-6">
+            <motion.div 
+              initial={{ opacity: 0, x: -10 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="flex items-center gap-4"
+            >
               <div className="w-12 h-[1px] bg-gold" />
               <span className="text-gold font-mono text-[10px] uppercase tracking-[0.5em] font-bold">
-                Hall of Honor
+                The Registry of Permanence
               </span>
-           </div>
-           <h2 className="text-5xl md:text-8xl font-mono font-black text-white uppercase tracking-tighter leading-none mix-blend-difference">
-              Legacy <span className="text-transparent" style={{ WebkitTextStroke: '1px var(--color-gold)' }}>In Stone</span>
-           </h2>
+            </motion.div>
+            
+            <h2 className="text-5xl md:text-8xl font-sans font-black text-white uppercase tracking-tighter leading-[0.85]">
+               Legacy <br/> <span className="text-transparent" style={{ WebkitTextStroke: '1.5px var(--color-gold)' }}>In Stone</span>
+            </h2>
+            
+            <p className="text-white/40 font-mono text-[10px] uppercase tracking-[0.3em] max-w-lg leading-relaxed mt-4">
+               Authorized fabrication and precision laser-etching for projects of national and historical significance.
+            </p>
         </div>
       </div>
 
-      {/* 2. The Accordion (Sacred Hall) */}
-      <div className="flex-1 flex w-full h-full relative z-10 pt-32 md:pt-0">
-        {PROJECTS.map((project) => (
-          <motion.div
-            key={project.id}
-            onMouseEnter={() => setHoveredId(project.id)}
-            onMouseLeave={() => setHoveredId(null)}
-            className="relative h-full border-r border-white/5 flex flex-col group cursor-crosshair overflow-hidden"
-            initial={false}
-            animate={{ 
-              flex: hoveredId === project.id ? 2.5 : 1,
-            }}
-            transition={PHYSICS.industrial}
-          >
-            {/* A. Image Layer (Ignites on Hover) */}
-            <motion.div 
-              className="absolute inset-0 z-0 bg-cover bg-center transition-all duration-700 ease-out"
-              style={{
-                backgroundImage: `url(${project.image})`,
-              }}
-              animate={{
-                filter: hoveredId === project.id ? 'grayscale(0%) brightness(100%)' : 'grayscale(100%) brightness(30%)',
-                scale: hoveredId === project.id ? 1.05 : 1
-              }}
-            >
-              {/* IMAGE DEFERRAL FIX: Added hidden <img> for proper lazy loading browser hints */}
-              <img 
-                src={project.image} 
-                alt={project.title} 
-                loading="lazy" 
-                decoding="async"
-                className="hidden" 
-              />
-            </motion.div>
-
-            {/* B. Vignette Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-transparent to-black/90 z-[1] opacity-80" />
-            
-            {/* C. The Glow Border */}
-            <div className="absolute inset-0 border-[0.5px] border-transparent group-hover:border-gold/30 transition-colors duration-500 z-[2]" />
-
-            {/* D. Vertical Title */}
-            <div className="absolute bottom-12 left-0 w-full pointer-events-none z-30 overflow-hidden mix-blend-screen">
-               <motion.div 
-                 initial={false}
-                 animate={{ 
-                   x: hoveredId === project.id ? 0 : -20, 
-                   opacity: hoveredId === project.id ? 1 : 1 
-                 }}
-                 className="flex items-center gap-8 whitespace-nowrap origin-left -rotate-90 translate-x-12"
-               >
-                  <span className={`font-mono text-xl md:text-3xl font-black uppercase tracking-tighter transition-colors duration-500 ${hoveredId === project.id ? 'text-gold' : 'text-white/40'}`}>
-                    {project.title}
-                  </span>
-                  <div className={`w-24 h-[1px] transition-colors duration-500 ${hoveredId === project.id ? 'bg-gold' : 'bg-white/20'}`} />
-               </motion.div>
-            </div>
-
-            {/* E. Expanded HUD */}
-            <AnimatePresence>
-              {hoveredId === project.id && (
+      {/* 2. THE STABLE GRID GALLERY */}
+      <div className="flex-1 w-full px-6 md:px-12 max-w-screen-2xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {PROJECTS.map((project, idx) => {
+            const isActive = activeId === project.id;
+            return (
+              <motion.div
+                key={project.id}
+                onMouseEnter={() => setActiveId(project.id)}
+                onMouseLeave={() => setActiveId(null)}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className="relative aspect-[3/4] md:aspect-[4/5] bg-surface group overflow-hidden border border-white/5 cursor-pointer"
+              >
+                {/* Background Image with Expansion Effect */}
                 <motion.div 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.5, delay: 0.1 }}
-                  className="absolute inset-0 z-40 pointer-events-none p-6 md:p-12 flex flex-col justify-between"
-                >
-                  <div className="self-end group/label">
-                     {/* Coords removed as requested */}
-                  </div>
+                  className="absolute inset-0 z-0 bg-cover bg-center transition-all duration-1000 grayscale group-hover:grayscale-0 group-hover:scale-110"
+                  style={{ backgroundImage: `url(${project.image})` }}
+                />
+                
+                {/* Dark Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent z-10 transition-opacity duration-500 group-hover:opacity-80" />
 
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-20 pointer-events-none">
-                     <span className="font-mono text-[10vw] text-transparent" style={{ WebkitTextStroke: '1px white' }}>
-                        {project.completion}
-                     </span>
-                  </div>
+                {/* Content Overlay */}
+                <div className="absolute inset-0 z-20 p-10 flex flex-col justify-between">
+                   <div className="flex justify-between items-start">
+                      <span className="font-mono text-[10px] text-white/30 uppercase tracking-[0.4em] font-bold">
+                        REF / {project.ref}
+                      </span>
+                      <div className="w-8 h-8 flex items-center justify-center border border-white/10 group-hover:border-gold/50 transition-colors">
+                        <ICONS.Excellence className="w-3.5 h-3.5 text-white/20 group-hover:text-gold" />
+                      </div>
+                   </div>
 
-                  <div className="self-end max-w-sm">
-                     <motion.div 
-                        initial={{ y: 40, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ ...PHYSICS.industrial, delay: 0.1 }}
-                        className="relative p-8 bg-black/60 backdrop-blur-md border border-gold/20"
-                     >
-                        <div className="absolute top-2 left-2 w-1 h-1 rounded-full bg-gold/50" />
-                        <div className="absolute top-2 right-2 w-1 h-1 rounded-full bg-gold/50" />
-                        <div className="absolute bottom-2 left-2 w-1 h-1 rounded-full bg-gold/50" />
-                        <div className="absolute bottom-2 right-2 w-1 h-1 rounded-full bg-gold/50" />
+                   <div className="space-y-4">
+                      <h3 className="text-white font-sans text-2xl font-black uppercase tracking-tight leading-none">
+                        {project.title}
+                      </h3>
+                      
+                      <div className="h-0.5 w-8 bg-gold transition-all duration-500 group-hover:w-24" />
+                      
+                      <div className="overflow-hidden">
+                        <motion.div
+                          initial={false}
+                          animate={{ y: isActive ? 0 : 40, opacity: isActive ? 1 : 0 }}
+                          className="pt-4 space-y-4"
+                        >
+                           <p className="text-white/60 text-xs font-light leading-relaxed">
+                             {project.description}
+                           </p>
+                           <div className="flex flex-col gap-1">
+                              <span className="text-gold font-mono text-[9px] uppercase tracking-[0.2em] font-bold">
+                                Material: {project.material}
+                              </span>
+                              <span className="text-white/30 font-mono text-[9px] uppercase tracking-widest">
+                                Completed: {project.completion}
+                              </span>
+                           </div>
+                        </motion.div>
+                      </div>
+                   </div>
+                </div>
 
-                        <span className="text-gold font-mono text-[9px] uppercase tracking-widest block mb-4 border-b border-gold/10 pb-2">
-                           Project Brief • {project.id}
-                        </span>
-                        
-                        <h3 className="text-white font-mono text-lg uppercase font-bold mb-2">
-                          {project.subtitle}
-                        </h3>
-
-                        <p className="text-text-muted text-xs font-sans font-light leading-relaxed mb-6">
-                          {project.description}
-                        </p>
-                        
-                        <div className="flex items-center gap-2">
-                           <div className="w-1 h-1 bg-gold rotate-45" />
-                           <span className="text-[9px] font-mono text-white/60 uppercase tracking-widest">
-                             Material: <span className="text-white">{project.material}</span>
-                           </span>
-                        </div>
-                     </motion.div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-          </motion.div>
-        ))}
+                {/* Tracking Glint */}
+                <div className="absolute inset-0 z-30 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-1000 overflow-hidden">
+                  <motion.div 
+                    animate={{ x: ['-100%', '200%'] }}
+                    transition={{ duration: 2, repeat: Infinity, repeatDelay: 1, ease: "linear" }}
+                    className="absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/5 to-transparent skew-x-12"
+                  />
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
 
-      <div className="h-12 border-t border-white/5 bg-primary flex items-center justify-center z-20 shrink-0">
-         <div className="flex items-center gap-8 opacity-40">
-            {/* Removed "Federal Projects Division" */}
-            <span className="text-[8px] font-mono text-text-muted uppercase tracking-[0.5em]">
-              Excellence Since 1993
-            </span>
-         </div>
+      {/* FOOTER BAR */}
+      <div className="w-full px-6 md:px-12 mt-24">
+        <div className="max-w-screen-2xl mx-auto pt-12 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-8 opacity-40">
+           <span className="text-[9px] font-mono text-white/40 uppercase tracking-[0.5em]">
+             National Monument Division
+           </span>
+           <div className="flex gap-12">
+              {['NSF CERTIFIED', 'AIA PARTNER', 'NSI ACCREDITED'].map(tag => (
+                <span key={tag} className="text-[8px] font-mono text-white uppercase tracking-widest whitespace-nowrap">
+                  {tag}
+                </span>
+              ))}
+           </div>
+           <span className="text-[9px] font-mono text-white/40 uppercase tracking-[0.5em]">
+             Est. 1993
+           </span>
+        </div>
       </div>
     </section>
   );

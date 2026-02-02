@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, Fingerprint, Info, ShieldCheck } from 'lucide-react';
+import { Fingerprint, Info, ShieldCheck, Layers, Gauge, Thermometer, Droplets } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { ProjectState, Recommendation } from '../../../../entities/project/store';
 
@@ -10,127 +10,125 @@ interface RecommendationStepProps {
   recommendation: Recommendation;
 }
 
+const MetricItem = ({ icon: Icon, label, value }: { icon: any, label: string, value: string }) => (
+  <div className="flex flex-col gap-1 border-l border-white/5 pl-4">
+    <div className="flex items-center gap-2">
+      <Icon className="w-3 h-3 text-gold/40" />
+      <span className="text-[8px] font-mono text-white/30 uppercase tracking-[0.2em]">{label}</span>
+    </div>
+    <span className="text-[10px] font-mono text-white uppercase tracking-widest font-bold">{value}</span>
+  </div>
+);
+
 export const RecommendationStep: React.FC<RecommendationStepProps> = ({ state, dispatch, recommendation }) => {
   const hasPreference = state.stonePreference !== 'Pending';
-  const preferenceMatchesRec = state.stonePreference === recommendation.material;
-
+  
   const materials = ['Granite', 'Marble', 'Quartzite', 'Quartz', 'Dekton', 'Onyx'];
+
+  // Derived Performance data based on recommendation (Mock data for architectural feel)
+  const isQuartzite = recommendation.material.includes('Quartzite');
+  const isDekton = recommendation.material.includes('Dekton');
 
   return (
     <motion.div 
       initial={{ opacity: 0 }} 
       animate={{ opacity: 1 }} 
-      className="space-y-8"
+      className="space-y-12"
     >
-      {/* 1. THE ADVISORY PANEL: Unified technical verdict */}
-      <div className="relative border border-white/10 bg-surface/20 p-6 md:p-10 overflow-hidden">
-        {/* Aesthetic Background Element */}
-        <div className="absolute top-0 right-0 p-8 opacity-[0.03] pointer-events-none">
-          <Sparkles className="w-48 h-48 text-white rotate-12" />
+      {/* 1. THE TECHNICAL SPECIFICATION HEADER */}
+      <div className="relative border border-white/10 bg-surface/30 p-8 md:p-10">
+        <div className="absolute top-0 right-0 p-4 border-b border-l border-white/5 bg-black/20">
+          <Layers className="w-4 h-4 text-gold/40" strokeWidth={1} />
         </div>
 
-        <div className="relative z-10 flex flex-col md:flex-row gap-8 lg:gap-12">
-          {/* Left Side: The "What" */}
-          <div className="flex-1 space-y-4">
-            <div className="flex items-center gap-2">
-              <div className="w-1.5 h-1.5 bg-gold rotate-45" />
-              <span className="font-mono text-[10px] text-gold uppercase tracking-[0.4em] font-bold">Expert Match</span>
+        <div className="flex flex-col gap-10">
+          {/* A. Verdict */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-[1px] bg-gold" />
+              <span className="font-mono text-[10px] text-gold uppercase tracking-[0.4em] font-bold">Material Specification</span>
             </div>
             
-            <h4 className="text-4xl md:text-6xl font-sans font-black text-white uppercase tracking-tighter leading-none">
-              {recommendation.material}
-            </h4>
-
-            <div className="flex items-center gap-3 py-2">
-              <ShieldCheck className="w-4 h-4 text-gold/60" />
-              <span className="text-[10px] font-mono text-white/40 uppercase tracking-widest">Performance Verified</span>
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+              <h4 className="text-3xl md:text-4xl font-sans font-black text-white uppercase tracking-tight leading-none">
+                {recommendation.material}
+              </h4>
+              <div className="flex items-center gap-3 border border-gold/20 px-3 py-1.5 bg-gold/5">
+                <ShieldCheck className="w-3.5 h-3.5 text-gold" />
+                <span className="text-[9px] font-mono text-gold uppercase tracking-[0.2em] font-bold whitespace-nowrap">Engineered Selection</span>
+              </div>
             </div>
           </div>
 
-          {/* Right Side: The "Why" */}
-          <div className="flex-1 lg:pl-12 border-l border-white/5 space-y-6">
-            <div className="prose-stone max-w-none">
-              <ReactMarkdown>{recommendation.reason}</ReactMarkdown>
-            </div>
-            
-            {recommendation.warning && (
-              <div className="flex gap-3 items-start text-white/40">
-                <Info className="w-3.5 h-3.5 mt-0.5 shrink-0" />
-                <p className="text-[10px] font-light leading-relaxed italic">{recommendation.warning}</p>
+          {/* B. Performance Ledger */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 py-8 border-y border-white/5">
+            <MetricItem icon={Gauge} label="Hardness" value={isQuartzite ? "7.5 MOHS" : "6.0 MOHS"} />
+            <MetricItem icon={Thermometer} label="Heat Tol." value={isDekton ? "1200°F" : "450°F"} />
+            <MetricItem icon={Droplets} label="Porosity" value="0.01%" />
+            <MetricItem icon={Fingerprint} label="Origin" value="Global Sourced" />
+          </div>
+
+          {/* C. The Logic */}
+          <div className="max-w-xl">
+             <div className="prose-stone text-xs md:text-sm leading-relaxed opacity-80 italic">
+                <ReactMarkdown>{recommendation.reason}</ReactMarkdown>
+             </div>
+             {recommendation.warning && (
+              <div className="flex gap-3 items-center mt-6 text-white/30 border-t border-white/5 pt-4">
+                <Info className="w-3 h-3 shrink-0" />
+                <p className="text-[9px] font-mono uppercase tracking-widest">{recommendation.warning}</p>
               </div>
             )}
           </div>
         </div>
       </div>
 
-      {/* 2. CONTEXT NOTE: Only if preference differs */}
-      {hasPreference && !preferenceMatchesRec && (
-        <motion.div 
-          initial={{ opacity: 0, y: 5 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex items-center gap-4 px-6 py-4 border border-gold/10 bg-gold/[0.03]"
-        >
-          <Fingerprint className="w-4 h-4 text-gold/40 shrink-0" />
-          <p className="text-[11px] text-white/60 font-light leading-snug">
-            We noted your earlier preference for <span className="text-gold font-bold">"{state.stonePreference}"</span>. 
-            While we advise <span className="text-white font-bold">{recommendation.material}</span> for longevity, our specialists can tailor either choice to your space.
-          </p>
-        </motion.div>
-      )}
-
-      {/* 3. FINAL SELECTION: Clean Selection Grid */}
+      {/* 2. THE SELECTION INTERFACE */}
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <label className="text-[9px] font-mono text-white/30 uppercase tracking-[0.4em] font-bold">
-            Select Your Specification
+        <div className="flex items-center gap-6">
+          <label className="text-[10px] font-mono text-white/20 uppercase tracking-[0.5em] font-bold whitespace-nowrap">
+            Finalize Selection
           </label>
-          <div className="h-px flex-1 bg-white/5 ml-6" />
+          <div className="h-px flex-1 bg-white/5" />
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
           {materials.map(m => {
             const isSelected = state.stonePreference === m;
             const isRecommended = recommendation.material.includes(m);
-            const isUserPref = state.stonePreference === m && hasPreference;
 
             return (
-              <motion.button
+              <button
                 key={m}
-                whileTap={{ scale: 0.98 }}
                 onClick={() => dispatch({ type: 'SET_STONE_PREFERENCE', payload: m })}
                 className={`
-                  relative group px-5 py-4 text-left border transition-all duration-300 rounded-none overflow-hidden
+                  relative group px-6 py-5 text-left transition-all duration-300 border rounded-none overflow-hidden
                   ${isSelected 
-                    ? 'bg-gold border-gold text-primary shadow-xl shadow-gold/5' 
-                    : 'bg-surface/40 border-white/5 text-white/40 hover:border-gold/30 hover:text-white'}
+                    ? 'bg-gold border-gold text-primary' 
+                    : 'bg-transparent border-white/10 text-white/30 hover:border-gold/30 hover:text-white'}
                 `}
               >
-                {/* Visual Indicators */}
-                {isRecommended && !isSelected && (
-                  <div className="absolute top-2 right-2">
-                    <Sparkles className="w-3 h-3 text-gold/40" />
-                  </div>
-                )}
-                
-                <div className="flex flex-col gap-1">
-                  <span className={`text-xs font-mono font-bold uppercase tracking-widest ${isSelected ? 'text-primary' : 'text-inherit'}`}>
+                <div className="flex flex-col gap-1.5">
+                  <span className={`text-[11px] font-mono font-bold uppercase tracking-widest ${isSelected ? 'text-primary' : 'text-inherit'}`}>
                     {m}
                   </span>
                   {isRecommended && (
-                    <span className={`text-[8px] font-mono uppercase tracking-tighter ${isSelected ? 'text-primary/60' : 'text-gold'}`}>
-                      Expert Choice
-                    </span>
+                    <div className="flex items-center gap-1.5">
+                      <div className={`w-1 h-1 rounded-full ${isSelected ? 'bg-primary' : 'bg-gold'}`} />
+                      <span className={`text-[9px] font-mono uppercase tracking-widest ${isSelected ? 'text-primary/60' : 'text-gold'}`}>
+                        Master Match
+                      </span>
+                    </div>
                   )}
                 </div>
-              </motion.button>
+                {isSelected && (
+                  <div className="absolute top-2 right-2">
+                    <div className="w-1.5 h-1.5 bg-primary rotate-45" />
+                  </div>
+                )}
+              </button>
             )
           })}
-        </div>
-        
-        <div className="flex justify-center">
-          <p className="text-[9px] font-mono text-white/20 uppercase tracking-[0.2em] text-center max-w-sm">
-            Your selection determines the final fabrication specifications in our facility ledger.
-          </p>
         </div>
       </div>
     </motion.div>
