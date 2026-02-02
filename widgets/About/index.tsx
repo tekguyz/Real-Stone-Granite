@@ -32,9 +32,15 @@ export const About: React.FC = () => {
             className="flex items-center gap-4 mb-8"
           >
             <div className="w-8 h-[1px] bg-gold" />
-            <span className="text-gold font-mono text-[10px] uppercase tracking-[0.3em] font-bold">
-              Est. 1993 // Fort Pierce, FL
-            </span>
+            <div className="flex items-center gap-3">
+              <span className="text-gold font-mono text-[10px] uppercase tracking-[0.3em] font-bold">
+                Legacy Fabrication
+              </span>
+              <div className="w-1 h-1 bg-gold/40 rotate-45" />
+              <span className="text-gold/60 font-mono text-[10px] uppercase tracking-[0.3em]">
+                Est. 1993
+              </span>
+            </div>
           </motion.div>
 
           {/* Headline */}

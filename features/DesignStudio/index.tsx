@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ProjectProvider } from '../../entities/project/store';
@@ -39,7 +40,9 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
     timelineIndex,
     isRecording,
     isProcessingAudio,
-    toggleRecording
+    toggleRecording,
+    // Add missing isStepValid from hook return
+    isStepValid
   } = useDesignStudio(isOpen, onClose);
 
   if (!isOpen && !isExiting) return null;
@@ -107,6 +110,8 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
                     attachedFile={attachedFile}
                     fileInputRef={fileInputRef}
                     isSubmitting={isSubmitting}
+                    // Pass isStepValid to satisfy the StudioStepsProps requirement
+                    isStepValid={isStepValid}
                     handlers={{
                       handleFileClick,
                       handleFileChange,

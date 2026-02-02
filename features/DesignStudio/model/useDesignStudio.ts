@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useProjectStore } from '../../../entities/project/store';
 import { transcribeAudio } from '../../../shared/api/gemini';
@@ -26,7 +25,6 @@ export const useDesignStudio = (isOpen: boolean, onClose: () => void) => {
 
   const timelineIndex = useMemo(() => TIMELINE_OPTIONS.indexOf(state.timeline), [state.timeline]);
 
-  // Sync internal state when opened, but DO NOT RESET project data
   useEffect(() => {
     if (isOpen) {
       setCurrentStep(1);
@@ -37,12 +35,34 @@ export const useDesignStudio = (isOpen: boolean, onClose: () => void) => {
     }
   }, [isOpen]);
 
+  // Validation Logic per Step
+  const isStepValid = useMemo(() => {
+    switch (currentStep) {
+      case 1: return !!state.userRole;
+      case 2: return !!state.scope;
+      case 3: return !!state.intensity;
+      case 4: return true; // Recommendation is passive
+      case 5: return !!state.timeline && state.description.length > 5;
+      default: return false;
+    }
+  }, [currentStep, state]);
+
   const handleClose = () => {
+    if (isSubmitted) {
+      dispatch({ type: 'RESET' });
+    }
     setIsExiting(true);
     setTimeout(onClose, 500);
   };
 
-  const nextStep = () => setCurrentStep(prev => Math.min(prev + 1, 5));
+  const nextStep = () => {
+    if (isStepValid) {
+      setCurrentStep(prev => Math.min(prev + 1, 5));
+    } else {
+      showToast("Please complete the required selections.", "info");
+    }
+  };
+  
   const prevStep = () => setCurrentStep(prev => Math.max(prev - 1, 1));
 
   const handleFileClick = () => fileInputRef.current?.click();
@@ -59,6 +79,10 @@ export const useDesignStudio = (isOpen: boolean, onClose: () => void) => {
   }
 
   const handleSubmit = async () => {
+    if (!isStepValid) {
+      showToast("Project details are incomplete.", "error");
+      return;
+    }
     setIsSubmitting(true);
     try {
       await fetch("/", {
@@ -71,11 +95,10 @@ export const useDesignStudio = (isOpen: boolean, onClose: () => void) => {
         })
       });
       setIsSubmitted(true);
-      dispatch({ type: 'RESET' }); // Only reset on successful submission
     } catch (error) {
       console.error("Submission failed:", error);
       setIsSubmitted(true);
-      showToast("Offline Mode: Project Saved Locally", "info");
+      showToast("Project Saved (Local Mirror)", "info");
     } finally {
       setIsSubmitting(false);
     }
@@ -113,9 +136,9 @@ export const useDesignStudio = (isOpen: boolean, onClose: () => void) => {
             const transcribedText = await transcribeAudio(base64Audio, mimeType, prompt);
             if (!transcribedText) throw new Error('Transcription failed');
             dispatch({ type: 'SET_DESCRIPTION', payload: state.description ? `${state.description}\n\n${transcribedText}` : transcribedText });
-            showToast("Voice Note Transcribed", "success");
+            showToast("Specification Logged", "success");
           } catch (e) {
-            showToast("Transcription Failed. Please type details.", "error");
+            showToast("Voice Capture Unavailable", "error");
           } finally {
             setIsProcessingAudio(false);
           }
@@ -123,7 +146,7 @@ export const useDesignStudio = (isOpen: boolean, onClose: () => void) => {
         mediaRecorder.start();
         setIsRecording(true);
       } catch (err) {
-        showToast("Microphone Access Required", "error");
+        showToast("Microphone Access Denied", "error");
       }
     }
   };
@@ -132,6 +155,6 @@ export const useDesignStudio = (isOpen: boolean, onClose: () => void) => {
     state, dispatch, recommendation, currentStep, setCurrentStep, isExiting, isSubmitted, isSubmitting,
     attachedFile, isDrawerOpen, setIsDrawerOpen, handleClose, nextStep, prevStep, handleFileClick,
     handleFileChange, handleSubmit, fileInputRef, projectRef, timelineIndex, isRecording,
-    isProcessingAudio, toggleRecording
+    isProcessingAudio, toggleRecording, isStepValid
   };
 };

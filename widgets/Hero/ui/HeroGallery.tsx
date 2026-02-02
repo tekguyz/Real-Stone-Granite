@@ -108,7 +108,6 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
           style={{ x: lightX, y: lightY }}
           animate={{ opacity: hovering ? 1 : 0, scale: hovering ? 1 : 0.5 }}
         >
-          {/* Reduced size by 25% from w-2 h-2 to w-1.5 h-1.5 */}
           <div className="w-1.5 h-1.5 bg-white rounded-full shadow-[0_0_10px_2px_rgba(255,255,255,0.8)] -translate-x-1/2 -translate-y-1/2" />
         </motion.div>
 

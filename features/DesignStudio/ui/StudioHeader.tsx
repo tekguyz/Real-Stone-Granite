@@ -5,23 +5,29 @@ interface StudioHeaderProps {
 }
 
 const STEP_TITLES: Record<number, string> = {
-  1: "About You",
-  2: "Project Details",
-  3: "Lifestyle & Usage",
-  4: "Our Recommendation",
-  5: "Final Details"
+  1: "Project Identity",
+  2: "Defining the Scope",
+  3: "Intended Usage",
+  4: "Material Recommendation",
+  5: "Refining Specifications"
 };
 
 export const StudioHeader: React.FC<StudioHeaderProps> = ({ currentStep }) => {
   return (
-    <div className="mb-12">
-      <div className="flex items-center gap-3 mb-4 opacity-50">
-        <div className="w-8 h-[1px] bg-gold" />
-        <span className="text-gold font-mono text-[10px] tracking-[0.3em] uppercase">
-          Consultation Mode // 0{currentStep}
-        </span>
+    <div className="mb-8">
+      <div className="flex items-center gap-3 mb-4 opacity-70">
+        <div className="w-6 h-[1px] bg-gold" />
+        <div className="flex items-center gap-2">
+          <span className="text-gold font-mono text-[10px] tracking-[0.3em] uppercase font-bold">
+            Project Phase
+          </span>
+          <div className="w-1 h-1 bg-gold/40 rotate-45" />
+          <span className="text-white/60 font-mono text-[10px] tracking-[0.3em] uppercase">
+            0{currentStep}
+          </span>
+        </div>
       </div>
-      <h2 className="text-3xl md:text-4xl lg:text-5xl text-white font-sans font-light tracking-tight leading-tight">
+      <h2 className="text-2xl md:text-3xl lg:text-4xl text-white font-sans font-medium tracking-tight leading-tight">
         {STEP_TITLES[currentStep] || "Project Details"}
       </h2>
     </div>

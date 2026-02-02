@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { ChevronRight, ArrowLeft } from 'lucide-react';
+import { ChevronRight, ArrowLeft, Lock } from 'lucide-react';
 import { ProjectState, Recommendation } from '../../../entities/project/store';
 import { PrecisionBtn } from '../../../shared/ui/PrecisionBtn';
 import { StudioHeader } from './StudioHeader';
@@ -19,6 +18,7 @@ interface StudioStepsProps {
   attachedFile: string | null;
   fileInputRef: React.RefObject<HTMLInputElement>;
   isSubmitting: boolean;
+  isStepValid: boolean;
   handlers: {
     handleFileClick: () => void;
     handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -42,6 +42,7 @@ export const StudioSteps: React.FC<StudioStepsProps> = ({
   attachedFile, 
   fileInputRef, 
   isSubmitting, 
+  isStepValid,
   handlers,
   voice
 }) => {
@@ -91,10 +92,17 @@ export const StudioSteps: React.FC<StudioStepsProps> = ({
           <PrecisionBtn 
             variant="secondary" 
             onClick={handlers.nextStep} 
-            className="h-12 px-8 group"
+            className={`h-12 px-8 group transition-all ${!isStepValid ? 'opacity-30 grayscale cursor-not-allowed border-white/5' : ''}`}
+            disabled={!isStepValid}
           >
-            <span className="font-mono text-[10px] uppercase tracking-widest font-bold">Continue</span>
-            <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            <span className="font-mono text-[10px] uppercase tracking-widest font-bold">
+              {isStepValid ? "Continue" : "Selection Required"}
+            </span>
+            {isStepValid ? (
+              <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            ) : (
+              <Lock className="w-3 h-3 ml-2 opacity-50" />
+            )}
           </PrecisionBtn>
         )}
       </div>

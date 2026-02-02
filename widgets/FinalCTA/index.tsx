@@ -33,9 +33,15 @@ export const FinalCTA: React.FC<FinalCTAProps> = ({ onStartProject }) => {
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           {/* Simple Eyebrow Text */}
-          <span className="block text-gold/80 font-mono text-[10px] md:text-xs uppercase tracking-[0.3em] mb-6 md:mb-8">
-            EST. 1995 &mdash; Fort Pierce, FL
-          </span>
+          <div className="flex items-center justify-center gap-3 mb-8">
+            <span className="text-gold/80 font-mono text-[10px] md:text-xs uppercase tracking-[0.4em] font-bold">
+              Legacy Fabrication
+            </span>
+            <div className="w-1 h-1 bg-gold/40 rotate-45" />
+            <span className="text-white/40 font-mono text-[10px] md:text-xs uppercase tracking-[0.4em]">
+              Est. 1993
+            </span>
+          </div>
 
           {/* Main Headline: Warm & Emotional */}
           <h2 className="text-4xl sm:text-5xl md:text-7xl font-sans font-light text-white tracking-tight leading-[1.1] mb-6 md:mb-8">
