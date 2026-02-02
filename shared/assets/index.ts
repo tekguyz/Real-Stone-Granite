@@ -1,4 +1,3 @@
-
 import { 
   Layers, 
   Shield, 
@@ -58,12 +57,10 @@ export const TEXTURES = {
 };
 
 export const MONUMENTS = {
-  // Use slightly larger width for monuments but still compressed
-  VIETNAM: "https://i.ibb.co/4ZMqJd8h/25-20230616152034-10397363-xlarge.jpg",
-  NAVY_SEAL: `https://images.unsplash.com/photo-1614064641938-3bbee52942c7${UNSPLASH_PARAMS}&w=1000`,
-  NINE_ELEVEN: `https://images.unsplash.com/photo-1518391846015-55a9cc003b25${UNSPLASH_PARAMS}&w=1000`,
-  SPACE: `https://images.unsplash.com/photo-1446776811953-b23d57bd21aa${UNSPLASH_PARAMS}&w=1000`,
-  GOLD_STAR: `https://images.unsplash.com/photo-1464692805480-a69dfaafdb0d${UNSPLASH_PARAMS}&w=1000`
+  VETERANS: "https://i.ibb.co/hxFxGBSF/25-20230616152026-10397362-xlarge.jpg",
+  NAVY_SEAL: "https://i.ibb.co/kVNN6xt6/25-20230616151744-10397348-xlarge.jpg",
+  SPACE: "https://i.ibb.co/mr2HycJK/25-20230616123223-10396534-xlarge.jpg",
+  GOLD_STAR: "https://i.ibb.co/xqj1w3Fz/25-20230616154012-10397379-xlarge.jpg"
 };
 
 export const MEDIA = {

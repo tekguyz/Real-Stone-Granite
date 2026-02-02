@@ -100,8 +100,7 @@ export const COMPANY_KB = {
   legacy: {
     notableProjects: [
       { name: "National Navy SEAL Museum Memorial", location: "Fort Pierce, FL" },
-      { name: "Vietnam Wall Replica", location: "National Tribute" },
-      { name: "9/11 First Responders Memorial", location: "Honor Guard" },
+      { name: "Veterans Memorial", location: "National Tribute" },
       { name: "Space Walk of Fame", location: "Titusville, FL" },
       { name: "Gold Star Family Memorials", location: "Statewide" }
     ],

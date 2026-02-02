@@ -14,13 +14,13 @@ interface MonumentProject {
 
 const PROJECTS: MonumentProject[] = [
   {
-    id: "VIETNAM",
-    title: "Vietnam Veterans Memorial",
-    subtitle: "Sacred Replication",
+    id: "VETERANS",
+    title: "Veterans Memorial",
+    subtitle: "Sacred Honoring",
     material: "ABSOLUTE BLACK GRANITE",
     completion: "1993",
-    image: MONUMENTS.VIETNAM, 
-    description: "Honoring the fallen through precise digital replication of names on reflective natural granite."
+    image: MONUMENTS.VETERANS, 
+    description: "Honoring those who served through precise digital replication of names on reflective natural granite."
   },
   {
     id: "SEAL",
@@ -30,15 +30,6 @@ const PROJECTS: MonumentProject[] = [
     completion: "2010",
     image: MONUMENTS.NAVY_SEAL,
     description: "A trident-shaped memorial honoring our elite forces, engineered for endurance on the Florida coast."
-  },
-  {
-    id: "NINE_ELEVEN",
-    title: "9/11 First Responders",
-    subtitle: "Strength & Bravery",
-    material: "VIRGINIA MIST GRANITE",
-    completion: "2011",
-    image: MONUMENTS.NINE_ELEVEN, 
-    description: "Massive stone cladding dedicated to the bravery of the first responders at Ground Zero."
   },
   {
     id: "SPACE",
@@ -91,7 +82,7 @@ export const Monuments: React.FC = () => {
       </div>
 
       <div className="flex-1 w-full px-6 md:px-12 max-w-screen-2xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {PROJECTS.map((project, idx) => {
             const isActive = activeId === project.id;
             return (
@@ -103,7 +94,7 @@ export const Monuments: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
-                className="relative aspect-[3/4] md:aspect-[4/5] bg-surface group overflow-hidden border border-white/5 cursor-pointer"
+                className="relative aspect-[3/2] bg-surface group overflow-hidden border border-white/5 cursor-pointer"
               >
                 <img 
                   src={project.image}
