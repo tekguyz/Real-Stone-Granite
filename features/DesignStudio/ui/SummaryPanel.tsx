@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FileText, ChefHat, Droplets, Sun, Gem, Gauge, Ruler, LayoutGrid } from 'lucide-react';
@@ -42,7 +41,7 @@ const BlueprintPlaceholder: React.FC = () => (
       />
     </div>
     <span className="text-[10px] font-mono text-white/20 uppercase tracking-[0.4em] mb-2">Awaiting Specs</span>
-    <p className="text-[11px] text-white/10 font-light leading-relaxed">Define project context to initiate <br/>the architectural blueprint.</p>
+    <p className="text-[11px] text-white/10 font-light leading-relaxed">Define project details to initiate <br/>your architectural plan.</p>
   </div>
 );
 
@@ -53,7 +52,7 @@ export const SummaryPanel: React.FC<SummaryPanelProps> = ({ state, recommendatio
   return (
     <div className="w-full h-full p-8 xl:p-12 relative z-10 overflow-hidden flex flex-col">
       
-      {/* REACTIVE BACKGROUND (Visual Telemetry) */}
+      {/* REACTIVE BACKGROUND (Visual Context) */}
       <div className="absolute inset-0 z-0">
         <AnimatePresence mode="wait">
           {visual && (
@@ -76,7 +75,7 @@ export const SummaryPanel: React.FC<SummaryPanelProps> = ({ state, recommendatio
             <div className="flex items-center gap-3 mb-10 text-white border-b border-white/10 pb-6">
               <FileText className="w-4 h-4 text-gold" />
               <div className="flex flex-col">
-                <span className="font-mono text-[10px] uppercase tracking-[0.2em] font-bold leading-none mb-1">Project Blueprint</span>
+                <span className="font-mono text-[10px] uppercase tracking-[0.2em] font-bold leading-none mb-1">Your Plan</span>
                 <span className="text-[9px] font-mono text-white/20 uppercase tracking-widest leading-none">REF: #{projectRef}</span>
               </div>
             </div>
@@ -86,7 +85,7 @@ export const SummaryPanel: React.FC<SummaryPanelProps> = ({ state, recommendatio
             ) : (
               <div className="space-y-10">
                 <motion.div layout initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}>
-                  <span className="text-[10px] text-white/40 uppercase tracking-widest block mb-2 font-bold">Context</span>
+                  <span className="text-[10px] text-white/40 uppercase tracking-widest block mb-2 font-bold">Scope</span>
                   <div className="flex items-center gap-3">
                     {ScopeIcon && <ScopeIcon className="w-4 h-4 text-gold" />}
                     <span className="text-white text-lg font-light tracking-tight">{state.scope}</span>
@@ -95,7 +94,7 @@ export const SummaryPanel: React.FC<SummaryPanelProps> = ({ state, recommendatio
                 
                 {state.intensity && (
                   <motion.div layout initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}>
-                    <span className="text-[10px] text-white/40 uppercase tracking-widest block mb-2 font-bold">Intensity</span>
+                    <span className="text-[10px] text-white/40 uppercase tracking-widest block mb-2 font-bold">Lifestyle</span>
                     <div className="flex items-center gap-3">
                        <Gauge className="w-4 h-4 text-white/40" />
                        <span className="text-white text-lg font-light tracking-tight">{state.intensity}</span>
@@ -105,7 +104,7 @@ export const SummaryPanel: React.FC<SummaryPanelProps> = ({ state, recommendatio
 
                 {recommendation.material !== 'Awaiting Context' && (
                   <motion.div layout initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}>
-                    <span className="text-[10px] text-white/40 uppercase tracking-widest block mb-2 font-bold">Intelligence Result</span>
+                    <span className="text-[10px] text-white/40 uppercase tracking-widest block mb-2 font-bold">Your Match</span>
                     <div className="flex items-center gap-3 text-gold">
                       <div className="w-1.5 h-1.5 bg-gold rotate-45" />
                       <span className="text-xl font-medium tracking-tight uppercase">
@@ -117,7 +116,7 @@ export const SummaryPanel: React.FC<SummaryPanelProps> = ({ state, recommendatio
 
                 {state.fabricationLevel && (
                   <motion.div layout initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}>
-                    <span className="text-[10px] text-white/40 uppercase tracking-widest block mb-2 font-bold">Tier</span>
+                    <span className="text-[10px] text-white/40 uppercase tracking-widest block mb-2 font-bold">Fabrication</span>
                     <div className="flex items-center gap-3">
                        <Ruler className="w-4 h-4 text-white/40" />
                        <span className="text-white text-lg font-light tracking-tight">{state.fabricationLevel}</span>
@@ -130,7 +129,7 @@ export const SummaryPanel: React.FC<SummaryPanelProps> = ({ state, recommendatio
           
           <div className="mt-auto pt-12">
             <div className="flex justify-between items-center mb-3">
-               <span className="text-[9px] font-mono text-white/20 uppercase tracking-widest font-bold">Progress Tracker</span>
+               <span className="text-[9px] font-mono text-white/20 uppercase tracking-widest font-bold">Progress</span>
                <span className="text-[9px] font-mono text-gold uppercase tracking-widest font-bold">{Math.round((currentStep / 5) * 100)}%</span>
             </div>
             <div className="h-[1px] w-full bg-white/10 overflow-hidden">

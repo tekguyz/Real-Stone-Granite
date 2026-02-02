@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { COMPANY_KB } from '../../entities/company/knowledge';
@@ -24,7 +23,7 @@ export const MaterialVault: React.FC<MaterialVaultProps> = ({ onStartProject }) 
 
   const tabs: { key: TabKey; label: string }[] = [
     { key: 'natural', label: 'Natural Selection' },
-    { key: 'engineered', label: 'Engineered & Synthetic' },
+    { key: 'engineered', label: 'Engineered Surfaces' },
   ];
 
   return (
@@ -38,13 +37,13 @@ export const MaterialVault: React.FC<MaterialVaultProps> = ({ onStartProject }) 
           {/* Title Block */}
           <div className="max-w-2xl">
             <span className="text-gold font-mono text-xs uppercase tracking-[0.4em] font-bold block mb-4">
-               The Inventory
+               Our Collection
             </span>
             <h2 className="text-5xl md:text-7xl font-sans font-black uppercase text-white tracking-tighter leading-[0.9]">
               Material <span className="text-gold">Vault</span>
             </h2>
             <p className="text-text-muted mt-8 text-base font-light leading-relaxed border-l border-white/10 pl-6 max-w-xl">
-              High-resolution digital catalog of our physical stock. Select a category below to inspect material availability.
+              Browse our digital catalog of physical stock. Select a category below to inspect material availability.
             </p>
           </div>
 

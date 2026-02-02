@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
 import { COMPANY_KB } from '../../entities/company/knowledge';
@@ -108,7 +107,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
             className="fixed inset-0 z-[10000] bg-[#050505] flex flex-col p-8"
           >
             <div className="flex justify-between items-center mb-16 border-b border-white/10 pb-6">
-               <span className="font-mono text-gold text-xs uppercase tracking-widest">System Navigation</span>
+               <span className="font-mono text-gold text-xs uppercase tracking-widest">Menu</span>
                <button 
                 onClick={() => setIsMobileOpen(false)} 
                 aria-label="Close Mobile Menu"

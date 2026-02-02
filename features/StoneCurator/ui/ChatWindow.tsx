@@ -104,7 +104,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
               <div className="w-1.5 h-1.5 bg-gold rounded-full animate-bounce" />
               <div className="w-1.5 h-1.5 bg-gold rounded-full animate-bounce [animation-delay:0.2s]" />
               <div className="w-1.5 h-1.5 bg-gold rounded-full animate-bounce [animation-delay:0.4s]" />
-              <span className="ml-2 text-[10px] font-mono text-gold uppercase tracking-widest font-bold">Consulting Intelligence...</span>
+              <span className="ml-2 text-[10px] font-mono text-gold uppercase tracking-widest font-bold">Checking availability...</span>
           </div>
         )}
         <div ref={messagesEndRef} />

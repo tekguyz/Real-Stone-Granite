@@ -42,7 +42,7 @@ export const IntensityStep: React.FC<IntensityStepProps> = ({ state, dispatch })
               `}
               transition={PHYSICS.industrial}
             >
-              {/* 1. Telemetry Index */}
+              {/* 1. Step Number */}
               <div className="hidden md:flex flex-col items-center justify-center shrink-0 w-12 border-r border-white/10 pr-6 mr-2">
                  <span className={`font-mono text-[10px] ${isActive ? 'text-gold' : 'opacity-30'}`}>
                     0{idx + 1}
@@ -81,13 +81,13 @@ export const IntensityStep: React.FC<IntensityStepProps> = ({ state, dispatch })
         })}
       </div>
 
-      {/* Industrial Footer Advisory */}
+      {/* Expert Tip Footer */}
       <div className="p-6 bg-black/40 border-l border-gold/30 flex items-start gap-5 backdrop-blur-sm">
          <div className="mt-1 w-2 h-2 bg-gold/50 rotate-45 shrink-0" />
          <div className="flex flex-col gap-2">
-            <span className="text-[9px] font-mono text-gold uppercase tracking-[0.2em] font-bold">Structural Advisory</span>
+            <span className="text-[9px] font-mono text-gold uppercase tracking-[0.2em] font-bold">Expert Tip</span>
             <p className="text-[11px] font-light text-white/50 leading-relaxed italic">
-               Selection affects the structural reinforcement protocols during fabrication. "Heavy Duty" environments utilize specialized mechanical anchoring for increased tensile strength.
+               Heavier usage areas may require reinforced installation methods and specific material choices to ensure longevity for your family.
             </p>
          </div>
       </div>

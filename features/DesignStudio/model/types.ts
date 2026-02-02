@@ -1,4 +1,3 @@
-
 import { User, PenTool, Layers, FileText, Microscope } from 'lucide-react';
 
 export interface DesignStudioProps {
@@ -7,10 +6,10 @@ export interface DesignStudioProps {
 }
 
 export const STEPS = [
-  { id: 1, label: 'Client Role', icon: User },
+  { id: 1, label: 'About You', icon: User },
   { id: 2, label: 'Project Scope', icon: PenTool },
-  { id: 3, label: 'Physics', icon: Microscope },
-  { id: 4, label: 'Intelligence', icon: Layers },
+  { id: 3, label: 'Lifestyle', icon: Microscope },
+  { id: 4, label: 'Recommendation', icon: Layers },
   { id: 5, label: 'Final Details', icon: FileText },
 ];
 

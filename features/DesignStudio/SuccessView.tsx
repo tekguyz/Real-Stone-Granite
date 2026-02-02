@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ShieldCheck, Download, Calendar, ArrowLeft, Loader2, FileText, Check } from 'lucide-react';
@@ -57,7 +56,7 @@ export const SuccessView: React.FC<SuccessViewProps> = ({ onClose, projectRef })
     setIsDownloading(true);
     setTimeout(() => {
       setIsDownloading(false);
-      showToast(`Dossier #${projectRef} Saved to Device`, 'success');
+      showToast(`Project Plan #${projectRef} Saved to Device`, 'success');
     }, 1500);
   };
 
@@ -69,7 +68,7 @@ export const SuccessView: React.FC<SuccessViewProps> = ({ onClose, projectRef })
         transition={PHYSICS.snappy}
         className="max-w-2xl w-full"
       >
-        {/* THE SPEC SHEET (Technical Document Style) */}
+        {/* THE PROJECT SUMMARY */}
         <div className="bg-surface border border-white/10 p-8 md:p-12 shadow-2xl relative mb-12">
             
             {/* Corner Decorative */}
@@ -80,13 +79,13 @@ export const SuccessView: React.FC<SuccessViewProps> = ({ onClose, projectRef })
                 <div>
                   <div className="flex items-center gap-3 mb-2">
                     <div className="w-2 h-2 bg-gold rotate-45" />
-                    <span className="font-mono text-[10px] text-gold uppercase tracking-[0.4em] font-bold">Preliminary Spec Sheet</span>
+                    <span className="font-mono text-[10px] text-gold uppercase tracking-[0.4em] font-bold">Project Summary</span>
                   </div>
                   <h2 className="text-3xl font-sans font-black uppercase text-white tracking-tighter">Inquiry # {projectRef}</h2>
                   <p className="text-white/40 font-mono text-[10px] mt-2 uppercase tracking-widest">Drafted: {new Date().toLocaleDateString()}</p>
                 </div>
                 <div className="flex flex-col items-end">
-                   <span className="px-3 py-1 bg-gold/10 border border-gold/30 text-gold font-mono text-[10px] uppercase tracking-widest font-bold">Queued for Review</span>
+                   <span className="px-3 py-1 bg-gold/10 border border-gold/30 text-gold font-mono text-[10px] uppercase tracking-widest font-bold">Received by Office</span>
                 </div>
             </div>
 
@@ -97,17 +96,17 @@ export const SuccessView: React.FC<SuccessViewProps> = ({ onClose, projectRef })
                       <span className="text-white text-base font-medium">{state.userRole}</span>
                    </div>
                    <div>
-                      <span className="block font-mono text-[9px] text-white/30 uppercase tracking-[0.2em] mb-2 font-bold">Context</span>
+                      <span className="block font-mono text-[9px] text-white/30 uppercase tracking-[0.2em] mb-2 font-bold">Scope</span>
                       <span className="text-white text-base font-medium">{state.scope}</span>
                    </div>
                    <div>
-                      <span className="block font-mono text-[9px] text-white/30 uppercase tracking-[0.2em] mb-2 font-bold">Physics</span>
+                      <span className="block font-mono text-[9px] text-white/30 uppercase tracking-[0.2em] mb-2 font-bold">Usage</span>
                       <span className="text-white text-base font-medium">{state.intensity}</span>
                    </div>
                 </div>
                 <div className="space-y-6">
                    <div className="p-4 bg-white/[0.03] border border-white/5">
-                      <span className="block font-mono text-[9px] text-gold uppercase tracking-[0.2em] mb-3 font-bold">Intelligence Result</span>
+                      <span className="block font-mono text-[9px] text-gold uppercase tracking-[0.2em] mb-3 font-bold">Your Match</span>
                       <div className="flex items-center gap-3 text-white mb-2">
                          <Check className="w-4 h-4 text-gold" />
                          <span className="text-lg font-bold uppercase tracking-tight">
@@ -127,7 +126,7 @@ export const SuccessView: React.FC<SuccessViewProps> = ({ onClose, projectRef })
                </p>
                <PrecisionBtn onClick={handleDownload} variant="secondary" className="h-10 px-6 text-[9px] whitespace-nowrap min-w-0">
                   {isDownloading ? <Loader2 className="w-3 h-3 animate-spin" /> : <Download className="w-3 h-3" />}
-                  Download Dossier
+                  Download Plan
                </PrecisionBtn>
             </div>
         </div>

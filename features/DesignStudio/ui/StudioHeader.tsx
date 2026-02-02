@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface StudioHeaderProps {
@@ -6,11 +5,11 @@ interface StudioHeaderProps {
 }
 
 const STEP_TITLES: Record<number, string> = {
-  1: "Initiate Consultant Profile",
-  2: "Define Project Context",
-  3: "Calibrate Usage Physics",
-  4: "Material Intelligence",
-  5: "Final Specifications"
+  1: "About You",
+  2: "Project Details",
+  3: "Lifestyle & Usage",
+  4: "Our Recommendation",
+  5: "Final Details"
 };
 
 export const StudioHeader: React.FC<StudioHeaderProps> = ({ currentStep }) => {

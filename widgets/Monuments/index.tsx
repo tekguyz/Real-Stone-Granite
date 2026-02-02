@@ -8,7 +8,6 @@ interface MonumentProject {
   title: string;
   subtitle: string;
   material: string;
-  coords: string;
   completion: string;
   image: string;
   description: string;
@@ -20,7 +19,6 @@ const PROJECTS: MonumentProject[] = [
     title: "Vietnam Veterans Memorial",
     subtitle: "Traveling Replica",
     material: "ABSOLUTE BLACK GRANITE",
-    coords: "38.8913° N, 77.0477° W",
     completion: "Est. 1993",
     image: MONUMENTS.VIETNAM, 
     description: "The replication and maintenance of sacred names etched into the most reflective granite on Earth."
@@ -30,7 +28,6 @@ const PROJECTS: MonumentProject[] = [
     title: "Navy SEAL Memorial",
     subtitle: "Muster Grounds",
     material: "JET BLACK GRANITE",
-    coords: "27.4965° N, 80.3013° W",
     completion: "2010",
     image: MONUMENTS.NAVY_SEAL,
     description: "Crafting the Trident-shaped sanctuary honoring the fallen frogmen of the U.S. Navy."
@@ -40,7 +37,6 @@ const PROJECTS: MonumentProject[] = [
     title: "9/11 First Responders",
     subtitle: "Ground Zero Cladding",
     material: "VIRGINIA MIST GRANITE",
-    coords: "40.7127° N, 74.0134° W",
     completion: "2011",
     image: MONUMENTS.NINE_ELEVEN, 
     description: "Architectural cladding and monuments dedicated to the bravery of those at Ground Zero."
@@ -50,7 +46,6 @@ const PROJECTS: MonumentProject[] = [
     title: "Space Walk of Fame",
     subtitle: "Titusville, FL",
     material: "POLISHED GRANITE",
-    coords: "28.6139° N, 80.8015° W",
     completion: "Phase I-IV",
     image: MONUMENTS.SPACE, 
     description: "Monuments celebrating the pioneers of the Gemini and Apollo programs."
@@ -60,7 +55,6 @@ const PROJECTS: MonumentProject[] = [
     title: "Gold Star Families",
     subtitle: "Statewide Memorials",
     material: "INDIA BLACK GRANITE",
-    coords: "27.4467° N, 80.3256° W",
     completion: "Ongoing",
     image: MONUMENTS.GOLD_STAR, 
     description: "A tribute to the families who have sacrificed a loved one for our freedom."
@@ -157,12 +151,7 @@ export const Monuments: React.FC = () => {
                   className="absolute inset-0 z-40 pointer-events-none p-6 md:p-12 flex flex-col justify-between"
                 >
                   <div className="self-end group/label">
-                     <div className="flex flex-col items-end">
-                        <span className="text-[10px] font-mono text-gold uppercase tracking-[0.3em] font-bold">
-                          {project.coords}
-                        </span>
-                        <div className="w-8 h-[1px] bg-gold mt-2" />
-                     </div>
+                     {/* Coords removed as requested */}
                   </div>
 
                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-20 pointer-events-none">
@@ -213,12 +202,9 @@ export const Monuments: React.FC = () => {
 
       <div className="h-12 border-t border-white/5 bg-primary flex items-center justify-center z-20 shrink-0">
          <div className="flex items-center gap-8 opacity-40">
+            {/* Removed "Federal Projects Division" */}
             <span className="text-[8px] font-mono text-text-muted uppercase tracking-[0.5em]">
-              Federal Projects Division
-            </span>
-            <div className="w-1.5 h-1.5 bg-gold/50 rotate-45" />
-            <span className="text-[8px] font-mono text-text-muted uppercase tracking-[0.5em]">
-              Est. 1993
+              Excellence Since 1993
             </span>
          </div>
       </div>

@@ -44,7 +44,7 @@ export const FinalCTA: React.FC<FinalCTAProps> = ({ onStartProject }) => {
           <div className="flex items-center justify-center gap-4 mb-8 md:mb-12 opacity-50">
             <div className="w-8 md:w-12 h-[1px] bg-gold/50" />
             <span className="text-gold font-mono text-[9px] md:text-[10px] uppercase tracking-[0.4em] font-bold whitespace-nowrap">
-              Project Finalization
+              Ready to build?
             </span>
             <div className="w-8 md:w-12 h-[1px] bg-gold/50" />
           </div>
@@ -66,10 +66,6 @@ export const FinalCTA: React.FC<FinalCTAProps> = ({ onStartProject }) => {
 
           {/* CTA & Scroll Indicator */}
           <div className="flex flex-col items-center gap-10">
-            {/* MOBILE FIX: Removed fixed width (min-w). 
-                Used w-full max-w-md to ensure it fits small screens 
-                but doesn't get huge on desktop.
-            */}
             <PrecisionBtn 
               variant="primary" 
               onClick={onStartProject}
@@ -77,21 +73,11 @@ export const FinalCTA: React.FC<FinalCTAProps> = ({ onStartProject }) => {
             >
               Start Your Project
             </PrecisionBtn>
-            
-            <motion.div 
-               initial={{ opacity: 0 }}
-               whileInView={{ opacity: 0.4 }}
-               transition={{ delay: 1 }}
-               className="flex flex-col items-center gap-2"
-            >
-               <span className="text-[8px] text-white font-mono uppercase tracking-[0.3em]">Directory</span>
-               <div className="w-[1px] h-8 bg-white/20" />
-            </motion.div>
           </div>
         </motion.div>
       </div>
 
-      {/* 4. THE SPEC STAMP (Responsive Placement) */}
+      {/* 4. THE SPEC STAMP */}
       <div className="absolute bottom-6 left-6 z-30 opacity-40">
         <div className="flex flex-col border-l border-gold/30 pl-4">
           <span className="text-gold font-mono text-[9px] uppercase tracking-[0.2em]">
