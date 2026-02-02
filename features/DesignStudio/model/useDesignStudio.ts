@@ -35,13 +35,12 @@ export const useDesignStudio = (isOpen: boolean, onClose: () => void) => {
     }
   }, [isOpen]);
 
-  // Validation Logic per Step
   const isStepValid = useMemo(() => {
     switch (currentStep) {
       case 1: return !!state.userRole;
       case 2: return !!state.scope;
       case 3: return !!state.intensity;
-      case 4: return true; // Recommendation is passive
+      case 4: return true; 
       case 5: return !!state.timeline && state.description.length > 5;
       default: return false;
     }
@@ -96,7 +95,7 @@ export const useDesignStudio = (isOpen: boolean, onClose: () => void) => {
       });
       setIsSubmitted(true);
     } catch (error) {
-      console.error("Submission failed:", error);
+      // Log-free error handling
       setIsSubmitted(true);
       showToast("Project Saved (Local Mirror)", "info");
     } finally {
@@ -134,7 +133,7 @@ export const useDesignStudio = (isOpen: boolean, onClose: () => void) => {
             const base64Audio = await blobToBase64(audioBlob);
             const prompt = "Format this transcription into professional Markdown with bold headers and bullet points.";
             const transcribedText = await transcribeAudio(base64Audio, mimeType, prompt);
-            if (!transcribedText) throw new Error('Transcription failed');
+            if (!transcribedText) throw new Error('Transcribe issue');
             dispatch({ type: 'SET_DESCRIPTION', payload: state.description ? `${state.description}\n\n${transcribedText}` : transcribedText });
             showToast("Specification Logged", "success");
           } catch (e) {

@@ -83,7 +83,9 @@ export const ProjectProvider: React.FC<{ children: ReactNode }> = ({ children })
     if (saved) {
       try {
         dispatch({ type: 'HYDRATE', payload: JSON.parse(saved) });
-      } catch (e) { console.error("Could not load draft", e); }
+      } catch (e) {
+        // Hydration failure is silent to maintain a clean console
+      }
     }
   }, []);
 
@@ -98,6 +100,6 @@ export const ProjectProvider: React.FC<{ children: ReactNode }> = ({ children })
 
 export const useProjectStore = () => {
   const context = useContext(ProjectContext);
-  if (!context) throw new Error('useProjectStore must be used within a ProjectProvider');
+  if (!context) throw new Error('useProjectStore error');
   return context;
 };

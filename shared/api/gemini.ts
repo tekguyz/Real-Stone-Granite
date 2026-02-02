@@ -11,13 +11,13 @@ export const generateText = async (prompt: string, systemInstruction: string) =>
     });
 
     if (!response.ok) {
-      throw new Error(`Connection issue`);
+      return "I’m sorry, I’m having trouble reaching the team right now. Please try again in a few moments.";
     }
 
     const data = await response.json();
     return data.text;
   } catch (error) {
-    console.error("Connection problem:", error);
+    // Fail silently to the console while providing a helpful UI message
     return "I’m sorry, I’m having trouble reaching the team right now. Please try again in a few moments.";
   }
 };
@@ -39,13 +39,13 @@ export const transcribeAudio = async (base64Audio: string, mimeType: string, pro
     });
 
     if (!response.ok) {
-       throw new Error(`Could not process note`);
+       throw new Error('Process issue');
     }
 
     const data = await response.json();
     return data.text;
   } catch (error) {
-    console.error("Audio problem:", error);
+    // Errors handled by the calling hook via toasts
     throw error;
   }
 };
