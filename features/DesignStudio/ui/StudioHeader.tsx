@@ -5,11 +5,11 @@ interface StudioHeaderProps {
 }
 
 const STEP_TITLES: Record<number, string> = {
-  1: "Project Identity",
-  2: "Defining the Scope",
-  3: "Intended Usage",
-  4: "Material Recommendation",
-  5: "Refining Specifications"
+  1: "Start Your Project",
+  2: "What are we building?",
+  3: "How will it be used?",
+  4: "Our Suggestion",
+  5: "Final Details"
 };
 
 export const StudioHeader: React.FC<StudioHeaderProps> = ({ currentStep }) => {
@@ -19,7 +19,7 @@ export const StudioHeader: React.FC<StudioHeaderProps> = ({ currentStep }) => {
         <div className="w-6 h-[1px] bg-gold" />
         <div className="flex items-center gap-2">
           <span className="text-gold font-mono text-[10px] tracking-[0.3em] uppercase font-bold">
-            Project Phase
+            Project Step
           </span>
           <div className="w-1 h-1 bg-gold/40 rotate-45" />
           <span className="text-white/60 font-mono text-[10px] tracking-[0.3em] uppercase">

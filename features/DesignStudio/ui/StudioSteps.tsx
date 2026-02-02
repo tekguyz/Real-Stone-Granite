@@ -54,15 +54,13 @@ export const StudioSteps: React.FC<StudioStepsProps> = ({
     <div className="flex-1 p-6 md:p-12 lg:px-24 lg:py-16 overflow-y-auto relative z-10 scrollbar-hide pb-32 lg:pb-24">
       <div className="max-w-3xl mx-auto">
         
-        {/* Mobile Step Tracker */}
         <div className="lg:hidden mb-8 flex items-center gap-3">
-          <span className="text-gold font-mono text-[10px] uppercase tracking-widest font-bold">Phase 0{currentStep} / 05</span>
+          <span className="text-gold font-mono text-[10px] uppercase tracking-widest font-bold">Step 0{currentStep} of 05</span>
           <div className="h-[1px] flex-1 bg-white/10" />
         </div>
 
         <StudioHeader currentStep={currentStep} />
 
-        {/* Form Content with Slab-Shift Transition */}
         <motion.div
           key={currentStep}
           initial={{ opacity: 0, x: 20 }}
@@ -92,7 +90,6 @@ export const StudioSteps: React.FC<StudioStepsProps> = ({
         </motion.div>
       </div>
 
-      {/* Industrial Navigation Layer */}
       <div className="max-w-3xl mx-auto mt-16 flex justify-between border-t border-white/5 pt-10">
         <button 
           onClick={handlers.prevStep} 
@@ -103,7 +100,7 @@ export const StudioSteps: React.FC<StudioStepsProps> = ({
           `}
         >
           <ArrowLeft className="w-3 h-3 group-hover:-translate-x-1 transition-transform" />
-          Previous
+          Go Back
         </button>
         
         <div className="flex-shrink-0">
@@ -115,7 +112,7 @@ export const StudioSteps: React.FC<StudioStepsProps> = ({
               disabled={isSubmitting}
             >
               <span className="font-mono text-[10px] uppercase tracking-widest font-bold">
-                {isStepValid ? "Confirm & Continue" : "Awaiting Selection"}
+                {isStepValid ? "Next Step" : "Please Select"}
               </span>
               {isStepValid ? (
                 <ChevronRight className="w-4 h-4 ml-3 group-hover:translate-x-1 transition-transform" />
@@ -133,10 +130,10 @@ export const StudioSteps: React.FC<StudioStepsProps> = ({
               {isSubmitting ? (
                 <div className="flex items-center gap-4 font-mono text-[10px] uppercase tracking-widest font-bold">
                   <Loader2 className="w-4 h-4 animate-spin text-primary" />
-                  Transmitting...
+                  Sending...
                 </div>
               ) : (
-                <span className="font-mono text-[11px] uppercase tracking-[0.3em] font-bold">Submit Project Plan</span>
+                <span className="font-mono text-[11px] uppercase tracking-[0.3em] font-bold">Send My Project Details</span>
               )}
             </PrecisionBtn>
           )}

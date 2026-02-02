@@ -28,10 +28,8 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
       transition={{ type: "spring", damping: 35, stiffness: 350 }}
       className="absolute top-0 right-0 h-full w-full md:w-[500px] bg-primary border-l border-white/10 shadow-[-50px_0_100px_rgba(0,0,0,0.8)] flex flex-col pointer-events-auto z-[12001] gpu-accel isolate-layer"
     >
-      {/* Texture Overlay - Optimized Static */}
       <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/asfalt-dark.png')] opacity-[0.03] pointer-events-none mix-blend-overlay" />
 
-      {/* Header: Concierge Style */}
       <div className="h-20 border-b border-white/10 bg-black/40 flex items-center justify-between pl-8 pr-0 flex-shrink-0 relative z-20">
         <div className="flex items-center gap-4">
           <div className="w-10 h-10 bg-white/5 border border-white/10 flex items-center justify-center rounded-sm">
@@ -39,10 +37,10 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
           </div>
           <div className="flex flex-col">
             <span className="text-sm text-white font-sans font-medium tracking-tight uppercase">
-              Stone Concierge
+              How can we help?
             </span>
             <span className="text-[9px] text-gold/80 uppercase tracking-widest font-mono">
-              Direct Line
+              Direct Office Line
             </span>
           </div>
         </div>
@@ -55,7 +53,6 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
         </button>
       </div>
 
-      {/* Messages Area */}
       <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-8 z-10 custom-scrollbar scroll-smooth bg-primary/95">
         
         {messages.length === 0 && (
@@ -63,7 +60,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
             <div className="w-12 h-12 border border-white/10 mx-auto mb-6 flex items-center justify-center rounded-sm bg-white/5">
               <MessageSquare className="w-5 h-5 text-white/40" />
             </div>
-            <p className="font-mono text-[10px] text-white/60 uppercase tracking-widest">Awaiting Inquiry</p>
+            <p className="font-mono text-[10px] text-white/60 uppercase tracking-widest">Talk to us</p>
           </div>
         )}
 
@@ -91,7 +88,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
                   className="w-full flex items-center justify-between group h-12 text-[9px]"
                   onClick={onLaunchStudio}
                 >
-                  <span className="font-mono tracking-widest uppercase">Open Studio</span>
+                  <span className="font-mono tracking-widest uppercase">Start My Plan</span>
                   <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                 </PrecisionBtn>
               </div>
@@ -104,13 +101,12 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
               <div className="w-1.5 h-1.5 bg-gold rounded-full animate-bounce" />
               <div className="w-1.5 h-1.5 bg-gold rounded-full animate-bounce [animation-delay:0.2s]" />
               <div className="w-1.5 h-1.5 bg-gold rounded-full animate-bounce [animation-delay:0.4s]" />
-              <span className="ml-2 text-[10px] font-mono text-gold uppercase tracking-widest font-bold">Checking availability...</span>
+              <span className="ml-2 text-[10px] font-mono text-gold uppercase tracking-widest font-bold">Checking...</span>
           </div>
         )}
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input Area */}
       <div className="bg-black/40 border-t border-white/10 p-6 relative z-20">
         
         <div className="flex overflow-x-auto gap-2 mb-4 scrollbar-hide pb-2">
@@ -131,7 +127,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-            placeholder="Ask about materials or pricing..."
+            placeholder="Tell us about your project..."
             className="w-full h-12 bg-surface border border-white/10 px-4 text-white text-sm font-sans outline-none focus:border-gold/50 transition-colors placeholder:text-white/20 placeholder:font-light"
           />
           <button 

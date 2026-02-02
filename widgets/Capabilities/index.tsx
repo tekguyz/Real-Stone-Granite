@@ -6,37 +6,37 @@ import { PHYSICS } from '../../shared/lib/theme';
 const CAPABILITIES = [
   {
     id: "01",
-    title: "Digital Design Verification",
-    tagline: "Total Project Accuracy",
-    desc: "We translate architectural intent into digital reality. Using high-resolution slab scanning and 3D templating, we ensure every vein transition is perfect before the first cut.",
-    specs: ["8K Slab Scanning", "3D Vein Matching", "CAD/BIM Integration"],
+    title: "Visual Planning",
+    tagline: "Total Clarity",
+    desc: "We help you visualize your project before the first cut. Using high-resolution scanning, we ensure vein transitions are seamless across your entire space.",
+    specs: ["Slab Matching", "Vein Flow", "Digital Templates"],
     icon: ICONS.Design,
     texture: TEXTURES.ONYX
   },
   {
     id: "02",
-    title: "Industrial Waterjet Fabrication",
-    tagline: "Micron-Level Precision",
-    desc: "Our 5-axis waterjet systems allow for complex curves and compound mitered edges that traditional saws cannot achieve. Built for speed, refined by hand.",
-    specs: ["5-Axis Cutting", "±0.1mm Tolerance", "Monolithic Miters"],
+    title: "Precision Fabrication",
+    tagline: "Perfect Alignment",
+    desc: "Our master fabricators use advanced cutting systems to achieve complex curves and clean, mitered edges that define high-end masonry.",
+    specs: ["Clean Edges", "Seamless Joins", "Custom Cuts"],
     icon: ICONS.Waterjet,
     texture: TEXTURES.GRANITE
   },
   {
     id: "03",
-    title: "Artisan Stone Detailing",
-    tagline: "The Hand-Finished Legacy",
-    desc: "Beyond the machines. Our senior masons perform hand-tooled edge profiles, museum-grade laser etching, and custom inlays for high-signature projects.",
-    specs: ["Custom Edge Profiles", "Laser HD Etching", "Inlay Patterning"],
+    title: "Artisan Detailing",
+    tagline: "The Master's Touch",
+    desc: "Beyond the tools. Our senior masons perform hand-finished edge profiles and custom inlays for projects that require a personal touch.",
+    specs: ["Hand-Tooled", "Custom Inlays", "Artistic Finishes"],
     icon: ICONS.Artistic,
     texture: TEXTURES.MARBLE
   },
   {
     id: "04",
-    title: "Elite Structural Assembly",
-    tagline: "White-Glove Installation",
-    desc: "The final assembly of your vision. We manage structural lift logistics, site protection, and our proprietary high-performance sealing process.",
-    specs: ["Logistics Management", "Seam Minimization", "Nano-Tech Sealing"],
+    title: "Dedicated Installation",
+    tagline: "White-Glove Care",
+    desc: "Our personal installation team manages every detail of the final assembly, including site protection and our high-performance sealing process.",
+    specs: ["Clean Worksite", "Expert Assembly", "Final Seal"],
     icon: ICONS.Safety,
     texture: TEXTURES.QUARTZITE
   }
@@ -48,14 +48,12 @@ export const Capabilities: React.FC = () => {
   return (
     <section id="capabilities" className="w-full bg-primary pt-24 pb-12 px-6 md:px-12 border-t border-white/5 relative overflow-hidden">
       
-      {/* 1. ATMOSPHERE: The Measurement Grid */}
       <div className="absolute inset-0 pointer-events-none opacity-[0.02]">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] bg-[size:100px_100px]" />
       </div>
 
       <div className="max-w-screen-2xl mx-auto relative z-10">
         
-        {/* HEADER: Flushed Left, Quiet Authority */}
         <div className="mb-32">
             <motion.div 
               initial={{ opacity: 0, x: -10 }}
@@ -65,16 +63,15 @@ export const Capabilities: React.FC = () => {
             >
               <div className="w-8 h-[1px] bg-gold" />
               <span className="text-gold font-mono text-[10px] uppercase tracking-[0.5em] font-bold">
-                Operational Ledger
+                Our Expertise
               </span>
             </motion.div>
             <h2 className="text-4xl md:text-5xl font-sans font-light text-white tracking-tighter leading-none">
-              The <span className="font-black uppercase">Studio</span> <br className="md:hidden" />
-              <span className="text-white/30 italic">&</span> Engineering.
+              Modern Tools <br className="md:hidden" />
+              <span className="text-white/30 italic">&</span> <span className="font-black uppercase">Traditional Values</span>.
             </h2>
         </div>
 
-        {/* THE LEDGER: Clean Horizontal Rows */}
         <div className="flex flex-col border-t border-white/10">
           {CAPABILITIES.map((cap, idx) => {
             const isHovered = hoveredIndex === idx;
@@ -85,7 +82,6 @@ export const Capabilities: React.FC = () => {
                 onMouseLeave={() => setHoveredIndex(null)}
                 className="relative border-b border-white/10 group cursor-pointer overflow-hidden transition-colors duration-500 hover:bg-white/[0.01]"
               >
-                {/* Background Material Hint */}
                 <AnimatePresence>
                   {isHovered && (
                     <motion.div 
@@ -100,17 +96,12 @@ export const Capabilities: React.FC = () => {
 
                 <div className="relative z-10 py-12 md:py-16 grid grid-cols-1 md:grid-cols-12 gap-8 items-center px-4 md:px-8">
                   
-                  {/* 1. Identification */}
                   <div className="md:col-span-1 flex flex-col">
                     <span className="text-gold font-mono text-[11px] font-bold tracking-widest">
                       {cap.id}
                     </span>
-                    <span className="text-white/10 font-mono text-[9px] uppercase tracking-tighter hidden md:block mt-1">
-                      REF
-                    </span>
                   </div>
 
-                  {/* 2. Primary Statement */}
                   <div className="md:col-span-6">
                     <span className="text-gold/40 font-mono text-[9px] uppercase tracking-[0.3em] block mb-2 group-hover:text-gold transition-colors">
                       {cap.tagline}
@@ -120,7 +111,6 @@ export const Capabilities: React.FC = () => {
                     </h3>
                   </div>
 
-                  {/* 3. Narrative Reveal (Horizontal on Desktop) */}
                   <div className="md:col-span-5 flex flex-col md:items-end md:text-right">
                     <p className={`text-white/40 text-sm font-light leading-relaxed max-w-sm transition-all duration-700 ${isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 md:opacity-100 md:translate-y-0'}`}>
                       {cap.desc}
@@ -128,7 +118,6 @@ export const Capabilities: React.FC = () => {
                   </div>
                 </div>
 
-                {/* 4. The Data String (Bottom Bar Reveal) */}
                 <motion.div 
                   initial={false}
                   animate={{ height: isHovered ? 'auto' : 0, opacity: isHovered ? 1 : 0 }}
@@ -147,7 +136,6 @@ export const Capabilities: React.FC = () => {
                   </div>
                 </motion.div>
 
-                {/* Tracking Line */}
                 <motion.div 
                   className="absolute bottom-0 left-0 h-[1px] bg-gold z-20"
                   initial={{ width: 0 }}

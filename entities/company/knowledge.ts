@@ -1,7 +1,7 @@
 /**
  * COMPANY_KB: The Authoritative Data Source for Real Stone & Granite Corp.
  * Pillars: Integrity, Craftsmanship, Quality.
- * Updated: Jan 2026 - Digital Twin Version
+ * Updated: Jan 2026
  */
 export const COMPANY_KB = {
   identity: {
@@ -14,118 +14,103 @@ export const COMPANY_KB = {
   },
   facility: {
     address: "427 South Market Avenue, Fort Pierce, FL 34982",
-    specs: "20,000 sq. ft. State-of-the-Art Fabrication Facility & Design Center",
+    specs: "20,000 sq. ft. Custom Fabrication Studio & Showroom",
     hours: "Monday – Friday, 8:00 AM – 4:00 PM",
-    access: "Showroom appointment recommended for personalized consultation"
+    access: "Visit us for a personal consultation in our design center."
   },
   territory: {
     primary: "Florida's Treasure Coast (Port St. Lucie, Vero Beach, Stuart, Jupiter, Fort Pierce)",
-    extended: "Throughout Florida and North America",
-    international: "Export Logistics to Bahamas and Caribbean Islands"
+    extended: "Serving Florida and North America",
+    international: "Delivery available for the Bahamas and Caribbean."
   },
   sourcing: {
     origin: "Our founder personally hand-selects unique materials from the historic quarries of Italy, Spain, Greece, and Brazil.",
-    standards: "Direct extraction oversight ensures the structural integrity and aesthetic exclusivity our clients demand."
+    standards: "Every slab is inspected for natural beauty and structural integrity before arriving at our studio."
   },
   
-  // --- STRICT INVENTORY MAPPING ---
   materials: {
     natural: [
       {
         type: "Granite",
-        description: "The definition of endurance. A naturally durable, heat-resistant stone available in a vast spectrum of colors and deep geological patterns.",
-        visualKeywords: "Macro granite texture, polished igneous rock slab, deep grain granite",
-        attributes: ["Heat Resistant", "Durable", "Varied Patterns"]
+        description: "A natural classic. Known for its incredible durability and unique geological patterns that make every kitchen one-of-a-kind.",
+        attributes: ["Heat Resistant", "Durable", "Unique Patterns"]
       },
       {
         type: "Marble",
-        description: "The historical standard for elegance. Renowned for its classic veining and soft, sophisticated aesthetic that defines luxury interiors.",
-        visualKeywords: "Carrara marble veining macro, polished white marble slab, calacatta gold texture",
-        attributes: ["Classic Veining", "Elegant", "Cool Surface"]
+        description: "The historical standard for elegance. Renowned for its classic veining and soft, sophisticated feel.",
+        attributes: ["Classic Veining", "Elegant", "Cool to Touch"]
       },
       {
         type: "Quartzite",
-        description: "Nature's hybrid. A hard natural stone that delivers the refined visual depth of marble with the superior structural durability of granite.",
-        visualKeywords: "Quartzite slab texture, taj mahal quartzite macro, crystalline stone surface",
-        attributes: ["Marble Look", "Granite Durability", "High Hardness"]
+        description: "The best of both worlds. Offers the refined look of marble with the exceptional strength and hardness of granite.",
+        attributes: ["Marble Look", "Strong", "Durable"]
       },
       {
         type: "Onyx",
-        description: "A showpiece material. Its translucent properties make it ideal for high-end decorative features like back-lit panels, vanities, and bar tops.",
-        visualKeywords: "Translucent onyx slab backlit, orange onyx texture, honey onyx stone",
-        attributes: ["Translucent", "Back-Lit Capable", "Decorative"]
+        description: "A breathtaking statement piece. Its natural translucence makes it perfect for backlit feature walls and custom bars.",
+        attributes: ["Translucent", "Stunning", "Decorative"]
       },
       {
         type: "Exotic",
-        description: "Rare, museum-grade materials personally hand-picked by our leadership for their distinctive features and singular beauty.",
-        visualKeywords: "Rare bookmatch marble, unique granite slab pattern, exotic stone macro",
-        attributes: ["Hand-Picked", "Distinctive", "Rare"]
+        description: "Rare materials personally chosen for their singular beauty and remarkable character.",
+        attributes: ["Hand-Selected", "Distinctive", "Rare"]
       }
     ],
     engineered: [
       {
         type: "Quartz",
-        description: "Engineered perfection. A non-porous, manufactured surface offering maintenance-free durability and absolute consistency in pattern.",
-        visualKeywords: "Quartz countertop texture white, engineered stone macro, speckle pattern",
-        attributes: ["Non-Porous", "Consistent", "Low Maintenance"]
+        description: "Practical perfection. A maintenance-free surface offering consistent patterns and modern durability.",
+        attributes: ["Easy Care", "Consistent", "Modern"]
       },
       {
         type: "Dekton",
-        description: "High-tech ultra-compact surface (Sintered Stone). Impervious to UV light, scratches, and extreme heat. The ultimate indoor-outdoor material.",
-        visualKeywords: "Dekton industrial slab, matte concrete finish stone, sintered stone texture",
-        attributes: ["UV Resistant", "Scratch Proof", "Heat Proof"]
+        description: "The ultimate indoor-outdoor surface. Impervious to heat, scratches, and the Florida sun.",
+        attributes: ["Sun Proof", "Scratch Proof", "Heat Proof"]
       },
       {
         type: "Porcelain",
-        description: "Large-format sintered slabs designed for modern, seamless applications. Ideal for monolithic kitchen islands and full-height wall cladding.",
-        visualKeywords: "Large format porcelain slab, calacatta porcelain texture, thin slab",
-        attributes: ["Large Format", "Seamless Look", "Modern"]
+        description: "Large-format surfaces for a clean, modern look. Perfect for seamless islands and full-height walls.",
+        attributes: ["Large Format", "Seamless", "Modern"]
       }
     ]
   },
 
   capabilities: [
     {
-      title: "Custom Fabrication",
-      description: "Precision cutting via CNC bridge saws and 5-Axis Waterjet systems, guided by a master's touch.",
-      focus: "Precision"
+      title: "Hand-Finished Craft",
+      description: "Precision cutting guided by a master's touch, ensuring every edge and corner is perfect.",
+      focus: "Craft"
     },
     {
-      title: "Advanced Design",
-      description: "3D project rendering, digital templating, and virtual visualization for complete project confidence.",
-      focus: "Technology"
+      title: "Visual Planning",
+      description: "See your stone before we cut it. We help you visualize exactly how your slabs will flow in your home.",
+      focus: "Design"
     },
     {
       title: "Artistic Features",
-      description: "Waterjet inlay patterns, 3D stone carving, sandblasting, and custom engraving.",
+      description: "Custom inlays, hand-carved details, and personalized engraving for truly unique projects.",
       focus: "Artistry"
     },
     {
-      title: "Private Installation",
-      description: "White-glove service including dust containment and final sealing by our senior masons.",
-      focus: "Service"
-    },
-    {
-      title: "Commercial Cladding",
-      description: "Large-scale facade work and monument assembly for public and commercial structures.",
-      focus: "Scale"
+      title: "Personal Installation",
+      description: "Our own team manages every step of the installation, ensuring your home is treated with respect.",
+      focus: "Care"
     }
   ],
   legacy: {
     notableProjects: [
       { name: "National Navy SEAL Museum Memorial", location: "Fort Pierce, FL" },
-      { name: "Vietnam Wall Replica", location: "Traveling Exhibition" },
-      { name: "9/11 First Responders Memorial", location: "Various Locations" },
+      { name: "Vietnam Wall Replica", location: "National Tribute" },
+      { name: "9/11 First Responders Memorial", location: "Honor Guard" },
       { name: "Space Walk of Fame", location: "Titusville, FL" },
       { name: "Gold Star Family Memorials", location: "Statewide" }
     ],
-    expertise: "Master-level craftsmanship applied to monuments of national significance.",
-    reviews: { count: 57, rating: 4.7, source: "Google Business Profile" }
+    expertise: "Master-level craftsmanship for homes and national landmarks.",
+    reviews: { count: 57, rating: 4.7, source: "Google Reviews" }
   },
   contact: {
     phone: "(772) 489-9964",
     email: "info@realstoneandgranite.com",
-    address: "427 South Market Avenue, Fort Pierce, FL 34982",
-    // REMOVED: status: "Fabrication Line Active"
+    address: "427 South Market Avenue, Fort Pierce, FL 34982"
   },
 };
