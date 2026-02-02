@@ -1,9 +1,15 @@
-import React, { createContext, useContext, useReducer, ReactNode, useMemo, useEffect } from 'react';
+import React, { createContext, useContext, useReducer, ReactNode, useMemo, useEffect, createElement } from 'react';
 
 export type ProjectScope = 'Culinary Surface' | 'Bath & Spa' | 'Outdoor Living' | 'Statement Piece';
 export type UsageIntensity = 'Visual Art' | 'Moderate Use' | 'Heavy Duty';
 export type UserRole = 'Private Residence' | 'Professional Partner';
 export type FabricationLevel = 'Classic Selection' | 'Artisan Masterpiece';
+
+export interface InternalMarkers {
+  engagement: 'Decisive' | 'Visionary' | 'Inquisitive' | 'Awaiting Data';
+  disposition: 'Professional' | 'Casual' | 'Awaiting Data';
+  urgency: 'High' | 'Normal' | 'Awaiting Data';
+}
 
 export interface ProjectState {
   userRole: UserRole;
@@ -14,6 +20,7 @@ export interface ProjectState {
   timeline: string;
   stonePreference: string; 
   description: string;
+  internalMarkers: InternalMarkers;
 }
 
 export interface Recommendation {
@@ -31,9 +38,14 @@ const initialState: ProjectState = {
   timeline: 'Planning Phase (1-3 Months)',
   stonePreference: 'Pending',
   description: '',
+  internalMarkers: {
+    engagement: 'Awaiting Data',
+    disposition: 'Awaiting Data',
+    urgency: 'Awaiting Data'
+  }
 };
 
-const STORAGE_KEY = 'rsg_project_draft';
+const STORAGE_KEY = 'rsg_project_draft_v2';
 
 type Action =
   | { type: 'SET_USER_ROLE'; payload: UserRole }
@@ -44,6 +56,7 @@ type Action =
   | { type: 'SET_TIMELINE'; payload: string }
   | { type: 'SET_STONE_PREFERENCE'; payload: string }
   | { type: 'SET_DESCRIPTION'; payload: string }
+  | { type: 'SET_INTERNAL_MARKERS'; payload: InternalMarkers }
   | { type: 'HYDRATE'; payload: ProjectState }
   | { type: 'RESET' };
 
@@ -57,6 +70,7 @@ function projectReducer(state: ProjectState, action: Action): ProjectState {
     case 'SET_TIMELINE': return { ...state, timeline: action.payload };
     case 'SET_STONE_PREFERENCE': return { ...state, stonePreference: action.payload };
     case 'SET_DESCRIPTION': return { ...state, description: action.payload };
+    case 'SET_INTERNAL_MARKERS': return { ...state, internalMarkers: action.payload };
     case 'HYDRATE': return action.payload;
     case 'RESET': 
       sessionStorage.removeItem(STORAGE_KEY);
@@ -73,8 +87,10 @@ export const getRecommendation = (state: ProjectState): Recommendation => {
   return { material: 'Premium Quartzite', reason: 'A beautiful, long-lasting choice that fits almost any design.' };
 };
 
+// Fixed: Added React namespace import to support React.Dispatch
 const ProjectContext = createContext<{ state: ProjectState; dispatch: React.Dispatch<Action>; recommendation: Recommendation } | undefined>(undefined);
 
+// Fixed: Added React namespace import to support React.FC
 export const ProjectProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(projectReducer, initialState);
 
@@ -84,7 +100,7 @@ export const ProjectProvider: React.FC<{ children: ReactNode }> = ({ children })
       try {
         dispatch({ type: 'HYDRATE', payload: JSON.parse(saved) });
       } catch (e) {
-        // Hydration failure is silent to maintain a clean console
+        // Hydration failure
       }
     }
   }, []);
@@ -95,7 +111,7 @@ export const ProjectProvider: React.FC<{ children: ReactNode }> = ({ children })
 
   const recommendation = useMemo(() => getRecommendation(state), [state]);
 
-  return React.createElement(ProjectContext.Provider, { value: { state, dispatch, recommendation } }, children);
+  return createElement(ProjectContext.Provider, { value: { state, dispatch, recommendation } }, children);
 };
 
 export const useProjectStore = () => {

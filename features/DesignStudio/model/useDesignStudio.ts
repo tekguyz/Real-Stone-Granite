@@ -113,21 +113,26 @@ export const useDesignStudio = (isOpen: boolean, onClose: () => void) => {
     HAPTICS.click();
 
     try {
+      // Inject internal markers into form data for Netlify
+      const formData = {
+        "form-name": "project-inquiry",
+        ...state,
+        engagement: state.internalMarkers.engagement,
+        disposition: state.internalMarkers.disposition,
+        urgency: state.internalMarkers.urgency,
+        projectRef: projectRef
+      };
+
       await fetch("/", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: encode({
-          "form-name": "project-inquiry",
-          ...state,
-          projectRef: projectRef
-        })
+        body: encode(formData)
       });
 
       HAPTICS.success();
       setIsSubmitted(true);
       showToast("Project Plan Received", "success");
     } catch (error) {
-      // Netlify submission usually succeeds in production even if fetch errors in local dev environments
       HAPTICS.success();
       setIsSubmitted(true);
     } finally {
@@ -163,12 +168,28 @@ export const useDesignStudio = (isOpen: boolean, onClose: () => void) => {
           const audioBlob = new Blob(audioChunksRef.current, { type: mimeType });
           try {
             const base64Audio = await blobToBase64(audioBlob);
-            const prompt = "Summarize the following stone project description into a clear, professional technical brief. Use bullet points.";
-            const transcribedText = await transcribeAudio(base64Audio, mimeType, prompt);
-            if (!transcribedText) throw new Error('Transcribe issue');
-            dispatch({ type: 'SET_DESCRIPTION', payload: state.description ? `${state.description}\n\n${transcribedText}` : transcribedText });
+            const result = await transcribeAudio(base64Audio, mimeType);
+            
+            if (!result.brief) throw new Error('Transcribe issue');
+            
+            // Sync visible content
+            dispatch({ 
+              type: 'SET_DESCRIPTION', 
+              payload: state.description ? `${state.description}\n\n${result.brief}` : result.brief 
+            });
+
+            // Sync hidden technical markers
+            dispatch({
+              type: 'SET_INTERNAL_MARKERS',
+              payload: {
+                engagement: result.engagement,
+                disposition: result.disposition,
+                urgency: result.urgency
+              }
+            });
+
             HAPTICS.success();
-            showToast("Voice Note Added", "success");
+            showToast("Vision Verified", "success");
           } catch (e) {
             HAPTICS.error();
             showToast("We couldn't hear you clearly. Please try again.", "error");

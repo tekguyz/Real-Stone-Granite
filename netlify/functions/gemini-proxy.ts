@@ -16,15 +16,21 @@ export default async (req: Request) => {
   }
 
   try {
-    const { prompt, systemInstruction, audio, temperature } = await req.json();
+    const body = await req.json();
+    const { prompt, systemInstruction, audio, temperature } = body;
 
     if (!process.env.API_KEY) {
-      throw new Error("Configuration issue");
+      console.error("API_KEY environment variable is missing.");
+      throw new Error("Configuration issue: Missing API Key");
     }
 
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-    const parts = [];
+    const parts: any[] = [];
     
+    // Select model based on whether audio is present
+    // gemini-2.5-flash-native-audio-preview-12-2025 is superior for transcription
+    const modelName = audio ? 'gemini-2.5-flash-native-audio-preview-12-2025' : 'gemini-3-flash-preview';
+
     if (audio && audio.data && audio.mimeType) {
       parts.push({
         inlineData: {
@@ -38,17 +44,23 @@ export default async (req: Request) => {
       parts.push({ text: prompt });
     }
 
+    if (parts.length === 0) {
+      return new Response(JSON.stringify({ error: "No content provided" }), { status: 400 });
+    }
+
     const response = await ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
+      model: modelName,
       contents: { parts },
       config: {
-        systemInstruction: systemInstruction, 
+        systemInstruction: systemInstruction || "You are a professional assistant.", 
         temperature: temperature || 0.4,
       },
     });
 
+    const textOutput = response.text || "";
+
     return new Response(JSON.stringify({ 
-      text: response.text 
+      text: textOutput 
     }), {
       headers: {
         "Content-Type": "application/json",
@@ -57,6 +69,7 @@ export default async (req: Request) => {
     });
 
   } catch (error: any) {
+    console.error("Gemini Proxy Error:", error);
     return new Response(JSON.stringify({ 
       error: "We're having trouble connecting to our design assistant. Please try again.",
       details: error.message 
