@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { MONUMENTS, ICONS } from '../../shared/assets';
@@ -105,9 +106,12 @@ export const Monuments: React.FC = () => {
                 transition={{ delay: idx * 0.1 }}
                 className="relative aspect-[3/4] md:aspect-[4/5] bg-surface group overflow-hidden border border-white/5 cursor-pointer"
               >
-                <motion.div 
-                  className="absolute inset-0 z-0 bg-cover bg-center transition-all duration-1000 grayscale group-hover:grayscale-0 group-hover:scale-110"
-                  style={{ backgroundImage: `url(${project.image})` }}
+                {/* Lazy Loaded Image */}
+                <img 
+                  src={project.image}
+                  alt={project.title}
+                  loading="lazy"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 grayscale group-hover:grayscale-0 group-hover:scale-110"
                 />
                 
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent z-10 transition-opacity duration-500 group-hover:opacity-80" />

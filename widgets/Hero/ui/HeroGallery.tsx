@@ -1,3 +1,4 @@
+
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring, useMotionTemplate } from 'framer-motion';
 import { FEATURED_SLABS } from '../model/inventory';
@@ -22,8 +23,8 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  const lightX = useSpring(mouseX, PHYSICS.industrial);
-  const lightY = useSpring(mouseY, PHYSICS.industrial);
+  const lightX = useSpring(mouseX, { stiffness: 150, damping: 25 }); // Reduced stiffness for performance
+  const lightY = useSpring(mouseY, { stiffness: 150, damping: 25 });
 
   const maskImage = useMotionTemplate`radial-gradient(circle ${LIGHT_RADIUS}px at ${lightX}px ${lightY}px, black 80%, transparent 100%)`;
   const glowGradient = useMotionTemplate`radial-gradient(circle ${GLOW_RADIUS}px at ${lightX}px ${lightY}px, rgba(255,220,150,${GLOW_OPACITY}) 0%, transparent 100%)`;
@@ -63,12 +64,15 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
             transition={{ duration: 1.5 }}
             className="absolute inset-0 w-full h-full"
           >
-            <div 
-              className="absolute inset-0 bg-cover bg-center"
+            <img 
+              src={currentSlab.image}
+              alt={`Texture of ${currentSlab.name}`}
+              className="absolute inset-0 w-full h-full object-cover"
               style={{ 
-                backgroundImage: `url(${currentSlab.image})`,
                 filter: 'brightness(0.35) contrast(1.1) grayscale(30%)'
               }}
+              fetchPriority="high"
+              decoding="async"
             />
           </motion.div>
 
@@ -84,12 +88,14 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
               maskImage: maskImage
             }}
           >
-            <div 
-              className="absolute inset-0 bg-cover bg-center"
+            <img 
+              src={currentSlab.image}
+              alt=""
+              className="absolute inset-0 w-full h-full object-cover"
               style={{ 
-                backgroundImage: `url(${currentSlab.image})`,
                 filter: `brightness(${LIGHT_BRIGHTNESS}) contrast(1.4) saturate(1.4) sepia(10%)` 
               }}
+              loading="lazy"
             />
           </motion.div>
         </AnimatePresence>
