@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { PrecisionBtn } from '../../../shared/ui/PrecisionBtn';
@@ -68,7 +69,7 @@ export const HeroManifesto: React.FC<HeroManifestoProps> = ({ onStartProject, on
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          className="font-sans font-medium text-[13vw] md:text-7xl lg:text-8xl text-white tracking-tighter leading-[0.85] mb-10 break-words"
+          className="font-sans font-medium text-[10.5vw] sm:text-[11vw] md:text-7xl lg:text-8xl text-white tracking-tighter leading-[0.85] mb-10 break-words"
         >
           Integrity <br/>
           Craftsmanship <br/>
