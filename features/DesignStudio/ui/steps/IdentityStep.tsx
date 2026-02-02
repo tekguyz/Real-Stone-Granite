@@ -49,7 +49,7 @@ export const IdentityStep: React.FC<IdentityStepProps> = ({ state, dispatch }) =
             value={state.reference}
             onChange={(e) => dispatch({ type: 'SET_REFERENCE', payload: e.target.value })}
             placeholder="Architect, Interior Designer, or Contractor Name"
-            className="w-full bg-white/5 border border-white/10 h-14 px-5 text-white font-sans text-sm focus:border-gold/50 outline-none transition-all placeholder:text-white/20"
+            className="w-full bg-surface border border-white/10 h-14 px-5 text-white font-sans text-sm focus:border-gold/50 outline-none transition-all placeholder:text-white/20"
           />
           <div className="absolute right-4 top-1/2 -translate-y-1/2 text-[9px] font-mono text-white/20 uppercase tracking-widest hidden md:block">
             Project Partner

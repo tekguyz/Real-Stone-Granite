@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { X, Send, ChevronRight, MessageSquare } from 'lucide-react';
@@ -132,7 +133,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
             placeholder="Inquire about stone types or processes..."
-            className="w-full h-12 bg-surface/50 border border-white/10 px-4 text-white text-sm font-sans outline-none focus:border-gold/50 transition-colors placeholder:text-white/20 placeholder:font-light"
+            className="w-full h-12 bg-surface border border-white/10 px-4 text-white text-sm font-sans outline-none focus:border-gold/50 transition-colors placeholder:text-white/20 placeholder:font-light"
           />
           <button 
             onClick={() => handleSend()}

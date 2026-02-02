@@ -99,7 +99,7 @@ export const DetailsStep: React.FC<DetailsStepProps> = ({
           value={state.description}
           onChange={(e) => dispatch({ type: 'SET_DESCRIPTION', payload: e.target.value })}
           placeholder="Describe your vision, requirements, or special details..."
-          className="w-full h-32 bg-white/5 border border-white/10 text-white font-sans text-sm p-4 focus:border-gold/50 outline-none resize-none transition-colors placeholder:text-white/20 leading-relaxed rounded-sm"
+          className="w-full h-32 bg-surface border border-white/10 text-white font-sans text-sm p-4 focus:border-gold/50 outline-none resize-none transition-colors placeholder:text-white/20 leading-relaxed rounded-sm"
         />
       </div>
 
