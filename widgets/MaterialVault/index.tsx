@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { COMPANY_KB } from '../../entities/company/knowledge';
 import { TEXTURES, ICONS } from '../../shared/assets';
 import { PHYSICS } from '../../shared/lib/theme';
+import { PrecisionBtn } from '../../shared/ui/PrecisionBtn';
+import { useProjectStore } from '../../entities/project/store';
+import { HAPTICS } from '../../shared/lib/haptics';
 
 type TabKey = 'natural' | 'engineered';
 
@@ -11,138 +14,219 @@ interface MaterialVaultProps {
 }
 
 export const MaterialVault: React.FC<MaterialVaultProps> = ({ onStartProject }) => {
+  const { dispatch } = useProjectStore();
   const [activeTab, setActiveTab] = useState<TabKey>('natural');
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Helper to safely get texture from assets
+  const activeMaterials = useMemo(() => COMPANY_KB.materials[activeTab], [activeTab]);
+  const selectedMaterial = activeMaterials[selectedIndex] || activeMaterials[0];
+
   const getTexture = (type: string) => {
-    // Normalizes "Exotic" -> "EXOTIC"
     const key = type.split(' ')[0].toUpperCase(); 
     // @ts-ignore
     return TEXTURES[key] || TEXTURES.GRANITE;
   };
 
-  const tabs: { key: TabKey; label: string }[] = [
-    { key: 'natural', label: 'Natural Selection' },
-    { key: 'engineered', label: 'Engineered Surfaces' },
-  ];
+  const handleProjectInquiry = () => {
+    dispatch({ type: 'SET_STONE_PREFERENCE', payload: selectedMaterial.type });
+    if (onStartProject) onStartProject();
+  };
+
+  const handleSelectMaterial = (idx: number) => {
+    if (idx !== selectedIndex) {
+      HAPTICS.heavy();
+      setSelectedIndex(idx);
+      
+      // Auto-scroll the mobile index to keep active item visible
+      if (window.innerWidth < 1024 && scrollRef.current) {
+        const item = scrollRef.current.children[idx] as HTMLElement;
+        if (item) {
+          scrollRef.current.scrollTo({
+            left: item.offsetLeft - 48,
+            behavior: 'smooth'
+          });
+        }
+      }
+    }
+  };
+
+  const handleTabChange = (tab: TabKey) => {
+    if (tab !== activeTab) {
+      HAPTICS.click();
+      setActiveTab(tab);
+      setSelectedIndex(0);
+    }
+  };
 
   return (
-    // Increased bottom padding (py-24 -> pt-24 pb-40) to separate from Monuments
-    <section id="materials" className="bg-primary border-b border-white/5 pt-24 pb-40 w-full overflow-hidden">
+    <section id="materials" className="bg-primary min-h-screen w-full flex flex-col relative overflow-hidden border-t border-white/5">
       
-      {/* 1. Header & Controls */}
-      <div className="w-full px-6 md:px-12 mb-16">
-        <div className="flex flex-col xl:flex-row xl:items-end justify-between gap-12">
-          
-          {/* Title Block */}
-          <div className="max-w-2xl">
-            <span className="text-gold font-mono text-xs uppercase tracking-[0.4em] font-bold block mb-4">
-               Our Collection
-            </span>
-            <h2 className="text-5xl md:text-7xl font-sans font-black uppercase text-white tracking-tighter leading-[0.9]">
-              Material <span className="text-gold">Vault</span>
-            </h2>
-            <p className="text-text-muted mt-8 text-base font-light leading-relaxed border-l border-white/10 pl-6 max-w-xl">
-              Browse our digital catalog of physical stock. Select a category below to inspect material availability.
-            </p>
-          </div>
-
-          {/* The Toggle Switch */}
-          <div className="flex flex-wrap gap-0 bg-white/5 p-1 border border-white/10">
-            {tabs.map((tab) => {
-              const isActive = activeTab === tab.key;
-              return (
-                <button
-                  key={tab.key}
-                  onClick={() => setActiveTab(tab.key)}
-                  className={`
-                    px-8 py-4 font-mono text-[10px] uppercase tracking-[0.2em] transition-all duration-300
-                    ${isActive 
-                      ? 'bg-gold text-primary font-bold' 
-                      : 'bg-transparent text-white/50 hover:text-white'
-                    }
-                  `}
-                >
-                  {tab.label}
-                </button>
-              );
-            })}
-          </div>
+      {/* 1. TOP NAV: Minimal Category Toggle */}
+      <div className="w-full py-6 md:py-8 px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-6 border-b border-white/5 z-30 bg-primary">
+        <div className="flex items-center gap-4">
+          <div className="w-2 h-2 bg-gold rotate-45" />
+          <h2 className="text-lg md:text-xl font-sans font-bold uppercase tracking-widest text-white">The Vault</h2>
+        </div>
+        
+        <div className="flex bg-white/5 border border-white/10 p-1">
+          {(['natural', 'engineered'] as TabKey[]).map((tab) => (
+            <button
+              key={tab}
+              onClick={() => handleTabChange(tab)}
+              className={`px-4 md:px-6 py-2 text-[9px] md:text-[10px] font-mono uppercase tracking-[0.2em] transition-all duration-500 ${
+                activeTab === tab ? 'bg-gold text-primary font-bold' : 'text-white/40 hover:text-white'
+              }`}
+            >
+              {tab === 'natural' ? 'Natural Stone' : 'Engineered'}
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* 2. Edge-to-Edge Grid System */}
-      <div className="w-full px-4 md:px-6">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeTab}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-5 gap-4"
-          >
-            {COMPANY_KB.materials[activeTab].map((material: any, idx: number) => {
-              const texture = getTexture(material.type);
+      <div className="flex-1 flex flex-col lg:flex-row relative overflow-hidden">
+        
+        {/* 2. THE INDEX: Swiper on Mobile, Sidebar on Desktop */}
+        <div 
+          ref={scrollRef}
+          className={`
+            w-full lg:w-[400px] xl:w-[500px] border-b lg:border-b-0 lg:border-r border-white/5 flex flex-row lg:flex-col bg-primary/80 backdrop-blur-md z-30 overflow-x-auto lg:overflow-y-auto scrollbar-hide lg:custom-scrollbar flex-shrink-0
+          `}
+        >
+           {activeMaterials.map((material, idx) => {
+             const isSelected = selectedIndex === idx;
+             return (
+               <button
+                 key={material.type}
+                 onClick={() => handleSelectMaterial(idx)}
+                 className={`
+                   flex-shrink-0 lg:w-full text-left p-6 lg:p-12 border-r lg:border-r-0 lg:border-b border-white/5 transition-all duration-500 relative group
+                   ${isSelected ? 'bg-white/[0.05]' : 'hover:bg-white/[0.02]'}
+                 `}
+               >
+                 <div className="flex flex-col gap-1 lg:gap-2 relative z-10">
+                   <span className={`font-mono text-[8px] lg:text-[9px] tracking-[0.3em] uppercase transition-colors duration-500 ${isSelected ? 'text-gold' : 'text-white/20'}`}>
+                     Ref / 0{idx + 1}
+                   </span>
+                   <h3 className={`text-base lg:text-4xl font-sans font-light tracking-tighter whitespace-nowrap lg:whitespace-normal transition-all duration-500 ${isSelected ? 'text-white scale-105 lg:scale-110 origin-left' : 'text-white/40'}`}>
+                     {material.type}
+                   </h3>
+                   
+                   <AnimatePresence>
+                     {isSelected && (
+                       <motion.div 
+                         initial={{ opacity: 0, y: 5 }} 
+                         animate={{ opacity: 1, y: 0 }} 
+                         className="hidden lg:flex flex-wrap gap-2 mt-4"
+                       >
+                         {material.attributes?.map(attr => (
+                           <span key={attr} className="text-[8px] font-mono uppercase tracking-widest text-gold/60 px-2 py-0.5 border border-gold/20">
+                             {attr}
+                           </span>
+                         ))}
+                       </motion.div>
+                     )}
+                   </AnimatePresence>
+                 </div>
+
+                 {/* Focus Indicator */}
+                 {isSelected && (
+                   <motion.div 
+                     layoutId="activeIndicator"
+                     className="absolute left-0 right-0 bottom-0 lg:right-auto lg:bottom-0 lg:top-0 w-full lg:w-1 h-0.5 lg:h-auto bg-gold"
+                   />
+                 )}
+               </button>
+             );
+           })}
+        </div>
+
+        {/* 3. THE PORTAL: Massive Visual & Detail Reveal */}
+        <div className="flex-1 relative bg-black group overflow-hidden flex flex-col">
+          
+          {/* Main Visual Cross-fade */}
+          <div className="absolute inset-0 z-0">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={selectedMaterial.type}
+                initial={{ opacity: 0, scale: 1.1 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute inset-0"
+              >
+                <img 
+                  src={getTexture(selectedMaterial.type)} 
+                  alt={selectedMaterial.type}
+                  className="w-full h-full object-cover filter brightness-[0.6] lg:brightness-[0.6] contrast-[1.1]"
+                />
+                {/* Cinematic Vignette */}
+                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-transparent hidden lg:block" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Grain Overlay */}
+          <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.05] pointer-events-none mix-blend-overlay z-10" />
+
+          {/* Information HUD */}
+          <div className="mt-auto w-full p-8 md:p-16 z-20 pointer-events-none pb-24 lg:pb-16">
+            <motion.div 
+              key={selectedMaterial.type + '-hud'}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="max-w-2xl bg-black/20 backdrop-blur-sm lg:bg-transparent p-6 lg:p-0 border lg:border-0 border-white/5"
+            >
+              <div className="flex items-center gap-4 mb-4 lg:mb-6">
+                <div className="h-px w-8 lg:w-12 bg-gold" />
+                <span className="text-gold font-mono text-[9px] lg:text-[10px] uppercase tracking-[0.5em] font-bold">Material Specification</span>
+              </div>
               
-              return (
-                <motion.div 
-                  key={material.type}
-                  initial={{ opacity: 0, scale: 0.98 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: idx * 0.03, ...PHYSICS.industrial }}
-                  className="group relative aspect-square w-full overflow-hidden bg-black cursor-pointer border border-white/5 hover:border-gold/30"
-                  onClick={onStartProject}
+              <h4 className="text-3xl md:text-6xl font-sans font-black uppercase text-white tracking-tighter mb-4 lg:mb-8 leading-none">
+                {selectedMaterial.type}
+              </h4>
+              
+              <p className="text-white/60 text-sm md:text-xl font-light leading-relaxed mb-8 lg:mb-10 max-w-xl">
+                {selectedMaterial.description}
+              </p>
+
+              <div className="pointer-events-auto">
+                <PrecisionBtn 
+                  variant="primary" 
+                  onClick={handleProjectInquiry}
+                  className="w-full sm:w-auto h-12 lg:h-14 px-10"
                 >
-                  {/* A. Visual Layer (Image) */}
-                  <div className="absolute inset-0 overflow-hidden">
-                    <img 
-                      src={texture} 
-                      alt={material.type}
-                      loading="lazy"
-                      className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 group-hover:brightness-[0.4]"
-                    />
-                  </div>
+                  Project Inquiry / {selectedMaterial.type}
+                </PrecisionBtn>
+              </div>
+            </motion.div>
+          </div>
 
-                  {/* B. Default State (Title Anchor) */}
-                  <div className="absolute inset-0 p-8 flex flex-col justify-end z-10 pointer-events-none group-hover:opacity-0 transition-opacity duration-300">
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-80" />
-                    
-                    <div className="relative">
-                      <h3 className="text-3xl lg:text-4xl font-sans font-black uppercase text-white tracking-tighter leading-none">
-                        {material.type}
-                      </h3>
-                    </div>
-                  </div>
+          {/* Compass / Orientation Aesthetic */}
+          <div className="absolute top-12 right-12 hidden xl:flex flex-col items-center gap-4 opacity-20 pointer-events-none">
+            <div className="w-[1px] h-24 bg-white" />
+            <span className="font-mono text-[10px] uppercase tracking-[0.4em] rotate-90 origin-center text-white">Full Slab View</span>
+            <div className="w-[1px] h-24 bg-white" />
+          </div>
 
-                  {/* C. The Reveal (Museum Plaque Style) */}
-                  <div className="absolute inset-0 z-20 bg-primary/95 backdrop-blur-md p-8 flex flex-col items-center justify-center text-center translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]">
-                    
-                    <h3 className="text-2xl font-sans font-bold uppercase text-white tracking-tight mb-4">
-                        {material.type}
-                    </h3>
+        </div>
+      </div>
 
-                    <p className="text-white/60 text-xs leading-relaxed font-light mb-6 line-clamp-3 max-w-[90%]">
-                        {material.description}
-                    </p>
-
-                    {/* Tags - Clean Borders */}
-                    <div className="flex flex-wrap justify-center gap-2">
-                        {material.attributes?.map((attr: string) => (
-                            <span key={attr} className="text-[9px] font-mono uppercase tracking-widest text-gold border border-gold/30 px-3 py-1">
-                                {attr}
-                            </span>
-                        ))}
-                    </div>
-                    
-                    {/* Bottom Indicator Line */}
-                    <div className="absolute bottom-0 left-0 w-full h-1 bg-gold scale-x-0 group-hover:scale-x-100 transition-transform duration-500 delay-200 origin-left" />
-                  </div>
-                </motion.div>
-              );
-            })}
-          </motion.div>
-        </AnimatePresence>
+      {/* 4. FOOTER: Technical Mirror */}
+      <div className="w-full py-4 border-t border-white/5 bg-primary/80 backdrop-blur-md px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-4 z-30">
+        <span className="text-[8px] font-mono text-white/20 uppercase tracking-[0.5em] text-center md:text-left">Inventory Status: Live Stock @ Fort Pierce Facility</span>
+        <div className="flex gap-6 md:gap-8">
+           <div className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 bg-green-500/40 rounded-full" />
+              <span className="text-[8px] font-mono text-white/40 uppercase tracking-widest">Slab Verified</span>
+           </div>
+           <div className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 bg-gold/40 rounded-full" />
+              <span className="text-[8px] font-mono text-white/40 uppercase tracking-widest">Certified Origin</span>
+           </div>
+        </div>
       </div>
     </section>
   );

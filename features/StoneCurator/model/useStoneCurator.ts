@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { COMPANY_KB } from '../../../entities/company/knowledge';
 import { generateText } from '../../../shared/api/gemini';
+import { useProjectStore, ProjectScope, UsageIntensity } from '../../../entities/project/store';
 import { Message, CHAT_THRESHOLD, TOP_THRESHOLD } from './types';
 
 const constructSystemPrompt = () => {
@@ -15,20 +16,28 @@ const constructSystemPrompt = () => {
     CORE KNOWLEDGE:
     ${kbString}
 
+    STRICT DATA EXTRACTION (CRITICAL):
+    If the user mentions a specific project type or material they like, acknowledge it naturally, and include a hidden data tag at the end of your message in the format [SYNC: { "field": "value" }].
+    
+    Fields you can sync:
+    - "scope": Use exact values: "Culinary Surface", "Wet Environment", "Exterior Architecture", "Statement Piece"
+    - "intensity": Use exact values: "Visual Art", "Moderate Use", "Heavy Duty"
+    - "stonePreference": Any material name (e.g., "Marble", "Quartzite", "Dekton")
+    - "description": Any specific detail they mentioned (e.g., "Waterfall island", "Outdoor BBQ")
+
     WRITING STYLE:
     1. **Be human.** Speak like a person sitting across a desk from a homeowner or architect.
     2. **Keep it simple.** Use bullet points for lists. Bold the names of materials like **Granite** or **Quartzite**.
     3. **Short responses.** Keep your answers concise and easy to read.
 
     GUIDELINES:
-    - Mention our location in Fort Pierce and our work in the Bahamas when relevant.
-    - Reference our founding in 1993 to build trust.
-    - If a user wants to start a project, talk about pricing, or send plans, end your message with this exact phrase: [ACTION_LAUNCH_STUDIO].
-    - Never mention that you are a computer, a model, or a machine. You are a member of the Real Stone team.
+    - If they want to start a project or see plans, end your message with: [ACTION_LAUNCH_STUDIO].
+    - Never mention that you are a model or machine.
   `;
 };
 
 export const useStoneCurator = (onLaunchStudio: () => void, isStudioOpen: boolean) => {
+  const { dispatch } = useProjectStore();
   const [isOpen, setIsOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const [input, setInput] = useState('');
@@ -60,8 +69,24 @@ export const useStoneCurator = (onLaunchStudio: () => void, isStudioOpen: boolea
     }
   }, [messages, isOpen]);
 
+  const processSyncData = (text: string) => {
+    const syncMatch = text.match(/\[SYNC:\s*({.*?})\s*\]/);
+    if (syncMatch) {
+      try {
+        const data = JSON.parse(syncMatch[1]);
+        if (data.scope) dispatch({ type: 'SET_SCOPE', payload: data.scope as ProjectScope });
+        if (data.intensity) dispatch({ type: 'SET_INTENSITY', payload: data.intensity as UsageIntensity });
+        if (data.stonePreference) dispatch({ type: 'SET_STONE_PREFERENCE', payload: data.stonePreference });
+        if (data.description) dispatch({ type: 'SET_DESCRIPTION', payload: data.description });
+      } catch (e) {
+        // Silent fail for malformed JSON
+      }
+    }
+  };
+
   const sanitizeResponse = (text: string) => {
     return text
+      .replace(/\[SYNC:.*?\]/g, '')
       .replace(/\[ACTION_LAUNCH_STUDIO\]/g, '')
       .trim();
   };
@@ -78,8 +103,11 @@ export const useStoneCurator = (onLaunchStudio: () => void, isStudioOpen: boolea
       const responseRaw = await generateText(text, constructSystemPrompt());
       
       let aiText = responseRaw || "I'm sorry, I'm having a little trouble connecting. Could you try that again?";
-      const triggerAction = responseRaw?.includes('[ACTION_LAUNCH_STUDIO]') || false;
-
+      
+      // Look for and handle sync data
+      processSyncData(aiText);
+      
+      const triggerAction = aiText.includes('[ACTION_LAUNCH_STUDIO]') || false;
       aiText = sanitizeResponse(aiText);
 
       const aiMsg: Message = {

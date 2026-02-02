@@ -1,6 +1,6 @@
+
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ProjectProvider } from '../../entities/project/store';
 import { SuccessView } from './SuccessView';
 import { useDesignStudio } from './model/useDesignStudio';
 import { Sidebar } from './ui/Sidebar';
@@ -15,7 +15,7 @@ interface DesignStudioProps {
   onClose: () => void;
 }
 
-const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
+export const DesignStudio: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
   const {
     state,
     dispatch,
@@ -139,9 +139,3 @@ const StudioContent: React.FC<DesignStudioProps> = ({ isOpen, onClose }) => {
     </AnimatePresence>
   );
 };
-
-export const DesignStudio = (props: DesignStudioProps) => (
-  <ProjectProvider>
-    <StudioContent {...props} />
-  </ProjectProvider>
-);

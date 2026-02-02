@@ -3,6 +3,7 @@ import { useProjectStore } from '../../../entities/project/store';
 import { transcribeAudio } from '../../../shared/api/gemini';
 import { TIMELINE_OPTIONS } from './types';
 import { useToast } from '../../../shared/ui/Toast';
+import { HAPTICS } from '../../../shared/lib/haptics';
 
 export const useDesignStudio = (isOpen: boolean, onClose: () => void) => {
   const { state, dispatch, recommendation } = useProjectStore();
@@ -56,19 +57,27 @@ export const useDesignStudio = (isOpen: boolean, onClose: () => void) => {
 
   const nextStep = () => {
     if (isStepValid) {
+      HAPTICS.click();
       setCurrentStep(prev => Math.min(prev + 1, 5));
     } else {
+      HAPTICS.error();
       showToast("Please complete the required selections.", "info");
     }
   };
   
-  const prevStep = () => setCurrentStep(prev => Math.max(prev - 1, 1));
+  const prevStep = () => {
+    HAPTICS.click();
+    setCurrentStep(prev => Math.max(prev - 1, 1));
+  };
 
   const handleFileClick = () => fileInputRef.current?.click();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) setAttachedFile(file.name);
+    if (file) {
+      HAPTICS.click();
+      setAttachedFile(file.name);
+    }
   };
 
   const encode = (data: Record<string, any>) => {
@@ -79,6 +88,7 @@ export const useDesignStudio = (isOpen: boolean, onClose: () => void) => {
 
   const handleSubmit = async () => {
     if (!isStepValid) {
+      HAPTICS.error();
       showToast("Project details are incomplete.", "error");
       return;
     }
@@ -93,9 +103,10 @@ export const useDesignStudio = (isOpen: boolean, onClose: () => void) => {
           projectRef: projectRef
         })
       });
+      HAPTICS.success();
       setIsSubmitted(true);
     } catch (error) {
-      // Log-free error handling
+      HAPTICS.success();
       setIsSubmitted(true);
       showToast("Project Saved (Local Mirror)", "info");
     } finally {
@@ -135,16 +146,20 @@ export const useDesignStudio = (isOpen: boolean, onClose: () => void) => {
             const transcribedText = await transcribeAudio(base64Audio, mimeType, prompt);
             if (!transcribedText) throw new Error('Transcribe issue');
             dispatch({ type: 'SET_DESCRIPTION', payload: state.description ? `${state.description}\n\n${transcribedText}` : transcribedText });
+            HAPTICS.success();
             showToast("Specification Logged", "success");
           } catch (e) {
+            HAPTICS.error();
             showToast("Voice Capture Unavailable", "error");
           } finally {
             setIsProcessingAudio(false);
           }
         };
         mediaRecorder.start();
+        HAPTICS.click();
         setIsRecording(true);
       } catch (err) {
+        HAPTICS.error();
         showToast("Microphone Access Denied", "error");
       }
     }
