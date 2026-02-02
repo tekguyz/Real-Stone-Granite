@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Check, ChevronUp, ChevronDown, LayoutGrid } from 'lucide-react';
@@ -29,7 +28,7 @@ export const MobileSummaryDrawer: React.FC<MobileDrawerProps> = ({
     >
       <div onClick={onToggle} className="h-20 w-full flex items-center justify-between px-8 bg-surface border-b border-white/5 cursor-pointer relative z-20">
         <div className="flex flex-col">
-          <span className="text-[9px] text-gold font-mono uppercase tracking-widest mb-1">Project ID</span>
+          <span className="text-[9px] text-gold font-mono uppercase tracking-widest mb-1">Ref #</span>
           <span className="text-white font-mono text-sm tracking-tighter">#{projectRef}</span>
         </div>
         <div className="flex items-center gap-2 text-text-muted uppercase tracking-widest text-[9px] font-mono">
@@ -54,7 +53,7 @@ export const MobileSummaryDrawer: React.FC<MobileDrawerProps> = ({
             
             {state.fabricationLevel && (
               <div>
-                <span className="text-[9px] text-text-muted uppercase tracking-widest block mb-2">Tier</span>
+                <span className="text-[9px] text-text-muted uppercase tracking-widest block mb-2">Finish Level</span>
                 <span className={`text-lg font-light ${state.fabricationLevel === 'Artisan Masterpiece' ? 'text-gold' : 'text-white'}`}>
                     {state.fabricationLevel}
                 </span>
@@ -64,7 +63,7 @@ export const MobileSummaryDrawer: React.FC<MobileDrawerProps> = ({
             {recommendation.material !== 'Awaiting Context' && (
               <div>
                 <span className="text-[9px] text-text-muted uppercase tracking-widest block mb-2">
-                  Selection Result
+                  Our Recommendation
                 </span>
                 <div className="flex items-center gap-2 text-gold mb-1">
                   <Check className="w-4 h-4" />

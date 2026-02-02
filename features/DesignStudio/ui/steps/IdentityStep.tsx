@@ -86,7 +86,7 @@ export const IdentityStep: React.FC<IdentityStepProps> = ({ state, dispatch }) =
           </div>
         </div>
         <p className="mt-4 text-[10px] font-mono text-white/20 uppercase tracking-widest">
-          * Provide the name of your coordinating professional for project syncing.
+          * Provide the name of your coordinating professional for project alignment.
         </p>
       </div>
     </motion.div>

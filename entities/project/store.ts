@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useReducer, ReactNode, useMemo, useEffect } from 'react';
 
-export type ProjectScope = 'Culinary Surface' | 'Wet Environment' | 'Exterior Architecture' | 'Statement Piece';
+export type ProjectScope = 'Culinary Surface' | 'Bath & Spa' | 'Outdoor Living' | 'Statement Piece';
 export type UsageIntensity = 'Visual Art' | 'Moderate Use' | 'Heavy Duty';
 export type UserRole = 'Private Residence' | 'Professional Partner';
 export type FabricationLevel = 'Classic Selection' | 'Artisan Masterpiece';
@@ -67,7 +67,7 @@ function projectReducer(state: ProjectState, action: Action): ProjectState {
 
 export const getRecommendation = (state: ProjectState): Recommendation => {
   if (!state.scope) return { material: 'Tell us about your project', reason: 'Choose a project area so we can suggest the best materials for your needs.' };
-  if (state.scope === 'Exterior Architecture') return { material: 'Dekton or Dense Granite', reason: 'These stones stand up beautifully to the Florida sun and salt air.', warning: 'We recommend avoiding soft marbles for outdoor projects.' };
+  if (state.scope === 'Outdoor Living') return { material: 'Dekton or Dense Granite', reason: 'These stones stand up beautifully to the Florida sun and salt air.', warning: 'We recommend avoiding soft marbles for outdoor projects.' };
   if (state.scope === 'Culinary Surface' && state.intensity === 'Heavy Duty') return { material: 'Natural Quartzite', reason: 'It has the hardness of a diamond, making it perfect for busy kitchens.' };
   if (state.scope === 'Statement Piece' && state.intensity === 'Visual Art') return { material: 'Onyx or Semi-Precious', reason: 'These materials look stunning when backlit and create a focal point.' };
   return { material: 'Premium Quartzite', reason: 'A beautiful, long-lasting choice that fits almost any design.' };

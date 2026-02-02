@@ -1,4 +1,3 @@
-
 export interface FeaturedSlab {
   id: string;
   name: string;
@@ -12,7 +11,7 @@ export const FEATURED_SLABS: FeaturedSlab[] = [
     id: "slab_01",
     name: "Honey Onyx",
     origin: "Iran",
-    status: "Backlit Ready",
+    status: "Translucent",
     image: "https://as2.ftcdn.net/v2/jpg/08/66/07/71/1000_F_866077175_sz6VXfzG4z80n2p12FtOUvHqqwY9tD8z.jpg"
   },
   {

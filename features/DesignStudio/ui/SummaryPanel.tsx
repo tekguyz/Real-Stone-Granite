@@ -16,11 +16,11 @@ const SCOPE_VISUALS: Record<string, { img: string; icon: any }> = {
     img: 'https://images.unsplash.com/photo-1600607687940-4e789269c27b?auto=format&fit=crop&q=80&w=800',
     icon: ChefHat
   },
-  'Wet Environment': {
+  'Bath & Spa': {
     img: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&q=80&w=800',
     icon: Droplets
   },
-  'Exterior Architecture': {
+  'Outdoor Living': {
     img: 'https://images.unsplash.com/photo-1590422501099-17937ac4f04b?auto=format&fit=crop&q=80&w=800',
     icon: Sun
   },
@@ -102,7 +102,7 @@ export const SummaryPanel: React.FC<SummaryPanelProps> = ({ state, recommendatio
 
                 {recommendation.material !== 'Tell us about your project' && (
                   <motion.div layout initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}>
-                    <span className="text-[10px] text-white/40 uppercase tracking-widest block mb-2 font-bold">Your Match</span>
+                    <span className="text-[10px] text-white/40 uppercase tracking-widest block mb-2 font-bold">Our Recommendation</span>
                     <div className="flex items-center gap-3 text-gold">
                       <div className="w-1.5 h-1.5 bg-gold rotate-45" />
                       <span className="text-xl font-medium tracking-tight uppercase">

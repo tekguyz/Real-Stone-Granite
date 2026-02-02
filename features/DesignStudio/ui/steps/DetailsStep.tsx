@@ -90,12 +90,12 @@ export const DetailsStep: React.FC<DetailsStepProps> = ({
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-2">
             <label className="text-[10px] font-mono text-white/30 uppercase tracking-[0.4em] font-bold block">
-              Technical Description
+              Project Notes
             </label>
             <div className="flex items-center gap-3">
               <div className={`h-1.5 w-1.5 rounded-full ${isDescValid ? 'bg-gold' : 'bg-white/10'}`} />
               <span className={`text-[9px] font-mono uppercase tracking-widest ${isDescValid ? 'text-gold' : 'text-white/20'}`}>
-                Specifications: {descLength} / 10 Min
+                Detail Level: {descLength} / 10
               </span>
             </div>
           </div>
@@ -129,7 +129,7 @@ export const DetailsStep: React.FC<DetailsStepProps> = ({
             >
                 {voice.isProcessingAudio ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Mic className={`w-3.5 h-3.5 ${voice.isRecording ? 'text-red-500' : ''}`} strokeWidth={2} />}
                 <span className="text-[10px] uppercase tracking-[0.2em] font-mono font-bold">
-                  {voice.isRecording ? 'Capturing...' : 'Dictate'}
+                  {voice.isRecording ? 'Listening...' : 'Dictate'}
                 </span>
             </motion.button>
           </div>
@@ -161,7 +161,7 @@ export const DetailsStep: React.FC<DetailsStepProps> = ({
                           <Loader2 className="w-10 h-10 text-gold animate-spin" />
                           <MessageSquareQuote className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 text-gold" />
                         </div>
-                        <span className="text-[11px] font-mono text-gold uppercase tracking-[0.4em] font-bold">Transcribing Specs...</span>
+                        <span className="text-[11px] font-mono text-gold uppercase tracking-[0.4em] font-bold">Writing notes...</span>
                     </motion.div>
                 )}
             </AnimatePresence>

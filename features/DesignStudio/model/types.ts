@@ -21,8 +21,8 @@ export const TIMELINE_OPTIONS = [
 
 export const SCOPE_OPTIONS = [
   { id: 'Culinary Surface', label: 'Culinary Surface', icon: 'ChefHat', desc: 'Kitchens, Islands, Prep Zones' },
-  { id: 'Wet Environment', label: 'Wet Environment', icon: 'Droplets', desc: 'Master Baths, Spas, Wellness' },
-  { id: 'Exterior Architecture', label: 'Exterior Architecture', icon: 'Sun', desc: 'Facades, Pool Decks, BBQ' },
+  { id: 'Bath & Spa', label: 'Bath & Spa', icon: 'Droplets', desc: 'Master Baths, Steam Showers, Wellness' },
+  { id: 'Outdoor Living', label: 'Outdoor Living', icon: 'Sun', desc: 'Facades, Pool Decks, BBQ Suites' },
   { id: 'Statement Piece', label: 'Statement Piece', icon: 'Gem', desc: 'Fireplaces, Feature Walls' },
 ];
 

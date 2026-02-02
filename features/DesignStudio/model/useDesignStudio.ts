@@ -68,14 +68,14 @@ export const useDesignStudio = (isOpen: boolean, onClose: () => void) => {
       setTimeout(() => setShake(false), 500);
       
       const messages: Record<number, string> = {
-        1: "Selection Required: Please identify your project type.",
-        2: "Selection Required: Please specify the project area.",
-        3: "Selection Required: Please select intended usage level.",
-        4: "Confirmation Required: Please verify your material choice.",
-        5: "Detail Required: Description must be at least 10 characters."
+        1: "Please identify your project type to continue.",
+        2: "Please tell us which area we are designing.",
+        3: "Please select the intended usage level.",
+        4: "Please confirm your material selection.",
+        5: "Please add a few more details (10 characters minimum)."
       };
       
-      showToast(messages[currentStep] || "Technical verification failed.", "info");
+      showToast(messages[currentStep] || "We need a few more details to start.", "info");
     }
   };
   
@@ -105,7 +105,7 @@ export const useDesignStudio = (isOpen: boolean, onClose: () => void) => {
     if (!isStepValid) {
       HAPTICS.error();
       setShake(true);
-      showToast("Technical specifications incomplete.", "error");
+      showToast("We need a few more details to start.", "error");
       return;
     }
     
@@ -125,7 +125,7 @@ export const useDesignStudio = (isOpen: boolean, onClose: () => void) => {
 
       HAPTICS.success();
       setIsSubmitted(true);
-      showToast("Project Plan Synchronized", "success");
+      showToast("Project Plan Received", "success");
     } catch (error) {
       // Netlify submission usually succeeds in production even if fetch errors in local dev environments
       HAPTICS.success();
@@ -168,10 +168,10 @@ export const useDesignStudio = (isOpen: boolean, onClose: () => void) => {
             if (!transcribedText) throw new Error('Transcribe issue');
             dispatch({ type: 'SET_DESCRIPTION', payload: state.description ? `${state.description}\n\n${transcribedText}` : transcribedText });
             HAPTICS.success();
-            showToast("Voice Capture Verified", "success");
+            showToast("Voice Note Added", "success");
           } catch (e) {
             HAPTICS.error();
-            showToast("Capture Failed. Manual input required.", "error");
+            showToast("We couldn't hear you clearly. Please try again.", "error");
           } finally {
             setIsProcessingAudio(false);
           }
