@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion, HTMLMotionProps } from 'framer-motion';
 import { PHYSICS } from '../lib/theme';
@@ -8,6 +9,8 @@ interface PrecisionBtnProps extends HTMLMotionProps<"button"> {
   children: React.ReactNode;
   className?: string;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  // Explicitly defining disabled for better type inference with framer-motion components
+  disabled?: boolean;
 }
 
 export const PrecisionBtn: React.FC<PrecisionBtnProps> = ({ 
@@ -15,6 +18,7 @@ export const PrecisionBtn: React.FC<PrecisionBtnProps> = ({
   children, 
   className = '',
   onClick,
+  disabled,
   ...props 
 }) => {
   const baseStyles = "relative px-10 py-5 font-mono uppercase tracking-[0.25em] text-xs font-bold flex items-center justify-center outline-none overflow-hidden group border transition-all duration-300 rounded-none";
@@ -25,21 +29,25 @@ export const PrecisionBtn: React.FC<PrecisionBtnProps> = ({
   };
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    // Prevent interaction if disabled
+    if (disabled) return;
     HAPTICS.click();
     if (onClick) onClick(e);
   };
 
   return (
     <motion.button
-      className={`${baseStyles} ${variants[variant]} ${className}`}
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.96 }}
+      // Add disabled styling and disable pointer events
+      className={`${baseStyles} ${variants[variant]} ${className} ${disabled ? 'opacity-50 cursor-not-allowed pointer-events-none' : ''}`}
+      whileHover={!disabled ? { scale: 1.02 } : {}}
+      whileTap={!disabled ? { scale: 0.96 } : {}}
       transition={PHYSICS.industrial}
       onClick={handleClick}
+      disabled={disabled}
       {...props}
     >
-      {/* 1. THE SHIMMER */}
-      {variant === 'primary' && (
+      {/* 1. THE SHIMMER - Hide when disabled */}
+      {variant === 'primary' && !disabled && (
         <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
            <div className="absolute top-0 left-0 w-[50%] h-full bg-gradient-to-r from-transparent via-white/40 to-transparent -skew-x-[20deg] animate-shimmer" />
         </div>

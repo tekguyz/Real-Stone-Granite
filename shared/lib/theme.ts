@@ -1,23 +1,14 @@
-
 export const COLORS = {
-  // DEEP ONYX: Darker (14% Lightness) for a true "Void" look.
-  primary: 'oklch(14% 0.01 80)', 
+  // Bound to index.css variables for Design Integrity
+  primary: 'var(--color-primary)', 
+  surface: 'var(--color-surface)',
+  gold: 'var(--color-gold)',
+  textMain: 'var(--color-text-main)',
+  textMuted: 'var(--color-text-muted)',
 
-  // GUNMETAL: Slightly lighter for cards/modals.
-  surface: 'oklch(19% 0.01 80)',
-
-  // ROLEX GOLD: Richer, Brassier (Hue 82).
-  gold: 'oklch(74% 0.16 82)',
-
-  // PURE WHITE: Maximum legibility.
-  textMain: 'oklch(98% 0 0)',
-
-  // MUTED PLATINUM: For secondary text.
-  textMuted: 'oklch(65% 0.01 80)',
-
-  // TRANSLUCENTS
-  goldDim: 'oklch(74% 0.16 82 / 0.1)', 
-  surfaceHighlight: 'oklch(19% 0.01 80 / 0.8)',
+  // Translucents (CSS Variable Fallbacks)
+  goldDim: 'rgba(212, 175, 55, 0.1)', 
+  surfaceHighlight: 'rgba(25, 25, 25, 0.8)',
 } as const;
 
 // HEX Fallbacks for Canvas/JS-only libraries (e.g. Confetti)
@@ -46,8 +37,8 @@ export const PHYSICS = {
   // FEELS LIKE: Pressing a heavy button on a CNC machine.
   industrial: {
     type: "spring",
-    stiffness: 250, // Lowered from 500 (too jittery)
-    damping: 35,    // Tuned to stop the heavy mass
-    mass: 2.0       // Increased from 1.2 (Heavier feel)
+    stiffness: 250, 
+    damping: 35,    
+    mass: 2.0       
   }
 } as const;
