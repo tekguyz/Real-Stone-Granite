@@ -61,7 +61,6 @@ export const DesignStudio: React.FC<DesignStudioProps> = ({ isOpen, onClose }) =
 
           <div className="h-16 md:h-20 w-full bg-primary border-b border-white/5 flex items-center justify-between px-6 md:px-12 flex-shrink-0 relative z-50">
              <div className="flex items-center gap-4">
-                {/* On mobile, we hide this redundant title to prevent 'Double Header' clutter */}
                 <span className="hidden md:block font-sans font-bold text-lg tracking-tight text-white">Project Planner</span>
                 <span className="font-mono text-[9px] md:text-[10px] text-white/40 uppercase tracking-widest px-2 py-1 border border-white/10 rounded-sm">
                    Planning Phase
@@ -83,7 +82,8 @@ export const DesignStudio: React.FC<DesignStudioProps> = ({ isOpen, onClose }) =
             <SuccessView onClose={handleClose} projectRef={projectRef} />
           ) : (
             <div className="flex-1 w-full grid grid-cols-1 lg:grid-cols-12 overflow-hidden relative z-10">
-              <div className="lg:col-span-2 border-r border-white/5 bg-primary/50 flex flex-col relative z-20 backdrop-blur-sm">
+              {/* Sidebar is now hidden on mobile (below lg breakpoint) */}
+              <div className="hidden lg:flex lg:col-span-2 border-r border-white/5 bg-primary/50 flex flex-col relative z-20 backdrop-blur-sm">
                   <Sidebar 
                     currentStep={currentStep} 
                     setCurrentStep={setCurrentStep} 

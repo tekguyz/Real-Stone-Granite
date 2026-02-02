@@ -19,13 +19,12 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
   const LIGHT_BRIGHTNESS = 1.3; 
   const GLOW_OPACITY = 0.15;    
 
-  const mouseX = useMotionValue(-500); // Start off-screen
+  const mouseX = useMotionValue(-500); 
   const mouseY = useMotionValue(-500);
   const lightX = useSpring(mouseX, { stiffness: 200, damping: 30 }); 
   const lightY = useSpring(mouseY, { stiffness: 200, damping: 30 });
 
-  // Use a smoother gradient to avoid 'square' artifacts on mobile rendering
-  const maskImage = useMotionTemplate`radial-gradient(circle ${LIGHT_RADIUS}px at ${lightX}px ${lightY}px, black 0%, black 40%, transparent 100%)`;
+  const maskImage = useMotionTemplate`radial-gradient(circle ${LIGHT_RADIUS}px at ${lightX}px ${lightY}px, black 0%, black 50%, transparent 100%)`;
   const glowGradient = useMotionTemplate`radial-gradient(circle ${GLOW_RADIUS}px at ${lightX}px ${lightY}px, rgba(212,175,55,${GLOW_OPACITY}) 0%, transparent 100%)`;
 
   const handlePointerMove = useCallback((clientX: number, clientY: number) => {
@@ -53,7 +52,8 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
 
   return (
     <div 
-      className="w-full md:w-1/2 h-[60vh] md:h-screen relative overflow-hidden bg-black cursor-none gpu-accel border-t md:border-t-0 border-white/5"
+      className="w-full md:w-1/2 h-[60vh] md:h-screen relative overflow-hidden bg-black cursor-none gpu-accel border-t md:border-t-0 border-white/5 select-none touch-none"
+      style={{ WebkitTapHighlightColor: 'transparent' }}
       onMouseMove={onMouseMove}
       onTouchMove={onTouchMove}
       onTouchStart={(e) => {
@@ -64,13 +64,12 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => {
         setHovering(false);
-        // Slowly move light out of view
         mouseX.set(-500);
         mouseY.set(-500);
       }}
       ref={galleryRef}
     >
-      <motion.div style={{ y: parallaxY }} className="absolute inset-0 w-full h-[120%] z-0">
+      <motion.div style={{ y: parallaxY }} className="absolute inset-0 w-full h-[120%] z-0 pointer-events-none">
         <AnimatePresence mode="popLayout">
           <motion.div
             key={`base-${currentIndex}`}
@@ -83,7 +82,7 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
             <img 
               src={currentSlab.image}
               alt={currentSlab.name}
-              className="absolute inset-0 w-full h-full object-cover"
+              className="absolute inset-0 w-full h-full object-cover pointer-events-none"
               style={{ filter: 'brightness(0.35) contrast(1.1) grayscale(30%)' }}
             />
           </motion.div>
@@ -100,7 +99,7 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
             <img 
               src={currentSlab.image}
               alt=""
-              className="absolute inset-0 w-full h-full object-cover"
+              className="absolute inset-0 w-full h-full object-cover pointer-events-none"
               style={{ filter: `brightness(${LIGHT_BRIGHTNESS}) contrast(1.4) saturate(1.4) sepia(10%)` }}
             />
           </motion.div>
@@ -115,12 +114,12 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
 
       <div className="absolute inset-0 pointer-events-none z-30">
         <motion.div
-          className="absolute top-0 left-0 w-6 h-6 flex items-center justify-center pointer-events-none"
+          className="absolute top-0 left-0 flex items-center justify-center pointer-events-none z-50"
           style={{ x: lightX, y: lightY, translateX: '-50%', translateY: '-50%' }}
           animate={{ opacity: hovering ? 1 : 0, scale: hovering ? 1 : 0.5 }}
         >
-          {/* Centered precision dot */}
-          <div className="w-1.5 h-1.5 bg-white rounded-full shadow-[0_0_15px_4px_rgba(255,255,255,0.6)]" />
+          {/* Centered precision dot - Ensure perfect roundness and zero square artifacts */}
+          <div className="w-2 h-2 bg-white rounded-full shadow-[0_0_15px_6px_rgba(255,255,255,0.7)]" />
         </motion.div>
 
         <motion.div 
