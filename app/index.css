@@ -15,7 +15,6 @@
 
 /* 
   1. INDUSTRIAL GEOMETRY RESET
-  Ensures every component respects the sharp-edge mandate.
 */
 * {
   border-radius: 0 !important;
@@ -24,7 +23,8 @@
 
 /* 
   2. ATMOSPHERIC OVERLAYS
-  Noise grain and global behaviors.
+  PERFORMANCE FIX: Replaced feTurbulence with a lighter repeating noise pattern.
+  SVG filters on the whole body are a major cause of mobile lag.
 */
 body::before {
   content: "";
@@ -33,19 +33,29 @@ body::before {
   left: 0;
   width: 100vw;
   height: 100vh;
-  opacity: 0.04;
+  opacity: 0.02;
   z-index: 9999;
   pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  background-image: url("https://www.transparenttextures.com/patterns/asfalt-dark.png");
 }
 
 html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
+  background-color: var(--color-primary);
 }
 
 /* 
-  3. CUSTOM SCROLLBAR
+  3. PERFORMANCE HINTS
+*/
+.gpu-accel {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* 
+  4. CUSTOM SCROLLBAR
 */
 ::-webkit-scrollbar {
   width: 4px;
@@ -58,7 +68,7 @@ html {
 }
 
 /* 
-  4. ACCESSIBILITY & INTERACTION
+  5. ACCESSIBILITY & INTERACTION
 */
 :focus-visible {
   outline: 2px solid var(--color-gold) !important;
@@ -81,26 +91,8 @@ input[type="submit"],
   color: var(--color-primary);
 }
 
-/* 
-  CHROME AUTOFILL FIX
-  Prevents the browser from injecting a white or yellow background on autocompleted fields.
-*/
-input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus,
-textarea:-webkit-autofill,
-textarea:-webkit-autofill:hover,
-textarea:-webkit-autofill:focus,
-select:-webkit-autofill,
-select:-webkit-autofill:hover,
-select:-webkit-autofill:focus {
-  -webkit-text-fill-color: var(--color-text-main) !important;
-  -webkit-box-shadow: 0 0 0px 1000px var(--color-surface) inset !important;
-  transition: background-color 5000s ease-in-out 0s;
-}
-
 /*
-  5. UTILITIES
+  6. UTILITIES
 */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
@@ -111,10 +103,15 @@ select:-webkit-autofill:focus {
 }
 
 /* 
-  6. INDUSTRIAL MARKDOWN (PROSE-STONE)
+  7. INDUSTRIAL MARKDOWN (PROSE-STONE)
 */
+.prose-stone {
+  line-height: 1.6;
+}
+
 .prose-stone p {
-  margin-bottom: 12px;
+  margin-bottom: 1rem;
+  color: oklch(90% 0 0);
 }
 
 .prose-stone p:last-child {
@@ -123,48 +120,40 @@ select:-webkit-autofill:focus {
 
 .prose-stone strong {
   color: var(--color-gold);
-  font-weight: 600;
-  letter-spacing: 0.01em;
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }
 
 .prose-stone ul, .prose-stone ol {
-  padding-left: 20px;
-  margin-bottom: 12px;
-  list-style-type: none;
+  padding-left: 0.5rem;
+  margin-bottom: 1rem;
 }
 
-.prose-stone ul li {
+.prose-stone li {
   position: relative;
-  margin-bottom: 6px;
+  padding-left: 1.25rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.95em;
 }
 
-.prose-stone ul li::before {
+.prose-stone li::before {
   content: "";
   position: absolute;
-  left: -16px;
-  top: 9px;
-  width: 4px;
-  height: 4px;
+  left: 0;
+  top: 0.7em;
+  width: 5px;
+  height: 1px;
   background-color: var(--color-gold);
+  opacity: 0.6;
 }
 
-.prose-stone a {
-  color: var(--color-gold);
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  text-decoration-thickness: 1px;
-  transition: opacity 0.2s ease;
-}
-
-.prose-stone a:hover {
-  opacity: 0.7;
-}
-
-.prose-stone code {
+.prose-stone h1, .prose-stone h2, .prose-stone h3 {
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 800;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
   font-family: 'Geist Mono', monospace;
-  font-size: 0.9em;
-  background-color: rgba(255, 255, 255, 0.05);
-  color: var(--color-gold);
-  padding: 1px 4px;
-  border: 1px solid rgba(212, 175, 55, 0.1);
+  font-size: 0.8rem;
 }

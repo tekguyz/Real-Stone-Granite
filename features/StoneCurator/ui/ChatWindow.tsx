@@ -23,14 +23,14 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
 }) => {
   return (
     <motion.div
-      initial={{ x: '100%', opacity: 1 }}
-      animate={{ x: '0%', opacity: 1 }}
-      exit={{ x: '100%', opacity: 1 }}
-      transition={{ type: "spring", damping: 30, stiffness: 300, mass: 1 }}
-      className="absolute top-0 right-0 h-full w-full md:w-[500px] bg-primary border-l border-white/10 shadow-[-50px_0_100px_rgba(0,0,0,0.8)] flex flex-col pointer-events-auto z-[12001]"
+      initial={{ x: '100%' }}
+      animate={{ x: '0%' }}
+      exit={{ x: '100%' }}
+      transition={{ type: "spring", damping: 35, stiffness: 350 }}
+      className="absolute top-0 right-0 h-full w-full md:w-[500px] bg-primary border-l border-white/10 shadow-[-50px_0_100px_rgba(0,0,0,0.8)] flex flex-col pointer-events-auto z-[12001] gpu-accel"
     >
-      {/* Texture Overlay */}
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none mix-blend-overlay" />
+      {/* Texture Overlay - Optimized Static */}
+      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/asfalt-dark.png')] opacity-[0.03] pointer-events-none mix-blend-overlay" />
 
       {/* Header: Concierge Style */}
       <div className="h-20 border-b border-white/10 bg-black/40 flex items-center justify-between pl-8 pr-0 flex-shrink-0 relative z-20">
@@ -39,11 +39,11 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
              <MessageSquare className="w-5 h-5 text-gold" strokeWidth={1.5} />
           </div>
           <div className="flex flex-col">
-            <span className="text-sm text-white font-sans font-medium tracking-tight">
+            <span className="text-sm text-white font-sans font-medium tracking-tight uppercase">
               Stone Concierge
             </span>
-            <span className="text-[10px] text-gold/80 uppercase tracking-widest font-mono">
-              Expert Assistance
+            <span className="text-[9px] text-gold/80 uppercase tracking-widest font-mono">
+              Direct Line
             </span>
           </div>
         </div>
@@ -61,10 +61,10 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
         
         {messages.length === 0 && (
           <div className="mt-12 text-center opacity-40">
-            <div className="w-16 h-16 border border-white/10 mx-auto mb-6 flex items-center justify-center rounded-full bg-white/5">
-              <MessageSquare className="w-6 h-6 text-white/40" />
+            <div className="w-12 h-12 border border-white/10 mx-auto mb-6 flex items-center justify-center rounded-sm bg-white/5">
+              <MessageSquare className="w-5 h-5 text-white/40" />
             </div>
-            <p className="font-sans text-sm text-white/60">How can we assist with your project today?</p>
+            <p className="font-mono text-[10px] text-white/60 uppercase tracking-widest">Awaiting Inquiry</p>
           </div>
         )}
 
@@ -74,13 +74,13 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
             className={`flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'}`}
           >
             <div 
-              className={`max-w-[90%] p-5 border ${
+              className={`max-w-[90%] p-5 border shadow-xl ${
                 msg.role === 'user' 
                   ? 'bg-white/5 text-white border-white/10' 
                   : 'bg-surface text-text-main border-l-2 border-l-gold border-y border-r border-white/5 prose-stone'
               }`}
             >
-              <div className="text-[13px] leading-relaxed font-light font-sans">
+              <div className="text-[14px] leading-relaxed font-light font-sans tracking-wide">
                 <ReactMarkdown>{msg.content}</ReactMarkdown>
               </div>
             </div>
@@ -92,7 +92,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
                   className="w-full flex items-center justify-between group h-12 text-[9px]"
                   onClick={onLaunchStudio}
                 >
-                  <span className="font-mono tracking-widest uppercase">Start Project Planner</span>
+                  <span className="font-mono tracking-widest uppercase">Open Studio</span>
                   <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                 </PrecisionBtn>
               </div>
@@ -103,9 +103,9 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
         {isLoading && (
           <div className="flex gap-2 items-center p-4 border-l-2 border-gold/50 bg-surface/30 w-fit">
               <div className="w-1.5 h-1.5 bg-gold rounded-full animate-bounce" />
-              <div className="w-1.5 h-1.5 bg-gold rounded-full animate-bounce delay-100" />
-              <div className="w-1.5 h-1.5 bg-gold rounded-full animate-bounce delay-200" />
-              <span className="ml-2 text-[10px] font-mono text-gold uppercase tracking-widest">Consulting...</span>
+              <div className="w-1.5 h-1.5 bg-gold rounded-full animate-bounce [animation-delay:0.2s]" />
+              <div className="w-1.5 h-1.5 bg-gold rounded-full animate-bounce [animation-delay:0.4s]" />
+              <span className="ml-2 text-[10px] font-mono text-gold uppercase tracking-widest font-bold">Consulting Intelligence...</span>
           </div>
         )}
         <div ref={messagesEndRef} />
@@ -132,7 +132,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-            placeholder="Inquire about stone types or processes..."
+            placeholder="Ask about materials or pricing..."
             className="w-full h-12 bg-surface border border-white/10 px-4 text-white text-sm font-sans outline-none focus:border-gold/50 transition-colors placeholder:text-white/20 placeholder:font-light"
           />
           <button 

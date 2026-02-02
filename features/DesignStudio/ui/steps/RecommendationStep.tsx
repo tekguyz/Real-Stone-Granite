@@ -2,6 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Info, Lightbulb } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
 import { ProjectState, Recommendation } from '../../../../entities/project/store';
 
 interface RecommendationStepProps {
@@ -27,10 +28,10 @@ export const RecommendationStep: React.FC<RecommendationStepProps> = ({ state, d
         
         <div className="space-y-6">
           <div className="border-l-2 border-gold/30 pl-6 py-2">
-            <span className="block text-[10px] text-white/40 uppercase tracking-widest font-bold mb-2">Technical Rationale</span>
-            <p className="text-white/80 text-sm leading-relaxed font-light max-w-2xl">
-                {recommendation.reason}
-            </p>
+            <span className="block text-[10px] text-white/40 uppercase tracking-widest font-bold mb-3">Technical Rationale</span>
+            <div className="prose-stone text-sm max-w-2xl">
+                <ReactMarkdown>{recommendation.reason}</ReactMarkdown>
+            </div>
           </div>
 
           {recommendation.warning && (
