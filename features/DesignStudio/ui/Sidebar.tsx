@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { X } from 'lucide-react';
 import { STEPS } from '../model/types';
@@ -36,7 +37,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentStep, setCurrentStep, h
             >
               <div className="flex flex-col">
                 <span className={`font-mono text-[9px] font-bold tracking-[0.2em] uppercase mb-0.5 ${currentStep === step.id ? 'text-gold' : 'opacity-30'}`}>
-                  Phase 0{step.id}
+                  Phase {step.id}
                 </span>
                 <span className="font-sans text-[13px] tracking-wide font-light">{step.label}</span>
               </div>

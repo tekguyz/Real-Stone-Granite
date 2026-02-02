@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ICONS, TEXTURES } from '../../shared/assets';
@@ -5,7 +6,7 @@ import { PHYSICS } from '../../shared/lib/theme';
 
 const CAPABILITIES = [
   {
-    id: "01",
+    id: "1",
     title: "Visual Planning",
     tagline: "Total Clarity",
     desc: "We help you visualize your project before the first cut. Using high-resolution scanning, we ensure vein transitions are seamless across your entire space.",
@@ -14,7 +15,7 @@ const CAPABILITIES = [
     texture: TEXTURES.ONYX
   },
   {
-    id: "02",
+    id: "2",
     title: "Precision Fabrication",
     tagline: "Perfect Alignment",
     desc: "Our master fabricators use advanced cutting systems to achieve complex curves and clean, mitered edges that define high-end masonry.",
@@ -23,7 +24,7 @@ const CAPABILITIES = [
     texture: TEXTURES.GRANITE
   },
   {
-    id: "03",
+    id: "3",
     title: "Artisan Detailing",
     tagline: "The Master's Touch",
     desc: "Beyond the tools. Our senior masons perform hand-finished edge profiles and custom inlays for projects that require a personal touch.",
@@ -32,7 +33,7 @@ const CAPABILITIES = [
     texture: TEXTURES.MARBLE
   },
   {
-    id: "04",
+    id: "4",
     title: "Dedicated Installation",
     tagline: "White-Glove Care",
     desc: "Our personal installation team manages every detail of the final assembly, including site protection and our high-performance sealing process.",

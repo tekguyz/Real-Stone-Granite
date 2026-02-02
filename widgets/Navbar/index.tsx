@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
 import { COMPANY_KB } from '../../entities/company/knowledge';
@@ -23,9 +24,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
     }
   });
 
-  // NAVIGATION ORDER: Our Story -> Capabilities -> Materials -> Monuments
   const navLinks = [
-    { name: 'Our Story', href: 'about' }, // New Link
+    { name: 'Our Story', href: 'about' },
     { name: 'Services', href: 'capabilities' },
     { name: 'Inventory', href: 'materials' },
     { name: 'Monuments', href: 'monuments' },
@@ -34,7 +34,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
-      const yOffset = -80; // Adjusted offset for fixed header
+      const yOffset = -80;
       const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
       window.scrollTo({ top: y, behavior: 'smooth' });
       setActiveSection(id);
@@ -52,7 +52,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
       >
         <div className="pointer-events-auto bg-[#0a0a0a]/90 backdrop-blur-md border border-white/10 px-1.5 py-1.5 flex items-center gap-1.5 shadow-2xl shadow-black/80 rounded-sm">
           
-          {/* LOGO HOME BUTTON */}
           <a 
             href="#" 
             aria-label="Real Stone & Granite Home"
@@ -64,7 +63,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
              </span>
           </a>
 
-          {/* DESKTOP NAV LINKS */}
           <div className="hidden md:flex items-center bg-black/40 border border-white/5 h-9 px-1">
             {navLinks.map((link) => (
               <button
@@ -80,17 +78,15 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
             ))}
           </div>
 
-          {/* CTA BUTTON */}
           <PrecisionBtn 
             variant="primary" 
             onClick={onOpenStudio} 
             className="h-9 px-5 text-[10px]"
             aria-label="Start Project Planner"
           >
-            Start Project
+            Talk to us
           </PrecisionBtn>
 
-          {/* MOBILE MENU TOGGLE */}
           <button 
             onClick={() => setIsMobileOpen(true)}
             aria-label="Open Mobile Menu"
@@ -102,7 +98,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
         </div>
       </motion.nav>
 
-      {/* MOBILE MENU OVERLAY */}
       <AnimatePresence>
         {isMobileOpen && (
           <motion.div
@@ -134,7 +129,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenStudio }) => {
                   className="text-left text-4xl md:text-5xl font-light text-white font-sans uppercase tracking-tight group flex items-start"
                 >
                   <span className="text-xs font-mono text-gold/40 mt-2 mr-6 block border-b border-gold/20 pb-1 w-8">
-                    0{idx + 1}
+                    {idx + 1}
                   </span>
                   <span className="group-hover:text-gold group-hover:translate-x-4 transition-all duration-300">
                     {link.name}

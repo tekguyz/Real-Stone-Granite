@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Fingerprint, Info, ShieldCheck, Layers, Gauge, Thermometer, Droplets } from 'lucide-react';
@@ -21,13 +22,21 @@ const MetricItem = ({ icon: Icon, label, value }: { icon: any, label: string, va
 );
 
 export const RecommendationStep: React.FC<RecommendationStepProps> = ({ state, dispatch, recommendation }) => {
-  const hasPreference = state.stonePreference !== 'Pending';
-  
   const materials = ['Granite', 'Marble', 'Quartzite', 'Quartz', 'Dekton', 'Onyx'];
 
-  // Derived Performance data based on recommendation (Mock data for architectural feel)
-  const isQuartzite = recommendation.material.includes('Quartzite');
-  const isDekton = recommendation.material.includes('Dekton');
+  // Derived Performance data
+  const isQuartzite = recommendation.material.toLowerCase().includes('quartzite');
+  const isDekton = recommendation.material.toLowerCase().includes('dekton');
+
+  // FIXED LOGIC: Uses word boundaries to distinguish between "Quartz" and "Quartzite"
+  const checkIsRecommended = (m: string) => {
+    const recText = recommendation.material.toLowerCase();
+    const materialKey = m.toLowerCase();
+    
+    // Exact word match to prevent "Quartzite" matching "Quartz"
+    const regex = new RegExp(`\\b${materialKey}\\b`, 'i');
+    return regex.test(recText);
+  };
 
   return (
     <motion.div 
@@ -35,18 +44,16 @@ export const RecommendationStep: React.FC<RecommendationStepProps> = ({ state, d
       animate={{ opacity: 1 }} 
       className="space-y-12"
     >
-      {/* 1. THE TECHNICAL SPECIFICATION HEADER */}
       <div className="relative border border-white/10 bg-surface/30 p-8 md:p-10">
         <div className="absolute top-0 right-0 p-4 border-b border-l border-white/5 bg-black/20">
           <Layers className="w-4 h-4 text-gold/40" strokeWidth={1} />
         </div>
 
         <div className="flex flex-col gap-10">
-          {/* A. Verdict */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
               <div className="w-8 h-[1px] bg-gold" />
-              <span className="font-mono text-[10px] text-gold uppercase tracking-[0.4em] font-bold">Material Specification</span>
+              <span className="font-mono text-[10px] text-gold uppercase tracking-[0.4em] font-bold">Selection Insight</span>
             </div>
             
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -55,20 +62,18 @@ export const RecommendationStep: React.FC<RecommendationStepProps> = ({ state, d
               </h4>
               <div className="flex items-center gap-3 border border-gold/20 px-3 py-1.5 bg-gold/5">
                 <ShieldCheck className="w-3.5 h-3.5 text-gold" />
-                <span className="text-[9px] font-mono text-gold uppercase tracking-[0.2em] font-bold whitespace-nowrap">Engineered Selection</span>
+                <span className="text-[9px] font-mono text-gold uppercase tracking-[0.2em] font-bold whitespace-nowrap">Expert Match</span>
               </div>
             </div>
           </div>
 
-          {/* B. Performance Ledger */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 py-8 border-y border-white/5">
             <MetricItem icon={Gauge} label="Hardness" value={isQuartzite ? "7.5 MOHS" : "6.0 MOHS"} />
             <MetricItem icon={Thermometer} label="Heat Tol." value={isDekton ? "1200°F" : "450°F"} />
-            <MetricItem icon={Droplets} label="Porosity" value="0.01%" />
+            <MetricItem icon={Droplets} label="Porosity" value="Low" />
             <MetricItem icon={Fingerprint} label="Origin" value="Global Sourced" />
           </div>
 
-          {/* C. The Logic */}
           <div className="max-w-xl">
              <div className="prose-stone text-xs md:text-sm leading-relaxed opacity-80 italic">
                 <ReactMarkdown>{recommendation.reason}</ReactMarkdown>
@@ -83,11 +88,10 @@ export const RecommendationStep: React.FC<RecommendationStepProps> = ({ state, d
         </div>
       </div>
 
-      {/* 2. THE SELECTION INTERFACE */}
       <div className="space-y-6">
         <div className="flex items-center gap-6">
           <label className="text-[10px] font-mono text-white/20 uppercase tracking-[0.5em] font-bold whitespace-nowrap">
-            Finalize Selection
+            Confirm Selection
           </label>
           <div className="h-px flex-1 bg-white/5" />
         </div>
@@ -95,7 +99,7 @@ export const RecommendationStep: React.FC<RecommendationStepProps> = ({ state, d
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
           {materials.map(m => {
             const isSelected = state.stonePreference === m;
-            const isRecommended = recommendation.material.includes(m);
+            const isRecommended = checkIsRecommended(m);
 
             return (
               <button

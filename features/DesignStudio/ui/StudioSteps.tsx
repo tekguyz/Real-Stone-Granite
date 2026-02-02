@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ChevronRight, ArrowLeft, Lock, Loader2 } from 'lucide-react';
@@ -54,11 +55,7 @@ export const StudioSteps: React.FC<StudioStepsProps> = ({
     <div className="flex-1 p-6 md:p-12 lg:px-24 lg:py-16 overflow-y-auto relative z-10 scrollbar-hide pb-32 lg:pb-24">
       <div className="max-w-3xl mx-auto">
         
-        <div className="lg:hidden mb-8 flex items-center gap-3">
-          <span className="text-gold font-mono text-[10px] uppercase tracking-widest font-bold">Step 0{currentStep} of 05</span>
-          <div className="h-[1px] flex-1 bg-white/10" />
-        </div>
-
+        {/* Step Context moved entirely to StudioHeader for clarity and to remove clutter */}
         <StudioHeader currentStep={currentStep} />
 
         <motion.div
@@ -100,7 +97,7 @@ export const StudioSteps: React.FC<StudioStepsProps> = ({
           `}
         >
           <ArrowLeft className="w-3 h-3 group-hover:-translate-x-1 transition-transform" />
-          Go Back
+          Back
         </button>
         
         <div className="flex-shrink-0">
@@ -112,7 +109,7 @@ export const StudioSteps: React.FC<StudioStepsProps> = ({
               disabled={isSubmitting}
             >
               <span className="font-mono text-[10px] uppercase tracking-widest font-bold">
-                {isStepValid ? "Next Step" : "Please Select"}
+                {isStepValid ? "Continue" : "Select to proceed"}
               </span>
               {isStepValid ? (
                 <ChevronRight className="w-4 h-4 ml-3 group-hover:translate-x-1 transition-transform" />
@@ -133,7 +130,7 @@ export const StudioSteps: React.FC<StudioStepsProps> = ({
                   Sending...
                 </div>
               ) : (
-                <span className="font-mono text-[11px] uppercase tracking-[0.3em] font-bold">Send My Project Details</span>
+                <span className="font-mono text-[11px] uppercase tracking-[0.3em] font-bold">Talk to us</span>
               )}
             </PrecisionBtn>
           )}

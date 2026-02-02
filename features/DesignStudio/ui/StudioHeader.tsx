@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 interface StudioHeaderProps {
@@ -6,8 +7,8 @@ interface StudioHeaderProps {
 
 const STEP_TITLES: Record<number, string> = {
   1: "Start Your Project",
-  2: "What are we building?",
-  3: "How will it be used?",
+  2: "The Space",
+  3: "The Lifestyle",
   4: "Our Suggestion",
   5: "Final Details"
 };
@@ -23,7 +24,7 @@ export const StudioHeader: React.FC<StudioHeaderProps> = ({ currentStep }) => {
           </span>
           <div className="w-1 h-1 bg-gold/40 rotate-45" />
           <span className="text-white/60 font-mono text-[10px] tracking-[0.3em] uppercase">
-            0{currentStep}
+            {currentStep}
           </span>
         </div>
       </div>

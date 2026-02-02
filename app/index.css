@@ -1,3 +1,4 @@
+
 /* 
   MASTER DESIGN SYSTEM 
   Industrial Luxury Theme - Single Source of Truth
@@ -22,7 +23,6 @@
 
 /* 
   2. ATMOSPHERIC OVERLAYS
-  PERFORMANCE FIX: Replaced feTurbulence with a static noise texture.
 */
 body::before {
   content: "";
@@ -106,7 +106,6 @@ input[type="submit"],
 
 /* 
   7. INDUSTRIAL MARKDOWN (PROSE-STONE)
-  Designed for High-Contrast Readability and Structural Aesthetics
 */
 .prose-stone {
   color: var(--color-text-main);
@@ -115,7 +114,6 @@ input[type="submit"],
   line-height: 1.7;
 }
 
-/* HEADINGS */
 .prose-stone h1, 
 .prose-stone h2, 
 .prose-stone h3 {
@@ -131,35 +129,16 @@ input[type="submit"],
   padding-bottom: 0.5rem;
 }
 
-/* PARAGRAPHS */
 .prose-stone p {
   margin-bottom: 1rem;
   color: rgba(255,255,255,0.85);
 }
 
-.prose-stone p:last-child {
-  margin-bottom: 0;
-}
-
-/* EMPHASIS (BOLD) -> ROLEX GOLD */
 .prose-stone strong, 
 .prose-stone b {
   color: var(--color-gold);
   font-weight: 700;
   letter-spacing: 0.02em;
-}
-
-/* LISTS (INDUSTRIAL BULLETS) */
-.prose-stone ul {
-  list-style: none;
-  padding-left: 0;
-  margin-bottom: 1rem;
-}
-
-.prose-stone li {
-  position: relative;
-  padding-left: 1.5rem;
-  margin-bottom: 0.5rem;
 }
 
 .prose-stone li::before {
@@ -172,25 +151,18 @@ input[type="submit"],
   opacity: 1;
 }
 
-/* LINKS */
-.prose-stone a {
-  color: var(--color-gold);
-  text-decoration: underline;
-  text-decoration-color: rgba(212, 175, 55, 0.3);
-  text-underline-offset: 4px;
-}
-.prose-stone a:hover {
-  color: white;
-  text-decoration-color: var(--color-gold);
+/* 8. BROWSER AUTOFILL OVERRIDES (CRITICAL FIX) */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #0a0a0a inset !important;
+  -webkit-text-fill-color: #ffffff !important;
+  caret-color: #ffffff !important;
+  border: 1px solid rgba(212, 175, 55, 0.3) !important;
+  transition: background-color 5000s ease-in-out 0s;
 }
 
-/* BLOCKQUOTES */
-.prose-stone blockquote {
-  border-left: 2px solid var(--color-gold);
-  padding-left: 1rem;
-  margin-left: 0;
-  font-style: italic;
-  color: var(--color-text-muted);
-  background: rgba(255,255,255,0.02);
-  padding: 1rem;
+input::placeholder {
+  color: rgba(255, 255, 255, 0.2) !important;
 }
