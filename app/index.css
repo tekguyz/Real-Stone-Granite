@@ -106,50 +106,19 @@ input[type="submit"],
 
 /* 
   7. INDUSTRIAL MARKDOWN (PROSE-STONE)
+  Designed for High-Contrast Readability and Structural Aesthetics
 */
 .prose-stone {
-  line-height: 1.6;
+  color: var(--color-text-main);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.7;
 }
 
-.prose-stone p {
-  margin-bottom: 1rem;
-  color: oklch(90% 0 0);
-}
-
-.prose-stone p:last-child {
-  margin-bottom: 0;
-}
-
-.prose-stone strong {
-  color: var(--color-gold);
-  font-weight: 700;
-  letter-spacing: 0.02em;
-}
-
-.prose-stone ul, .prose-stone ol {
-  padding-left: 0.5rem;
-  margin-bottom: 1rem;
-}
-
-.prose-stone li {
-  position: relative;
-  padding-left: 1.25rem;
-  margin-bottom: 0.5rem;
-  font-size: 0.95em;
-}
-
-.prose-stone li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.7em;
-  width: 5px;
-  height: 1px;
-  background-color: var(--color-gold);
-  opacity: 0.6;
-}
-
-.prose-stone h1, .prose-stone h2, .prose-stone h3 {
+/* HEADINGS */
+.prose-stone h1, 
+.prose-stone h2, 
+.prose-stone h3 {
   color: white;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -157,5 +126,71 @@ input[type="submit"],
   margin-top: 1.5rem;
   margin-bottom: 0.75rem;
   font-family: 'Geist Mono', monospace;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding-bottom: 0.5rem;
+}
+
+/* PARAGRAPHS */
+.prose-stone p {
+  margin-bottom: 1rem;
+  color: rgba(255,255,255,0.85);
+}
+
+.prose-stone p:last-child {
+  margin-bottom: 0;
+}
+
+/* EMPHASIS (BOLD) -> ROLEX GOLD */
+.prose-stone strong, 
+.prose-stone b {
+  color: var(--color-gold);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* LISTS (INDUSTRIAL BULLETS) */
+.prose-stone ul {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 1rem;
+}
+
+.prose-stone li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.prose-stone li::before {
+  content: "■";
+  position: absolute;
+  left: 0;
+  top: 0.1em;
+  font-size: 0.6em;
+  color: var(--color-gold);
+  opacity: 1;
+}
+
+/* LINKS */
+.prose-stone a {
+  color: var(--color-gold);
+  text-decoration: underline;
+  text-decoration-color: rgba(212, 175, 55, 0.3);
+  text-underline-offset: 4px;
+}
+.prose-stone a:hover {
+  color: white;
+  text-decoration-color: var(--color-gold);
+}
+
+/* BLOCKQUOTES */
+.prose-stone blockquote {
+  border-left: 2px solid var(--color-gold);
+  padding-left: 1rem;
+  margin-left: 0;
+  font-style: italic;
+  color: var(--color-text-muted);
+  background: rgba(255,255,255,0.02);
+  padding: 1rem;
 }

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useProjectStore } from '../../../entities/project/store';
 import { transcribeAudio } from '../../../shared/api/gemini';
@@ -133,7 +132,19 @@ export const useDesignStudio = (isOpen: boolean, onClose: () => void) => {
           
           try {
             const base64Audio = await blobToBase64(audioBlob);
-            const prompt = "You are a Secretary for a Stone Fabricator. Listen to this client's voice note and transcribe it into a clean, bulleted list of project requirements. Remove 'umms' and filler words. Keep it strictly professional.";
+            
+            // OPTIMIZED PROMPT: Forces RICH MARKDOWN output for the "Smart View"
+            const prompt = `
+              You are a professional project manager for a high-end stone fabrication company.
+              Listen to the client's voice note and transcribe the requirements into a STRUCTURED SPECIFICATION.
+
+              FORMATTING REQUIREMENTS (STRICT):
+              1. Use **Markdown** formatting.
+              2. Use **Bold** for all key headers and labels (e.g. **Material:**, **Dimensions:**).
+              3. Use Bullet Points (-) for lists of requirements.
+              4. Separate distinct thoughts with new lines.
+              5. Keep the tone professional, concise, and authoritative.
+            `;
             
             const transcribedText = await transcribeAudio(base64Audio, mimeType, prompt);
 
@@ -143,7 +154,7 @@ export const useDesignStudio = (isOpen: boolean, onClose: () => void) => {
             const newDesc = currentDesc ? `${currentDesc}\n\n${transcribedText}` : transcribedText;
             
             dispatch({ type: 'SET_DESCRIPTION', payload: newDesc });
-            showToast("Voice Note Transcribed Successfully", "success");
+            showToast("Voice Note Transcribed", "success");
 
           } catch (error) {
             console.error("Audio processing error:", error);
