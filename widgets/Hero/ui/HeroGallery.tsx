@@ -1,5 +1,4 @@
-
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring, useMotionTemplate } from 'framer-motion';
 import { FEATURED_SLABS } from '../model/inventory';
 import { ICONS } from '../../../shared/assets';
@@ -14,32 +13,25 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [hovering, setHovering] = useState(false);
 
-  const LIGHT_RADIUS = 100;      
-  const GLOW_RADIUS = 120;       
+  const LIGHT_RADIUS = 80;      
+  const GLOW_RADIUS = 100;       
   const LIGHT_BRIGHTNESS = 1.3; 
   const GLOW_OPACITY = 0.15;    
 
-  const mouseX = useMotionValue(-500); 
-  const mouseY = useMotionValue(-500);
-  const lightX = useSpring(mouseX, { stiffness: 200, damping: 30 }); 
-  const lightY = useSpring(mouseY, { stiffness: 200, damping: 30 });
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const lightX = useSpring(mouseX, { stiffness: 150, damping: 25 }); 
+  const lightY = useSpring(mouseY, { stiffness: 150, damping: 25 });
 
-  const maskImage = useMotionTemplate`radial-gradient(circle ${LIGHT_RADIUS}px at ${lightX}px ${lightY}px, black 0%, black 50%, transparent 100%)`;
-  const glowGradient = useMotionTemplate`radial-gradient(circle ${GLOW_RADIUS}px at ${lightX}px ${lightY}px, rgba(212,175,55,${GLOW_OPACITY}) 0%, transparent 100%)`;
+  const maskImage = useMotionTemplate`radial-gradient(circle ${LIGHT_RADIUS}px at ${lightX}px ${lightY}px, black 80%, transparent 100%)`;
+  const glowGradient = useMotionTemplate`radial-gradient(circle ${GLOW_RADIUS}px at ${lightX}px ${lightY}px, rgba(255,220,150,${GLOW_OPACITY}) 0%, transparent 100%)`;
 
-  const handlePointerMove = useCallback((clientX: number, clientY: number) => {
+  function handleMouseMove({ clientX, clientY }: React.MouseEvent) {
     if (!galleryRef.current) return;
     const { left, top } = galleryRef.current.getBoundingClientRect();
     mouseX.set(clientX - left);
     mouseY.set(clientY - top);
-  }, [mouseX, mouseY]);
-
-  const onMouseMove = (e: React.MouseEvent) => handlePointerMove(e.clientX, e.clientY);
-  const onTouchMove = (e: React.TouchEvent) => {
-    if (e.touches[0]) {
-      handlePointerMove(e.touches[0].clientX, e.touches[0].clientY);
-    }
-  };
+  }
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -52,24 +44,13 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
 
   return (
     <div 
-      className="w-full md:w-1/2 h-[60vh] md:h-screen relative overflow-hidden bg-black cursor-none gpu-accel border-t md:border-t-0 border-white/5 select-none touch-none"
-      style={{ WebkitTapHighlightColor: 'transparent' }}
-      onMouseMove={onMouseMove}
-      onTouchMove={onTouchMove}
-      onTouchStart={(e) => {
-        setHovering(true);
-        if (e.touches[0]) handlePointerMove(e.touches[0].clientX, e.touches[0].clientY);
-      }}
-      onTouchEnd={() => setHovering(false)}
+      className="w-full md:w-1/2 h-[60vh] md:h-screen relative overflow-hidden bg-black cursor-none gpu-accel border-t md:border-t-0 border-white/5"
+      onMouseMove={handleMouseMove}
       onMouseEnter={() => setHovering(true)}
-      onMouseLeave={() => {
-        setHovering(false);
-        mouseX.set(-500);
-        mouseY.set(-500);
-      }}
+      onMouseLeave={() => setHovering(false)}
       ref={galleryRef}
     >
-      <motion.div style={{ y: parallaxY }} className="absolute inset-0 w-full h-[120%] z-0 pointer-events-none">
+      <motion.div style={{ y: parallaxY }} className="absolute inset-0 w-full h-[120%] z-0">
         <AnimatePresence mode="popLayout">
           <motion.div
             key={`base-${currentIndex}`}
@@ -82,10 +63,8 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
             <img 
               src={currentSlab.image}
               alt={currentSlab.name}
-              className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+              className="absolute inset-0 w-full h-full object-cover"
               style={{ filter: 'brightness(0.35) contrast(1.1) grayscale(30%)' }}
-              fetchpriority={currentIndex === 0 ? "high" : "auto"}
-              loading={currentIndex === 0 ? "eager" : "lazy"}
             />
           </motion.div>
 
@@ -95,15 +74,14 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
             animate={{ opacity: hovering ? 1 : 0 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-            className="absolute inset-0 w-full h-full z-10 pointer-events-none"
+            className="absolute inset-0 w-full h-full z-10"
             style={{ WebkitMaskImage: maskImage, maskImage: maskImage }}
           >
             <img 
               src={currentSlab.image}
               alt=""
-              className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+              className="absolute inset-0 w-full h-full object-cover"
               style={{ filter: `brightness(${LIGHT_BRIGHTNESS}) contrast(1.4) saturate(1.4) sepia(10%)` }}
-              loading="lazy"
             />
           </motion.div>
         </AnimatePresence>
@@ -117,11 +95,11 @@ export const HeroGallery: React.FC<HeroGalleryProps> = ({ parallaxY }) => {
 
       <div className="absolute inset-0 pointer-events-none z-30">
         <motion.div
-          className="absolute top-0 left-0 flex items-center justify-center pointer-events-none z-50"
-          style={{ x: lightX, y: lightY, translateX: '-50%', translateY: '-50%' }}
+          className="absolute"
+          style={{ x: lightX, y: lightY }}
           animate={{ opacity: hovering ? 1 : 0, scale: hovering ? 1 : 0.5 }}
         >
-          <div className="w-2 h-2 bg-white rounded-full shadow-[0_0_15px_6px_rgba(255,255,255,0.7)]" />
+          <div className="w-1.5 h-1.5 bg-white rounded-full shadow-[0_0_10px_2px_rgba(255,255,255,0.8)] -translate-x-1/2 -translate-y-1/2" />
         </motion.div>
 
         <motion.div 
